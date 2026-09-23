@@ -1,0 +1,196 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+}
+
+// Load keystore properties for release signing
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("app/keystore.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    namespace 'com.mosquednd'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.mosquednd"
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+
+        // Gulshan-e-Hadeed coordinates (approximate center)
+        buildConfigField "double", "DEFAULT_LAT", "24.8967"
+        buildConfigField "double", "DEFAULT_LNG", "67.2369"
+        buildConfigField "String", "SEARCH_RADIUS", "\"5000\""
+
+        // Semantic Versioning and Build Metadata Injection
+        def versionPropsFile = file('version.properties')
+        def semVer = "1.0.0"
+        if (versionPropsFile.exists()) {
+            def props = new Properties()
+            props.load(new FileInputStream(versionPropsFile))
+            semVer = props.getProperty("VERSION_NAME", "1.0.0")
+        }
+        
+        def commitHash = "unknown"
+        try {
+            def stdout = new java.io.ByteArrayOutputStream()
+            exec {
+                commandLine 'git', 'rev-parse', '--short', 'HEAD'
+                standardOutput = stdout
+                ignoreExitValue = true
+            }
+            def gitOut = stdout.toString().trim()
+            if (!gitOut.isEmpty()) {
+                commitHash = gitOut
+            }
+        } catch (Exception e) {
+            // ignore git errors
+        }
+
+        def buildTimestamp = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", java.util.Locale.US).format(new Date())
+
+        buildConfigField "String", "APP_VERSION", "\"${semVer}\""
+        buildConfigField "String", "GIT_COMMIT_HASH", "\"${commitHash}\""
+        buildConfigField "String", "BUILD_TIMESTAMP", "\"${buildTimestamp}\""
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "String", "ENVIRONMENT", "\"debug\""
+        }
+        release {
+            buildConfigField "String", "ENVIRONMENT", "\"release\""
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    buildFeatures {
+        buildConfig true
+        viewBinding true
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.10"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    sourceSets {
+        test {
+            java.srcDirs = ['src/test/java']
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "MosqueDND.apk"
+        }
+    }
+}
+
+dependencies {
+    // AndroidX Core
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
+    implementation 'androidx.preference:preference-ktx:1.2.1'
+
+    // ViewPager2 for swipeable tab pages
+    implementation 'androidx.viewpager2:viewpager2:1.1.0'
+
+    // Google Play Services - Location and Geofencing
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    
+    // MapLibre (vector tile maps, no API key needed)
+    implementation 'org.maplibre.gl:android-sdk:10.3.7'
+
+    // WorkManager
+    implementation 'androidx.work:work-runtime-ktx:2.9.0'
+
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+
+    // LiveData
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
+    
+    // Gson for JSON serialization
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    // EncryptedSharedPreferences
+    implementation 'androidx.security:security-crypto:1.0.0'
+
+    // Jetpack Room
+    implementation 'androidx.room:room-runtime:2.6.1'
+    implementation 'androidx.room:room-ktx:2.6.1'
+    kapt 'androidx.room:room-compiler:2.6.1'
+
+    // ── Jetpack Compose ──
+    implementation 'androidx.compose.ui:ui:1.6.0'
+    implementation 'androidx.compose.ui:ui-graphics:1.6.0'
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.6.0'
+    implementation 'androidx.compose.material3:material3:1.2.0'
+    implementation 'androidx.compose.material:material-icons-extended:1.6.0'
+    implementation 'androidx.compose.foundation:foundation:1.6.0'
+    implementation 'androidx.compose.runtime:runtime-livedata:1.6.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-compose:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0'
+    implementation 'androidx.activity:activity-compose:1.8.2'
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.6.0'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest:1.6.0'
+
+    // JUnit for unit tests
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:5.7.0'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3'
+    testImplementation 'androidx.test:core:1.5.0'
+
+    // AndroidX Test (Instrumentation)
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    androidTestImplementation 'androidx.fragment:fragment-testing:1.6.2'
+    androidTestImplementation 'org.mockito:mockito-android:5.7.0'
+    androidTestImplementation 'org.mockito:mockito-inline:5.2.0'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.6.0'
+
+    // Robolectric for JVM unit tests requiring Android framework
+    testImplementation 'org.robolectric:robolectric:4.11.1'
+    // shadows-media not needed — all shadow classes included in robolectric:4.11.1
+}

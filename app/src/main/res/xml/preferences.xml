@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:preferenceTheme="@style/PreferenceThemeOverlay">
+
+    <PreferenceCategory android:title="@string/pref_category_calculation">
+
+        <ListPreference
+            android:key="pref_sect"
+            android:title="@string/pref_sect_title"
+            android:summary="@string/pref_sect_summary"
+            android:entries="@array/sect_entries"
+            android:entryValues="@array/sect_values"
+            android:defaultValue="hanafi"
+            app:iconSpaceReserved="false" />
+
+        <ListPreference
+            android:key="calculation_method"
+            android:title="@string/calculation_method_title"
+            android:summary="@string/calculation_method_summary"
+            android:entries="@array/calculation_method_entries"
+            android:entryValues="@array/calculation_method_values"
+            android:defaultValue="mwl"
+            app:iconSpaceReserved="false" />
+
+        <ListPreference
+            android:key="asr_method"
+            android:title="@string/asr_calculation_title"
+            android:summary="@string/asr_calculation_summary"
+            android:entries="@array/asr_calculation_entries"
+            android:entryValues="@array/asr_calculation_values"
+            android:defaultValue="hanafi"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_alarms">
+
+        <SwitchPreferenceCompat
+            android:key="master_alarm_enabled"
+            android:title="@string/master_alarm_title"
+            android:summary="@string/master_alarm_summary"
+            android:defaultValue="false"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="custom_adhan_ringtone"
+            android:title="@string/adhan_ringtone_title"
+            android:summary="@string/adhan_ringtone_summary"
+            app:iconSpaceReserved="false" />
+
+        <ListPreference
+            android:key="hijri_date_offset"
+            android:title="@string/hijri_date_offset_title"
+            android:summary="@string/hijri_date_offset_summary"
+            android:entries="@array/hijri_date_offset_entries"
+            android:entryValues="@array/hijri_date_offset_values"
+            android:defaultValue="0"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_dnd">
+
+        <SwitchPreferenceCompat
+            android:key="pref_auto_dnd_enabled"
+            android:title="@string/pref_auto_dnd_title"
+            android:summary="@string/pref_auto_dnd_summary"
+            android:defaultValue="true"
+            app:iconSpaceReserved="false" />
+
+        <ListPreference
+            android:key="pref_auto_dnd_duration_min"
+            android:title="@string/pref_auto_dnd_duration_title"
+            android:summary="@string/pref_auto_dnd_duration_summary"
+            android:entries="@array/dnd_duration_entries"
+            android:entryValues="@array/dnd_duration_values"
+            android:defaultValue="30"
+            app:iconSpaceReserved="false" />
+
+        <SeekBarPreference
+            android:key="pref_detection_radius_m"
+            android:title="@string/pref_detection_radius_title"
+            android:summary="@string/pref_detection_radius_summary"
+            android:max="500"
+            app:min="10"
+            android:defaultValue="100"
+            app:showSeekBarValue="true"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="pref_detection_radius_warning"
+            android:title="@string/pref_detection_radius_warning_title"
+            android:summary="@string/pref_detection_radius_warning_summary"
+            android:visible="false"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_data">
+
+        <Preference
+            android:key="export_data"
+            android:title="@string/export_data_title"
+            android:summary="@string/export_data_summary"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="import_data"
+            android:title="@string/import_data_title"
+            android:summary="@string/import_data_summary"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_general">
+
+        <ListPreference
+            android:key="pref_theme"
+            android:title="@string/pref_theme_title"
+            android:summary="@string/pref_theme_summary"
+            android:entries="@array/theme_entries"
+            android:entryValues="@array/theme_values"
+            android:defaultValue="system"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="pref_onboarding"
+            android:title="@string/pref_onboarding_title"
+            android:summary="@string/pref_onboarding_summary"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="pref_battery_optimization"
+            android:title="@string/pref_battery_optimization_title"
+            android:summary="@string/pref_battery_optimization_summary"
+            app:iconSpaceReserved="false" />
+
+        <EditTextPreference
+            android:key="log_server_ip"
+            android:title="Log Server IP / URL"
+            android:summary="Auto-discovery scans local subnet. Enter PC IP here if on different subnet."
+            android:dialogTitle="Log Server IP"
+            android:dialogMessage="Enter PC log server IP or URL (e.g. 192.168.1.50:5000):"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="About &amp; Version"
+        android:layout_marginTop="16dp">
+
+        <Preference
+            android:key="pref_app_version"
+            android:title="App Version"
+            android:summary="1.0.0"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="pref_build_hash"
+            android:title="Git Commit Hash"
+            android:summary="unknown"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="pref_build_timestamp"
+            android:title="Build Timestamp"
+            android:summary="unknown"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="pref_build_env"
+            android:title="Environment"
+            android:summary="debug"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
