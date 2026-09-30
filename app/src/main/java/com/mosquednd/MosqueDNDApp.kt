@@ -47,6 +47,10 @@ class MosqueDNDApp : Application() {
             val alarmPrefs = EncryptedPrefsManager.getEncryptedPrefs(this, "alarm_prefs")
             val locationPrefs = EncryptedPrefsManager.getEncryptedPrefs(this, "location_prefs")
 
+            // Initialize the MosqueRepository (and Room database)
+            // It also handles one-time data migration from EncryptedSharedPreferences if needed.
+            MosqueRepository.getInstance(this)
+
             // One-time data migration: copy sensitive keys from the default SharedPreferences
             // (where all data lived before the encrypted migration) to the corresponding
             // encrypted files. Without this, existing users lose all data on upgrade.
