@@ -21,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -255,7 +256,9 @@ fun QiblaScreen() {
         }
     }
 
-    val pitchRollOffset by sensorManager.pitchRollOffset.collectAsStateWithLifecycle()
+    val pitch by sensorManager.pitch.collectAsStateWithLifecycle()
+    val roll by sensorManager.roll.collectAsStateWithLifecycle()
+    val pitchRollOffset = Offset(pitch, roll)
 
     val dialState = QiblaDialState(
         userHeading = animatedHeading,
@@ -414,15 +417,12 @@ fun QiblaScreen() {
         QiblaDial(state = dialState)
 
         Spacer(modifier = Modifier.height(24.dp))                    // Green/Gold Pointer Needle extending towards center
-                    Box(
-                        modifier = Modifier
-                            .width(4.dp)
-                            .fillMaxHeight(0.35f)
-                            .background(GoldAccent, shape = RoundedCornerShape(2.dp))
-                    )
-                }
-            }
-        }
+        Box(
+            modifier = Modifier
+                .width(4.dp)
+                .fillMaxHeight(0.35f)
+                .background(GoldAccent, shape = RoundedCornerShape(2.dp))
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
     }

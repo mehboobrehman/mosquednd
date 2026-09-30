@@ -35,4 +35,20 @@ data class MosqueEntity(
         address = address,
         geofenceRadius = geofenceRadius
     )
+
+    companion object {
+        fun fromMosque(mosque: Mosque, version: Int, createdAt: Long, updatedAt: Long): MosqueEntity {
+            return MosqueEntity(
+                id = mosque.id,
+                name = mosque.name,
+                latitude = mosque.latitude,
+                longitude = mosque.longitude,
+                address = mosque.address,
+                geofenceRadius = mosque.geofenceRadius,
+                version = version,
+                createdAt = createdAt,
+                updatedAt = updatedAt
+            )
+        }
+    }
 }

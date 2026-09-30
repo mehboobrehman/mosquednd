@@ -8,6 +8,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -36,8 +37,6 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.sp
-import com.mosquednd.ui.theme.EmeraldAccent
-import com.mosquednd.ui.theme.GoldAccent
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.min
@@ -122,7 +121,7 @@ fun QiblaDial(
             .semantics { contentDescription = contentDesc },
         contentAlignment = Alignment.Center
     ) {
-        androidx.compose.foundation.Canvas(modifier = Modifier
+        Spacer(modifier = Modifier
             .fillMaxSize()
             .drawWithCache {
                 // Pre-allocate paths, brushes, and text layouts to avoid heap allocations in the draw loop
@@ -144,12 +143,12 @@ fun QiblaDial(
                     for (i in 1..8) {
                         val angleOuter = i * 45f - 90f
                         lineTo(
-                            centerX + starInnerRadius * cos(Math.toRadians(angleOuter - 22.5).toFloat()),
-                            centerY + starInnerRadius * sin(Math.toRadians(angleOuter - 22.5).toFloat())
+                            centerX + starInnerRadius * cos(Math.toRadians((angleOuter - 22.5).toDouble()).toFloat()),
+                            centerY + starInnerRadius * sin(Math.toRadians((angleOuter - 22.5).toDouble()).toFloat())
                         )
                         lineTo(
-                            centerX + starOuterRadius * cos(Math.toRadians(angleOuter).toFloat()),
-                            centerY + starOuterRadius * sin(Math.toRadians(angleOuter).toFloat())
+                            centerX + starOuterRadius * cos(Math.toRadians(angleOuter.toDouble()).toFloat()),
+                            centerY + starOuterRadius * sin(Math.toRadians(angleOuter.toDouble()).toFloat())
                         )
                     }
                     close()
@@ -337,7 +336,7 @@ fun QiblaDial(
 
                     // Level bubble (shows if device is flat)
                     val clampedPitchX = (state.pitchRollOffset.x * maxOffset).coerceIn(-maxOffset, maxOffset)
-                    val clampedPitchY = (state.state.pitchRollOffset.y * maxOffset).coerceIn(-maxOffset, maxOffset)
+                    val clampedPitchY = (state.pitchRollOffset.y * maxOffset).coerceIn(-maxOffset, maxOffset)
 
                     drawCircle(
                         color = ColorLevelBubbleLevel,

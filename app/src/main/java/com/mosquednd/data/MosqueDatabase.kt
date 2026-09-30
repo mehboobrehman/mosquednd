@@ -33,6 +33,15 @@ abstract class MosqueDatabase : RoomDatabase() {
     abstract fun mosqueHistoryDao(): MosqueHistoryDao
 
     companion object {
+        @Volatile
+        private var INSTANCE: MosqueDatabase? = null
+
+        fun getInstance(context: Context): MosqueDatabase {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: build(context).also { INSTANCE = it }
+            }
+        }
+
         /**
          * Build (not yet open) the database. Construction only — actual open
          * happens on first query, so this is safe to call during Direct Boot
@@ -44,6 +53,6 @@ abstract class MosqueDatabase : RoomDatabase() {
                 context.applicationContext,
                 MosqueDatabase::class.java,
                 "mosquednd.db"
-            ).build()
+            ).fallbackToDestructiveMigration().build()
     }
 }

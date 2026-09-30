@@ -29,4 +29,12 @@ data class MosqueHistoryEntity(
     val changedBy: String,
     val changeReason: String,
     val createdAt: Long
-)
+) {
+    fun toEntry(): MosqueHistoryEntry = MosqueHistoryEntry(
+        version = version,
+        snapshotJson = snapshotJson,
+        changedBy = changedBy,
+        changeReason = changeReason,
+        createdAt = createdAt
+    )
+}
