@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mosque DND</string>
+    <string name="add_mosque">Add Mosque</string>
+    <string name="mosque">Mosque</string>
+    <string name="remove">Remove</string>
+    <string name="no_mosques">No mosques added yet</string>
+    <string name="tap_to_add">Tap + to add a mosque location</string>
+    <string name="grant_dnd_access">Grant DND Access</string>
+    <string name="dnd_access_required">DND access is required to automatically enable Do Not Disturb mode when entering mosque geofence.</string>
+    <string name="qibla_direction">Qibla Direction</string>
+    <string name="detect_nearby">Nearby Mosque</string>
+    
+    <!-- Prayer Times -->
+    <string name="prayer_times">Prayer Times</string>
+    <string name="next_prayer">NEXT</string>
+    <string name="fajr">Fajr</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="dhuhr">Dhuhr</string>
+    <string name="asr">Asr</string>
+    <string name="maghrib">Maghrib</string>
+    <string name="isha">Isha</string>
+    
+    <!-- Per-prayer Help -->
+    <string name="prayer_help_fajr">Adjust the calculation method or the angle threshold for this prayer.</string>
+    <string name="prayer_help_dhuhr">Set the delay after Zawal or choose a different school for Asr time.</string>
+    <string name="prayer_help_asr">Configure the Asr calculation method (Shafi\'i vs Hanafi).</string>
+    <string name="prayer_help_maghrib">Set the minutes after sunset for Iftar or adjust the angle.</string>
+    <string name="prayer_help_isha">Adjust the angle for Isha or set a time interval.</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="action_settings">Settings</string>
+    <string name="appearance">Appearance</string>
+    <string name="theme">Theme</string>
+    <string name="theme_summary">Choose light, dark, or system default</string>
+    <string name="prayer_calculation">Prayer Calculation</string>
+    <string name="calculation_method">Calculation Method</string>
+    <string name="calculation_method_summary">Method used to calculate prayer times</string>
+    <string name="help_calc_method_title">Prayer calculation methods</string>
+    <string name="help_calc_method_message">Different methods use slightly different formulas for computing prayer times. MWL (Muslim World League) is the default. You can try other methods to see which one matches your local mosque schedule best.</string>
+    <string name="asr_method">Asr Method</string>
+    <string name="asr_method_summary">Method for calculating Asr prayer time</string>
+    <string name="notifications">Notifications</string>
+    <string name="adhan_notifications">Adhan Notifications</string>
+    <string name="adhan_notifications_summary">Play Adhan sound at prayer times</string>
+    <string name="geofence_enabled">Geofence DND</string>
+    <string name="geofence_enabled_summary">Automatically enable DND at mosque locations</string>
+    
+    <!-- Prayer Alarms -->
+    <string name="prayer_time_notification_title">Prayer Time</string>
+    <string name="prayer_time_notification_body">%1$s - Time for prayer</string>
+    <string name="channel_prayer_alerts">Prayer Alerts</string>
+    <string name="channel_prayer_alerts_desc">Notifications for prayer time alerts</string>
+    
+    <!-- Widget -->
+    <string name="widget_next_prayer">Next Prayer</string>
+    
+    <!-- Prayer Alarm Toggle -->
+    <string name="switch_alarm_toggle_desc">Toggle alarm for this prayer</string>
+
+    <!-- Master Alarm Toggle -->
+    <string name="master_alarm_title">Prayer Alarms</string>
+    <string name="master_alarm_summary">Enable or disable all prayer alarms</string>
+
+    <!-- Hijri Date -->
+    <string name="hijri_date_prefix">Hijri: </string>
+
+    <!-- Custom Adhan Ringtone -->
+    <string name="adhan_ringtone_title">Adhan Ringtone</string>
+    <string name="adhan_ringtone_summary">Select a custom ringtone for the call to prayer</string>
+    <string name="adhan_ringtone_none">Default</string>
+
+    <!-- Auto DND -->
+    <string name="dnd_auto_disabled">DND auto-disabled after 15 minutes</string>
+
+    <!-- Per-Prayer Alarm Offset -->
+    <string name="prayer_alarm_offset_title">Alarm Offset</string>
+    <string name="prayer_alarm_offset_message">Adjust %1$s alarm time\nEarlier = negative, Later = positive</string>
+    <string name="offset_adjusted_time">Adhan will sound at %s</string>
+    <string name="offset_previous_day">previous day</string>
+    <string name="offset_next_day">next day</string>
+
+    <!-- Qibla Compass -->
+    <string name="calibration_status_calibrated">Calibrated</string>
+    <string name="calibration_status_low_accuracy">Low Accuracy</string>
+    <string name="calibration_status_uncalibrated">Calibrate</string>
+    <string name="calibration_hint">Move phone in figure-8 motion to calibrate</string>
+    <string name="retry">Retry</string>
+
+    <!-- Qibla Alignment -->
+    <string name="alignment_status_aligned">Aligned with Qibla ✨</string>
+    <string name="magnetic_interference_warning">⚠ Magnetic interference detected. Move away from electronics or metal objects.</string>
+    <string name="accuracy_degraded_notice">Sensor accuracy degraded — compass may be less accurate</string>
+
+    <!-- Qibla Compass (new) -->
+    <string name="qibla_loading">Initialising compass…</string>
+    <string name="qibla_permission_denied">Location permission denied</string>
+    <string name="qibla_permission_explanation">Qibla direction requires location access to calculate the bearing to Makkah.</string>
+    <string name="qibla_grant_permission">Grant Permission</string>
+    <string name="qibla_no_compass_sensor">No compass sensor detected</string>
+    <string name="qibla_no_compass_explanation">This device does not have a magnetometer. The Qibla bearing is %1$d° from your current location.</string>
+    <string name="qibla_label_location">Location</string>
+    <string name="qibla_label_distance">Distance to Kaaba</string>
+    <string name="qibla_label_heading">Heading</string>
+    <string name="qibla_label_calibration">Calibration</string>
+    <string name="qibla_getting_location">Getting location…</string>
+    <string name="qibla_location_unavailable">Location unavailable</string>
+    <string name="qibla_location_required">Location permission is required for Qibla direction</string>
+    <string name="qibla_gps_off">GPS is turned off. Please enable Location to calculate Qibla direction.</string>
+    <string name="qibla_location_timeout">Unable to get location. Please check GPS signal and try again.</string>
+    <string name="qibla_near_kaaba">You are near the Kaaba. Qibla direction is not applicable.</string>
+    <string name="qibla_arrow_description">Qibla direction indicator, %1$d degrees</string>
+    <string name="qibla_compass_description">Compass dial, facing %1$d degrees (West at top)</string>
+    <string name="qibla_kaaba_content_description">Kaaba direction indicator</string>
+    <string name="kaaba_icon_content_description">Kaaba direction target</string>
+
+    <!-- Compass Error / Info -->
+    <string name="compass_calibrate_instruction">Calibrate device by moving in a figure-8 pattern</string>
+    <string name="compass_location_disabled">Location services are disabled. Enable GPS for accurate Qibla direction.</string>
+    <string name="compass_low_accuracy">GPS accuracy is low. Qibla direction may be approximate.</string>
+    <string name="compass_sensor_unavailable">Compass sensor not available on this device.</string>
+    <string name="calibration_help_title">Compass Calibration</string>
+    <string name="calibration_help_message">Move your phone in a figure-8 pattern to improve accuracy. Keep it away from magnets and metal objects. A green dot means the compass is calibrated. A yellow dot means low accuracy. A red dot means interference detected — move to a different location.</string>
+
+    <!-- Import / Export -->
+    <string name="category_data">Data</string>
+    <string name="export_data_title">Export Data</string>
+    <string name="export_data_summary">Save your prayer settings, alarms, and mosque locations to a file</string>
+    <string name="import_data_title">Import Data</string>
+    <string name="import_data_summary">Restore settings from a previously exported file</string>
+    <string name="import_confirm_title">Import Data</string>
+    <string name="import_confirm_message">Found: %1$d prayer settings, %2$d alarms, %3$d offsets, %4$d mosques, %5$s theme. Proceed with import?</string>
+    <string name="import_success">Data imported successfully</string>
+    <string name="import_error">Failed to import data: %1$s</string>
+    <string name="import_invalid_format">Invalid file format. Please select a valid MosqueDND export file.</string>
+    <string name="import_version_mismatch">Unsupported export version %1$d. This app only supports version %2$d.</string>
+    <string name="export_error_title">Export Error</string>
+    <string name="export_error">Failed to export data: %1$s</string>
+    <string name="export_success">Data exported successfully</string>
+    <string name="duplicate_mosques_found">%1$d duplicate mosques were skipped</string>
+    <string name="import_nothing">Nothing to import — no recognizable data found in file.</string>
+
+    <!-- Detection Radius -->
+    <string name="detection_radius_title">Detection Radius</string>
+    <string name="detection_radius_summary">Set how close you need to be to a mosque</string>
+    <string name="radius_meters">%d m</string>
+    <string name="pref_detection_radius_title">Detection Radius</string>
+    <string name="pref_detection_radius_summary">Detect mosques within %d meters</string>
+    <string name="pref_detection_radius_warning">This radius is very large and may not detect nearby mosques. Recommended: 1–50 km.</string>
+
+    <!-- Auto DND -->
+    <string name="dnd_settings">Do Not Disturb</string>
+    <string name="auto_dnd_title">Auto DND on mosque entry</string>
+    <string name="auto_dnd_summary_on">DND will be enabled automatically when near a mosque</string>
+    <string name="auto_dnd_summary_off">Tap to enable automatic DND near mosques</string>
+
+    <!-- DND Duration -->
+    <string name="dnd_duration_title">Default DND duration</string>
+    <string name="dnd_duration_summary">Set how long DND stays active</string>
+    <string name="help_dnd_duration_title">Default DND duration</string>
+    <string name="help_dnd_duration_message">The DND window silences adhan and non-Fajr reminders. If the end time is earlier than the start time, it wraps overnight (for example, 10 PM to 6 AM).</string>
+
+    <!-- Location Error Handling -->
+    <string name="location_source_gps">Using GPS</string>
+    <string name="location_source_manual">Manual location</string>
+    <string name="location_source_manual_location_info">Manual location (%1$s, %2$s)</string>
+    <string name="set_location_manually">Set Manually</string>
+    <string name="location_unavailable_title">Location unavailable</string>
+    <string name="location_unavailable_message">Unable to determine your location. Set it manually or enable location services.</string>
+    <string name="location_manual_title">Set Location Manually</string>
+    <string name="location_manual_latitude_hint">Latitude (-90 to 90)</string>
+    <string name="location_manual_longitude_hint">Longitude (-180 to 180)</string>
+    <string name="location_invalid_input">Invalid coordinates. Please enter valid latitude and longitude.</string>
+    <string name="use_gps">Use GPS</string>
+    <string name="enable_location">Enable Location</string>
+    <string name="qibla_location_set_manually">Set Manually</string>
+    <string name="qibla_enable_location">Enable Location</string>
+    <string name="qibla_location_error_title">Location unavailable</string>
+    <string name="qibla_location_error_message">Unable to determine your location. Enable GPS or set manually.</string>
+
+    <!-- Map Cache -->
+    <string name="map_data_from">Data from %s</string>
+    <string name="map_refresh_data">Refresh data</string>
+
+    <!-- Calendar Settings -->
+    <string name="calendar_settings">Calendar</string>
+    <string name="hijri_date_offset_title">Hijri Date Offset</string>
+    <string name="hijri_date_offset_summary">Adjust Hijri calendar date by ±2 days</string>
+    <string name="hijri_date_offset_help_title">Hijri Date Offset</string>
+    <string name="hijri_date_offset_help_message">Adjust the displayed Hijri (Islamic) calendar date by -2 to +2 days. Use this if your local moon sighting differs from the calculated date. The offset only affects the date display, not prayer times.</string>
+
+    <!-- Per-Prayer DND Controls -->
+    <string name="dnd_toggle_label">Silent (DND)</string>
+    <string name="dnd_toggle_content_desc">Toggle Do Not Disturb for this prayer</string>
+    <string name="dnd_offset_label">DND Offset</string>
+    <string name="dnd_duration_label">Duration</string>
+    <string name="dnd_chip_5min">5 min</string>
+    <string name="dnd_chip_10min">10 min</string>
+    <string name="dnd_chip_15min">15 min</string>
+    <string name="dnd_chip_30min">30 min</string>
+    <string name="dnd_chip_60min">60 min</string>
+    <string name="dnd_time_range" formatted="false">DND: %s - %s</string>
+    <string name="dnd_permission_snackbar">Grant DND access in Settings to use per-prayer silent mode</string>
+    <string name="dnd_alarm_scheduled_snackbar">DND scheduled for %s</string>
+    <string name="dnd_alarm_cancelled_snackbar">DND cancelled for %s</string>
+    <string name="dnd_toast_enabled">DND enabled for %1$s — phone will silence during prayer</string>
+    <string name="dnd_toast_disabled">DND disabled for %1$s</string>
+    <string name="dnd_seekbar_content_desc">DND offset seek bar, %s</string>
+    <string name="dnd_chip_5min_desc">5 minutes</string>
+    <string name="dnd_chip_10min_desc">10 minutes</string>
+    <string name="dnd_chip_15min_desc">15 minutes</string>
+    <string name="dnd_chip_20min">20 min</string>
+    <string name="dnd_chip_20min_desc">20 minutes</string>
+    <string name="dnd_chip_30min_desc">30 minutes</string>
+    <string name="dnd_chip_60min_desc">60 minutes</string>
+    <string name="dnd_chip_custom">Custom</string>
+    <string name="dnd_chip_custom_desc">Set a custom duration</string>
+
+    <string-array name="dnd_duration_preset_values">
+        <item>5 min</item>
+        <item>10 min</item>
+        <item>15 min</item>
+        <item>20 min</item>
+        <item>30 min</item>
+        <item>60 min</item>
+        <item>Custom…</item>
+    </string-array>
+    <string name="dnd_custom_label">Custom:</string>
+    <string name="dnd_custom_hint">Minutes</string>
+    <string name="dnd_custom_set">Set</string>
+    <string name="dnd_custom_value_set">Custom DND duration set to %d minutes</string>
+    <string name="dnd_custom_invalid">Please enter a valid number (1-999)</string>
+    <string name="help_location_title">Background Location</string>
+    <string name="help_location_message">MosqueDND needs background location access to detect when you enter a mosque\'s geofence. Without it, auto DND won\'t work. Tap here to open App Settings if you previously denied the permission.</string>
+    <string name="monitor_toggle_desc">Double-tap to toggle mosque monitoring. TalkBack is active — single tap toggles directly.</string>
+    <string name="help_button_desc">Help</string>
+
+    <!-- Help section -->
+    <string name="dnd_help_title">About Silent (DND) Mode</string>
+
+    <!-- Qibla Compass - extracted from Compose files -->
+    <string name="qibla_bearing_format">Qibla: %d°</string>
+    <string name="qibla_near_pole_message">Qibla direction undefined near poles</string>
+    <string name="qibla_compass_not_responding">Compass sensor not responding</string>
+    <string name="qibla_permanently_denied_title">Permission permanently denied</string>
+    <string name="qibla_permanently_denied_message">Open Settings to grant location permission for Qibla direction</string>
+    <string name="qibla_calibrating">Calibrating…</string>
+    <string name="qibla_magnetic_interference_status">Magnetic Interference</string>
+    <string name="qibla_you_are_near_kaaba">You are near the Kaaba</string>
+    <!-- Adhan/DND Overlap Validation -->
+    <string name="adhan_dnd_overlap">Adhan and DND intervals cannot overlap. Adjust the DND offset or duration.</string>
+
+    <string name="dnd_help_message">Manage silence periods for each prayer time.
+
+\u2022 Duration: Choose how long Do Not Disturb stays active — 5 to 60 minutes, or set a custom value.
+\u2022 Offset: Adjust when DND starts relative to the prayer time (-60 to +60 minutes).
+\u2022 Time range: Shows you the exact DND start and end time for each prayer.
+
+The app automatically schedules DND alarms and restores normal notifications when the period ends, even if the app is closed or the device restarts.</string>
+
+    <!-- Battery Optimization -->
+    <string name="battery_optimization_title">Battery Optimization</string>
+    <string name="battery_optimization_summary">Disable battery optimization for reliable prayer alerts and geofencing</string>
+    <string name="battery_optimization_message">To keep prayer alarms and mosque detection running reliably, please disable battery optimization for MosqueDND.</string>
+    <string name="battery_optimization_open_settings">Open Settings</string>
+    <string name="battery_optimization_not_now">Not Now</string>
+
+    <!-- Usage Access -->
+    <string name="usage_access_title">Usage Access</string>
+    <string name="usage_access_message">MosqueDND needs usage access to detect when battery optimizers or cleaner apps interfere with prayer alarms. This helps us prompt you to restore functionality.</string>
+    <string name="usage_access_grant">Grant Access</string>
+    <string name="usage_access_skip">Skip</string>
+    <string name="usage_access_granted">Usage access granted</string>
+    <string name="usage_access_denied">Usage access not granted — some features may not work</string>
+
+    <!-- Onboarding strings -->
+    <string name="onboarding_title">Welcome to Mosque DND</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_done">Done</string>
+
+    <!-- Onboarding: Slide 1 — Prayer Times -->
+    <string name="onboarding_prayer_title">Prayer Times</string>
+    <string name="onboarding_prayer_desc">Accurate Islamic prayer times based on your location. Supports multiple calculation methods and per-prayer alarm notifications.</string>
+
+    <!-- Onboarding: Slide 2 — Qibla Compass -->
+    <string name="onboarding_qibla_title">Qibla Compass</string>
+    <string name="onboarding_qibla_desc">Find the exact direction to the Holy Kaaba using your device\'s sensors. Works anywhere in the world.</string>
+
+    <!-- Onboarding: Slide 3 — Mosque Detection -->
+    <string name="onboarding_mosque_title">Mosque Detection</string>
+    <string name="onboarding_mosque_desc">Automatically detects nearby mosques using your location. Save mosques from the map to build your personal mosque list.</string>
+
+    <!-- Onboarding: Slide 4 — Auto DND -->
+    <string name="onboarding_dnd_title">Auto DND</string>
+    <string name="onboarding_dnd_desc">Automatically enables Do Not Disturb when you enter a mosque geofence. Stay focused on your prayers without manual toggling.</string>
+
+    <!-- Settings: Onboarding preference -->
+    <string name="pref_onboarding_title">Show Onboarding</string>
+    <string name="pref_onboarding_summary">Replay the feature walkthrough tour</string>
+    <string name="help_and_feedback">Help &amp; Feedback</string>
+
+    <!-- Onboarding accessibility -->
+    <string name="onboarding_page_desc">Slide %1$d of %2$d</string>
+
+    <!-- Permission Wall -->
+    <!-- Help strings -->
+    <string name="help_monitoring_toggle">Help about monitoring toggle</string>
+    <string name="help_detection_radius_title">Detection Radius</string>
+    <string name="help_detection_radius_message">The geofence radius defines how close you need to be to a saved mosque before Do Not Disturb is automatically enabled. A smaller radius (e.g. 20 m) requires you to be very close, while a larger radius (e.g. 200 m) triggers earlier and from further away.</string>
+
+    <!-- Help: Asr Method -->
+    <string name="help_asr_method_title">Juristic Method</string>
+    <string name="help_asr_method_message">Determines the start time for Asr prayer. The Shafi\'i (Standard) method calculates Asr when a shadow is equal to an object\'s height, while the Hanafi method calculates it when the shadow is twice the object\'s height.</string>
+
+    <!-- Help: Adhan Notifications -->
+    <string name="help_adhan_notifications_title">Adhan Notifications</string>
+    <string name="help_adhan_notifications_message">When enabled, you will receive a notification and the Adhan will play at each prayer time. You can customize which prayers trigger notifications and choose a custom Adhan audio file.</string>
+
+    <!-- Help: Geofence DND -->
+    <string name="help_geofence_enabled_title">Auto DND Near Mosques</string>
+    <string name="help_geofence_enabled_message">When enabled, the app will automatically enable Do Not Disturb mode when you enter a saved mosque\'s geofence area, and disable DND when you leave.</string>
+
+    <!-- Help: Master Alarm -->
+    <string name="help_master_alarm_enabled_title">Master Alarm Toggle</string>
+    <string name="help_master_alarm_enabled_message">When the master alarm is off, all per-prayer alarm toggles are disabled and no Adhan alarms will fire. Toggle individual prayers back on from the Prayer Times screen.</string>
+
+    <!-- Help: Onboarding -->
+    <string name="help_onboarding_title">Show Onboarding</string>
+    <string name="help_onboarding_message">Replay the introductory onboarding screens to learn about the app\'s features and set up permissions from scratch.</string>
+    <string name="help_map_save">Help about saving mosques</string>
+    <string name="help_map_save_title">Saving a Mosque</string>
+    <string name="help_map_save_message">Tap the map to place a marker, then enter a name for the mosque. The geofence radius controls how close you need to be before DND activates. You can adjust the radius with the slider or use \"Detect Nearby\" to automatically find mosques from OpenStreetMap.\n\nMosques are saved locally and used to manage Do Not Disturb around prayer times.</string>
+
+    <!-- Mosques Empty State -->
+    <string name="mosques_empty_help_text">Save your local mosques to enable automatic Do Not Disturb when you pray. MosqueDND detects when you enter a mosque geofence and silences your phone so you can focus on your prayers.</string>
+    <string name="mosques_instructions_label">Instructions</string>
+    <string name="mosques_instructions_expand_desc">Expand instructions</string>
+    <string name="mosques_instructions_collapse_desc">Collapse instructions</string>
+    <string name="mosques_instructions_content">1. Tap "Add Mosque" to open the map\n2. Search or browse for nearby mosques\n3. Tap on a mosque to save it\n4. Adjust the geofence radius if needed</string>
+    <string name="mosques_instructions_expanded">Instructions expanded</string>
+    <string name="mosques_instructions_collapsed">Instructions collapsed</string>
+
+    <!-- Sect Selector -->
+    <string name="sect_selector_title">Choose Your School of Thought</string>
+    <string name="sect_hanafi">Hanafi</string>
+    <string name="sect_hanbali">Hanbali</string>
+    <string name="sect_maliki">Maliki</string>
+    <string name="sect_shafii">Shafi\'i</string>
+    <string name="sect_jafari">Shia Jafari</string>
+    <string name="sect_zaydi">Zaydi</string>
+    <string name="sect_ibadi">Ibadi</string>
+    <string name="sect_custom">Custom</string>
+    <string name="sect_help_hanafi">Sets Asr to Hanafi method. Calculation method is preserved.</string>
+    <string name="sect_help_hanbali">Sets Asr to Standard method. Calculation method is preserved.</string>
+    <string name="sect_help_maliki">Sets Asr to Standard method. Calculation method is preserved.</string>
+    <string name="sect_help_shafii">Sets Asr to Standard method. Calculation method is preserved.</string>
+    <string name="sect_help_jafari">Uses Jafari calculation method with Standard Asr method.</string>
+    <string name="sect_help_zaydi">Sets Asr to Standard method. Calculation method is preserved.</string>
+    <string name="sect_help_ibadi">Sets Asr to Standard method. Calculation method is preserved.</string>
+    <string name="sect_help_custom">Manually set both Calculation and Asr methods.</string>
+    <string name="pref_sect_title">School of Thought</string>
+    <string name="pref_sect_summary">Select your Islamic school of thought</string>
+    <string name="pref_sect_help_title">School of Thought</string>
+    <string name="pref_sect_help_message">Select the school of thought (madhhab) you follow. This maps to the appropriate calculation method and Asr method combination:\n\n• Hanafi → Standard calc, Hanafi Asr\n• Hanbali, Maliki, Shafi\'i, Zaydi, Ibadi → Standard calc, Standard Asr\n• Shia Jafari → Jafari calc, Standard Asr\n• Custom → Leave both as manually set</string>
+
+    <!-- Exact Alarm Permission -->
+    <string name="exact_alarm_permission_title">Alarms &amp; Reminders Permission</string>
+    <string name="exact_alarm_permission_message">MosqueDND uses exact alarms for precise prayer time scheduling. Please grant the Alarms and reminders permission in Settings.</string>
+    <string name="exact_alarm_open_settings">Open Settings</string>
+    <string name="monitoring_status_on">Monitoring: ON</string>
+    <string name="monitoring_status_off">Monitoring: OFF</string>
+    <string name="background_location_needed">Background Location Needed</string>
+    <string name="background_location_required">Background Location Required</string>
+    <!-- Background location rationale disclosure (shown before the system permission prompt) -->
+    <string name="bg_rationale_title">Background Location Permission</string>
+    <string name="bg_rationale_message">MosqueDND uses background location only to detect when you are near a saved mosque and automatically enable Do Not Disturb.\n\n• It runs only while monitoring is turned on.\n• Your location is stored locally on this device.\n• No location data is shared with any third party.\n\nTap Continue to grant this permission.</string>
+    <string name="bg_rationale_proceed">Continue</string>
+    <string name="bg_rationale_dismiss">Not now</string>
+    <string name="monitoring_started">Monitoring started</string>
+    <string name="monitoring_stopped">Monitoring stopped</string>
+    <string name="monitoring_error_stop">Failed to stop monitoring: %s</string>
+    <string name="monitoring_error_start">Failed to start monitoring: %s</string>
+    <string name="map_location_permission_required">Location permission required</string>
+    <string name="radius_meters_format">%.0f m</string>
+    <string name="map_select_mosques_title">Select Mosques to Save</string>
+    <string name="map_no_mosques_found">No mosques found nearby</string>
+    <string name="map_select_location_prompt">Please select a location on the map</string>
+    <string name="map_mosque_added">Mosque added</string>
+    <string name="about_title">About Mosque DND</string>
+    <string name="about_message">Automatically enables Do Not Disturb mode when entering mosque geofences in Gulshan-e-Hadeed and surrounding areas.</string>
+    <string name="remove_mosque_title">Remove Mosque</string>
+    <string name="remove_mosque_message">Remove %1$s from geofencing?</string>
+    <string name="mosque_removed">Mosque removed</string>
+    <string name="coord_format">%.4f, %.4f</string>
+
+    <!-- Privacy Policy -->
+    <string name="privacy_policy_url">https://www.mosquednd.app/privacy</string>
+</resources>

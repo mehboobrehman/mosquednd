@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_home"         android:icon="@drawable/ic_home"        android:title="AutoDND" />
+    <item android:id="@+id/nav_mosques"      android:icon="@drawable/ic_mosque"      android:title="Mosques" />
+    <item android:id="@+id/nav_prayer_times" android:icon="@drawable/ic_compass"     android:title="Prayer times" />
+    <item android:id="@+id/nav_qibla"        android:icon="@drawable/ic_directions"  android:title="Qibla" />
+</menu>

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_prayer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="0dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="0dp"
+    android:layout_marginBottom="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:strokeWidth="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_md"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <!-- Color-coded vertical strip (bleeds to card edge on the left) -->
+        <View
+            android:id="@+id/view_color_strip"
+            android:layout_width="4dp"
+            android:layout_height="0dp"
+            android:background="#FF9800"
+            android:layout_marginStart="-16dp"
+            android:layout_marginTop="-16dp"
+            android:layout_marginBottom="-16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- Prayer name (starts after the color strip with gap) -->
+        <TextView
+            android:id="@+id/text_prayer_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_md"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@+id/view_color_strip"
+            app:layout_constraintEnd_toStartOf="@+id/badge_next"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/view_dnd_divider" />
+
+        <!-- NEXT badge -->
+        <TextView
+            android:id="@+id/badge_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next_prayer"
+            android:textSize="@dimen/text_size_xs"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnPrimary"
+            android:background="@drawable/badge_next_prayer"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:visibility="gone"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@+id/text_prayer_name"
+            app:layout_constraintEnd_toStartOf="@+id/text_prayer_time"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/view_dnd_divider" />
+
+        <!-- Prayer time (right side) -->
+        <TextView
+            android:id="@+id/text_prayer_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_lg"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintStart_toEndOf="@+id/badge_next"
+            app:layout_constraintEnd_toStartOf="@+id/btn_prayer_help"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/view_dnd_divider" />
+
+        <!-- Prayer help button -->
+        <ImageButton
+            android:id="@+id/btn_prayer_help"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_help"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/help_button_desc"
+            android:scaleType="fitCenter"
+            android:padding="2dp"
+            android:visibility="gone"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintStart_toEndOf="@+id/text_prayer_time"
+            app:layout_constraintEnd_toStartOf="@+id/text_offset_indicator"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/view_dnd_divider" />
+
+        <!-- Offset indicator -->
+        <TextView
+            android:id="@+id/text_offset_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_xs"
+            android:textColor="?attr/colorAccentText"
+            android:layout_marginEnd="4dp"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            app:layout_constraintStart_toEndOf="@+id/btn_prayer_help"
+            app:layout_constraintEnd_toStartOf="@+id/switch_alarm_toggle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/view_dnd_divider" />
+
+        <!-- Alarm toggle switch -->
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_alarm_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/switch_alarm_toggle_desc"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/view_dnd_divider" />
+
+        <!-- ── DND Section (hidden by default) ── -->
+
+        <!-- Divider line above DND section -->
+        <View
+            android:id="@+id/view_dnd_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="?attr/colorOutline"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/text_prayer_name"
+            app:layout_constraintStart_toStartOf="@+id/text_prayer_name"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- DND controls container -->
+        <LinearLayout
+            android:id="@+id/layout_dnd_section"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/spacing_sm"
+            app:layout_constraintTop_toBottomOf="@+id/view_dnd_divider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/text_prayer_name"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Row 1: DND Toggle -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="@dimen/spacing_xs">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/dnd_toggle_label"
+                    android:textSize="@dimen/text_size_sm"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_dnd_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/dnd_toggle_content_desc" />
+
+            </LinearLayout>
+
+            <!-- Row 2: DND Offset (SeekBar -60..+60) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/spacing_sm">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dnd_offset_label"
+                    android:textSize="@dimen/text_size_xs"
+                    android:textColor="?attr/colorAccentText"
+                    android:paddingBottom="@dimen/spacing_xs" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <SeekBar
+                        android:id="@+id/seekbar_dnd_offset"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:max="120"
+                        android:contentDescription="@string/dnd_seekbar_content_desc" />
+
+                    <TextView
+                        android:id="@+id/text_dnd_offset_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_sm"
+                        android:textStyle="bold"
+                        android:textColor="?attr/colorPrimary"
+                        android:minWidth="48dp"
+                        android:gravity="end"
+                        android:layout_marginStart="@dimen/spacing_sm" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Row 3: DND Duration (ChipGroup + help icon + custom input) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/spacing_sm">
+
+                <!-- Duration label row with help icon -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="@dimen/spacing_xs">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/dnd_duration_label"
+                        android:textSize="@dimen/text_size_xs"
+                        android:textColor="?attr/colorAccentText" />
+
+                    <ImageButton
+                        android:id="@+id/btn_dnd_help"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_help"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/help_button_desc"
+                        android:scaleType="fitCenter"
+                        android:padding="2dp" />
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/spinner_dnd_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="8dp"
+                    android:minHeight="36dp" />
+
+                <!-- Custom duration input (hidden by default) -->
+                <LinearLayout
+                    android:id="@+id/layout_custom_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/spacing_xs"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dnd_custom_label"
+                        android:textSize="@dimen/text_size_xs"
+                        android:textColor="?attr/colorAccentText" />
+
+                    <EditText
+                        android:id="@+id/edit_custom_duration"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:hint="@string/dnd_custom_hint"
+                        android:textSize="@dimen/text_size_sm"
+                        android:padding="4dp"
+                        android:background="?attr/colorSurfaceVariant"
+                        android:minHeight="36dp" />
+
+                    <Button
+                        android:id="@+id/btn_custom_duration_set"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dnd_custom_set" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Row 4: DND Time Range display -->
+            <TextView
+                android:id="@+id/text_dnd_time_range"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_sm"
+                android:textStyle="bold"
+                android:textColor="?attr/colorPrimary"
+                android:gravity="center_horizontal"
+                android:paddingTop="@dimen/spacing_sm"
+                android:paddingBottom="@dimen/spacing_xs" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

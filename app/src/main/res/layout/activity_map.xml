@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.MosqueDND.AppBarOverlay">
+        
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.MosqueDND.PopupOverlay" />
+        
+        <LinearLayout
+            android:id="@+id/layout_cache_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:visibility="gone"
+            android:background="?attr/colorSurface">
+            
+            <TextView
+                android:id="@+id/text_cache_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:textSize="12sp"
+                android:textColor="?android:textColorSecondary" />
+            
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_refresh_data"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/map_refresh_data"
+                android:textSize="12sp" />
+            
+        </LinearLayout>
+        
+    </com.google.android.material.appbar.AppBarLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        
+        <LinearLayout
+            android:id="@+id/layout_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone">
+            
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mosque Name">
+                
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_mosque_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mosque" />
+                
+            </com.google.android.material.textfield.TextInputLayout>
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Geofence Radius"
+                android:textSize="14sp" />
+            
+            <SeekBar
+                android:id="@+id/slider_radius"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="450"
+                android:progress="0" />
+            
+            <TextView
+                android:id="@+id/text_radius_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="200 m"
+                android:gravity="center"
+                android:textSize="14sp" />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical">
+                
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_detect_nearby"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/detect_nearby"
+                    app:icon="@drawable/ic_mosque"
+                    app:iconGravity="textStart" />
+                
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_save"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Save" />
+
+                <ImageButton
+                    android:id="@+id/btn_save_help"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_help"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/help_map_save" />
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_detect_nearby"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:text="@string/detect_nearby"
+        app:icon="@drawable/ic_mosque"
+        android:contentDescription="@string/detect_nearby" />
+    
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_my_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_my_location"
+        android:contentDescription="My Location" />
+    
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

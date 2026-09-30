@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark Theme — override layout colors for night mode -->
+    <color name="next_prayer_highlight">#1a403d</color>
+    <color name="card_default">#0a1628</color>
+    <color name="text_primary">#DEFFFFFF</color>
+    <color name="text_secondary">#99FFFFFF</color>
+
+    <!-- Emerald / Gold compass colors (dark mode — deep midnight blue bg) -->
+    <color name="compass_bg">#1A1A40</color>
+    <color name="compass_gold_primary">#D4AF37</color>
+    <color name="compass_gold_light">#F5E6A3</color>
+    <color name="compass_gold_dark">#8B6914</color>
+    <color name="compass_ivory">#F5F0E1</color>
+    <color name="compass_emerald">#006A4E</color>
+    <color name="compass_kaaba_body">#4A4A4A</color>
+    <color name="compass_kaaba_roof">#D4AF37</color>
+</resources>

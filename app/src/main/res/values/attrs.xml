@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- =========================================================
+         Custom themeable text/icon color attributes.
+         Each theme (light / dark) assigns actual color values
+         so that ?attr/ references resolve correctly at runtime.
+         ========================================================= -->
+
+    <!-- General UI text colors -->
+    <attr name="colorTitle" format="color" />
+    <attr name="colorHijriDate" format="color" />
+    <attr name="colorAccentText" format="color" />
+
+    <!-- Calibration status dot colors (for Qibla activity) -->
+    <attr name="colorCalibrationDotHigh" format="color" />
+    <attr name="colorCalibrationDotMedium" format="color" />
+    <attr name="colorCalibrationDotLow" format="color" />
+
+    <!-- =========================================================
+         Emerald / Gold / Islamic compass theme attributes.
+         Each theme (light / dark) assigns actual color values
+         so that ?attr/ references resolve correctly at runtime.
+         ========================================================= -->
+    <!-- Compass background (midnight blue) -->
+    <attr name="colorCompassBg" format="color" />
+    <!-- Primary gold for rings, arrows, and highlights -->
+    <attr name="colorCompassGoldPrimary" format="color" />
+    <!-- Light gold for gradient highlights -->
+    <attr name="colorCompassGoldLight" format="color" />
+    <!-- Dark gold for shadow depths -->
+    <attr name="colorCompassGoldDark" format="color" />
+    <!-- Soft ivory for text and needle highlights -->
+    <attr name="colorCompassIvory" format="color" />
+    <!-- Deep emerald for decorative star pattern -->
+    <attr name="colorCompassEmerald" format="color" />
+    <!-- Kaaba icon body (stone gray) -->
+    <attr name="colorCompassKaabaBody" format="color" />
+    <!-- Kaaba roof trim (gold) -->
+    <attr name="colorCompassKaabaRoof" format="color" />
+</resources>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Simple monochrome white mosque icon for notifications -->
+    <!-- Dome -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,33 C43,33 34,40 34,49 C34,56 54,72 54,72 C54,72 74,56 74,49 C74,40 65,33 54,33 Z" />
+    <!-- Left minaret -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M38,60 L38,38 L42,38 L42,60 Z" />
+    <!-- Right minaret -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M66,60 L66,38 L70,38 L70,60 Z" />
+    <!-- Left minaret top -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M36,38 L44,38 L44,35 L36,35 Z" />
+    <!-- Right minaret top -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M64,38 L72,38 L72,35 L64,35 Z" />
+    <!-- Base -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,72 L74,72 L74,76 L34,76 Z" />
+</vector>

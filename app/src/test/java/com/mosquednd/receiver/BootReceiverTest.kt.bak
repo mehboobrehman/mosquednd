@@ -1,0 +1,76 @@
+package com.mosquednd.receiver
+
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import com.mosquednd.service.GeofenceService
+import com.mosquednd.receiver.DailyRecalculationHelper
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
+import org.junit.Before
+import org.junit.Test
+import org.mockito.MockedStatic
+import org.mockito.Mockito
+import org.mockito.Mockito.never
+import org.mockito.Mockito.times
+
+class BootReceiverTest {
+
+    private lateinit var bootReceiver: BootReceiver
+    private lateinit var mockContext: Context
+    private lateinit var dailyRecalcMock: MockedStatic<DailyRecalculationHelper>
+    private lateinit var geofenceMock: MockedStatic<GeofenceService>
+    private lateinit var logMock: MockedStatic<Log>
+
+    @Before
+    fun setUp() {
+        bootReceiver = BootReceiver()
+        mockContext = Mockito.mock(Context::class.java)
+        logMock = Mockito.mockStatic(Log::class.java)
+        dailyRecalcMock = Mockito.mockStatic(DailyRecalculationHelper::class.java)
+        geofenceMock = Mockito.mockStatic(GeofenceService::class.java)
+    }
+
+    @After
+    fun tearDown() {
+        dailyRecalcMock.close()
+        geofenceMock.close()
+        logMock.close()
+    }
+
+    @Test
+    fun `BOOT_COMPLETED triggers recalc and geofence re-register exactly once`() {
+        val intent = Intent(Intent.ACTION_BOOT_COMPLETED)
+        bootReceiver.onReceive(mockContext, intent)
+
+        dailyRecalcMock.verify({ DailyRecalculationHelper.recalculateAndReschedule(mockContext) }, times(1))
+        geofenceMock.verify({ GeofenceService.enqueueReRegisterAll(mockContext) }, times(1))
+    }
+
+    @Test
+    fun `QUICKBOOT_POWERON also triggers recalc and geofence re-register`() {
+        val intent = Intent("android.intent.action.QUICKBOOT_POWERON")
+        bootReceiver.onReceive(mockContext, intent)
+
+        dailyRecalcMock.verify({ DailyRecalculationHelper.recalculateAndReschedule(mockContext) }, times(1))
+        geofenceMock.verify({ GeofenceService.enqueueReRegisterAll(mockContext) }, times(1))
+    }
+
+    @Test
+    fun `non-boot action does not trigger recalc or geofence`() {
+        val intent = Intent(Intent.ACTION_TIME_CHANGED)
+        bootReceiver.onReceive(mockContext, intent)
+
+        dailyRecalcMock.verify({ DailyRecalculationHelper.recalculateAndReschedule(mockContext) }, never())
+        geofenceMock.verify({ GeofenceService.enqueueReRegisterAll(mockContext) }, never())
+    }
+
+    @Test
+    fun `null intent returns early`() {
+        bootReceiver.onReceive(mockContext, null)
+        dailyRecalcMock.verify({ DailyRecalculationHelper.recalculateAndReschedule(mockContext) }, never())
+        geofenceMock.verify({ GeofenceService.enqueueReRegisterAll(mockContext) }, never())
+    }
+}

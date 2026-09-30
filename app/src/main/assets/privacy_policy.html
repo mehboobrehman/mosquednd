@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Mosque DND</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #1a1a1a; max-width: 680px; margin: 0 auto; padding: 20px 16px; background: #f7f7f8; }
+  h1 { font-size: 1.35em; border-bottom: 2px solid #c8a84e; padding-bottom: 8px; color: #0f3a22; }
+  h2 { font-size: 1.1em; color: #1a5c3a; margin-top: 1.4em; }
+  p, li { font-size: 0.95em; }
+  ul { padding-left: 1.3em; }
+  a { color: #1a5c3a; text-decoration: underline; }
+  .last-updated { font-size: 0.85em; color: #555; margin-bottom: 1.2em; }
+</style>
+</head>
+<body>
+  <h1>Mosque DND — Privacy Policy</h1>
+  <p class="last-updated">Last updated: July 2025</p>
+
+  <h2>Overview</h2>
+  <p>Mosque DND is a local Android application focused on prayer times, Qibla direction, and automatic Do Not Disturb (DND) near mosques. We designed the app to protect your privacy — almost everything stays on your device and no account is required.</p>
+
+  <h2>What Data Is Collected</h2>
+  <ul>
+    <li><strong>Location (GPS / Network):</strong> Needed to calculate accurate prayer times, determine Qibla direction, and detect when you enter or leave a saved mosque geofence.</li>
+    <li><strong>Prayer Schedule Preferences:</strong> Your chosen calculation method, Asr method, Hijri date offset, and per-prayer alarm settings.</li>
+    <li><strong>Do Not Disturb Settings:</strong> Per-prayer DND toggles, offsets, durations, and the master alarm toggle.</li>
+    <li><strong>Mosque Coordinates:</strong> Latitude, longitude, mosque name, and geofence radius for each mosque you save.</li>
+    <li><strong>App Settings:</strong> Theme preference, detection radius, and onboarding state.</li>
+  </ul>
+
+  <h2>How Data Is Used</h2>
+  <ul>
+    <li><strong>Auto-DND near mosques:</strong> Location is compared against your saved mosque coordinates to trigger DND automatically when you arrive and restore sound when you leave.</li>
+    <li><strong>Prayer time calculation:</strong> Coordinates feed into the prayer times engine so Fajr, Dhuhr, Asr, Maghrib, and Isha are accurate for your city.</li>
+    <li><strong>Qibla direction:</strong> The bearing from your location to the Holy Kaaba is computed locally using the great-circle formula.</li>
+    <li><strong>Local-only storage:</strong> All preferences and mosque data are stored in Android SharedPreferences / local files inside the app private storage.</li>
+  </ul>
+
+  <h2>No Third-Party Sharing</h2>
+  <p>Mosque DND does <strong>not</strong> share any personal data with third parties. We do not use ads, analytics SDKs, or crash-reporting services that transmit your data externally. Map tiles are downloaded from OpenStreetMap tile providers, but only the tile images are fetched — no location or usage data is sent to them.</p>
+
+  <h2>Storage Duration</h2>
+  <p>All data remains on your device indefinitely. It is not transmitted to any server operated by us or by third parties. If you choose to back up data to Google Drive, that file is managed entirely by your Google account and subject to Google’s privacy policy.</p>
+
+  <h2>User Controls &amp; Data Deletion</h2>
+  <p>You have full control over your data:</p>
+  <ul>
+    <li>Turn location monitoring on or off at any time from the Home screen toggle to start or stop automatic mosque proximity checks.</li>
+    <li>Delete all app data at any time via <strong>Settings &gt; Apps &gt; Mosque DND &gt; Storage &gt; Clear Data</strong>.</li>
+    <li>Uninstalling the app removes all locally stored data permanently.</li>
+    <li>You can edit or remove individual mosques from the Mosques screen.</li>
+    <li>Import/export allows you to copy your data elsewhere before clearing.</li>
+  </ul>
+
+  <h2>Permissions Rationale</h2>
+  <ul>
+    <li><strong>Location (Fine &amp; Coarse):</strong> Required to compute prayer times and Qibla direction, and to detect mosque entry.</li>
+    <li><strong>Background Location:</strong> Required for the foreground monitoring service to detect mosque geofence transitions even when the app is not on screen.</li>
+    <li><strong>Notifications / Do Not Disturb Access:</strong> Required to play Adhan notifications and to enable/disable DND mode automatically.</li>
+    <li><strong>Exact Alarm (SCHEDULE_EXACT_ALARM / USE_EXACT_ALARM):</strong> Required so prayer time alarms fire at the correct minute.</li>
+    <li><strong>Foreground Service (Location):</strong> Required because the app may run a persistent foreground service while actively monitoring mosque proximity.</li>
+  </ul>
+
+  <h2>Children’s Privacy</h2>
+  <p>Mosque DND is intended for general audiences and does not knowingly collect data from children under 13.</p>
+
+  <h2>Changes to This Policy</h2>
+  <p>If this policy changes, the new version will be published at the same URL. Continued use of the app after changes means you accept the updated policy.</p>
+
+  <h2>Contact</h2>
+  <p>If you have questions about this privacy policy, contact us at <a href="mailto:mehboobrehman@live.com">mehboobrehman@live.com</a>.</p>
+</body>
+</html>

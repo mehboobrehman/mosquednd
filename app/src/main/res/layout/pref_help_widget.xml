@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/help_button"
+    android:layout_width="48dp"
+    android:layout_height="match_parent"
+    android:minHeight="?attr/listPreferredItemHeightSmall"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:contentDescription="@string/help_button_desc"
+    android:src="@drawable/ic_help"
+    android:scaleType="center"
+    android:padding="12dp"
+    android:gravity="center" />

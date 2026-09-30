@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:preferenceTheme="@style/PreferenceThemeOverlay">
 
-    <PreferenceCategory android:title="@string/pref_category_calculation">
+    <PreferenceCategory android:title="@string/prayer_calculation">
 
         <ListPreference
             android:key="pref_sect"
@@ -16,25 +16,25 @@
 
         <ListPreference
             android:key="calculation_method"
-            android:title="@string/calculation_method_title"
+            android:title="@string/calculation_method"
             android:summary="@string/calculation_method_summary"
-            android:entries="@array/calculation_method_entries"
-            android:entryValues="@array/calculation_method_values"
+            android:entries="@array/method_entries"
+            android:entryValues="@array/method_values"
             android:defaultValue="mwl"
             app:iconSpaceReserved="false" />
 
         <ListPreference
             android:key="asr_method"
-            android:title="@string/asr_calculation_title"
-            android:summary="@string/asr_calculation_summary"
-            android:entries="@array/asr_calculation_entries"
-            android:entryValues="@array/asr_calculation_values"
+            android:title="@string/asr_method"
+            android:summary="@string/asr_method_summary"
+            android:entries="@array/asr_entries"
+            android:entryValues="@array/asr_values"
             android:defaultValue="hanafi"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_category_alarms">
+    <PreferenceCategory android:title="@string/master_alarm_title">
 
         <SwitchPreferenceCompat
             android:key="master_alarm_enabled"
@@ -53,28 +53,28 @@
             android:key="hijri_date_offset"
             android:title="@string/hijri_date_offset_title"
             android:summary="@string/hijri_date_offset_summary"
-            android:entries="@array/hijri_date_offset_entries"
-            android:entryValues="@array/hijri_date_offset_values"
+            android:entries="@array/hijri_offset_entries"
+            android:entryValues="@array/hijri_offset_values"
             android:defaultValue="0"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_category_dnd">
+    <PreferenceCategory android:title="@string/dnd_settings">
 
         <SwitchPreferenceCompat
             android:key="pref_auto_dnd_enabled"
-            android:title="@string/pref_auto_dnd_title"
-            android:summary="@string/pref_auto_dnd_summary"
+            android:title="@string/auto_dnd_title"
+            android:summary="@string/auto_dnd_summary_on"
             android:defaultValue="true"
             app:iconSpaceReserved="false" />
 
         <ListPreference
             android:key="pref_auto_dnd_duration_min"
-            android:title="@string/pref_auto_dnd_duration_title"
-            android:summary="@string/pref_auto_dnd_duration_summary"
-            android:entries="@array/dnd_duration_entries"
-            android:entryValues="@array/dnd_duration_values"
+            android:title="@string/dnd_duration_title"
+            android:summary="@string/dnd_duration_summary"
+            android:entries="@array/auto_dnd_duration_entries"
+            android:entryValues="@array/auto_dnd_duration_values"
             android:defaultValue="30"
             app:iconSpaceReserved="false" />
 
@@ -90,14 +90,14 @@
 
         <Preference
             android:key="pref_detection_radius_warning"
-            android:title="@string/pref_detection_radius_warning_title"
-            android:summary="@string/pref_detection_radius_warning_summary"
+            android:title="@string/pref_detection_radius_warning"
+            android:summary="@string/pref_detection_radius_warning"
             android:visible="false"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_category_data">
+    <PreferenceCategory android:title="@string/category_data">
 
         <Preference
             android:key="export_data"
@@ -113,12 +113,12 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_category_general">
+    <PreferenceCategory android:title="@string/appearance">
 
         <ListPreference
             android:key="pref_theme"
-            android:title="@string/pref_theme_title"
-            android:summary="@string/pref_theme_summary"
+            android:title="@string/theme"
+            android:summary="@string/theme_summary"
             android:entries="@array/theme_entries"
             android:entryValues="@array/theme_values"
             android:defaultValue="system"
@@ -132,8 +132,8 @@
 
         <Preference
             android:key="pref_battery_optimization"
-            android:title="@string/pref_battery_optimization_title"
-            android:summary="@string/pref_battery_optimization_summary"
+            android:title="@string/battery_optimization_title"
+            android:summary="@string/battery_optimization_summary"
             app:iconSpaceReserved="false" />
 
         <EditTextPreference

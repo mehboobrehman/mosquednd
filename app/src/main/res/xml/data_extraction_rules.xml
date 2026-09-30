@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- Exclude encrypted SharedPreferences files (contain sensitive mosque, alarm,
+             location, DND, and custom-Adhan data). See backup_rules.xml for the full
+             key-to-file mapping. Android backup rules operate at the FILE level. -->
+        <exclude domain="sharedpref" path="encrypted_mosque_repo.xml" />
+        <exclude domain="sharedpref" path="encrypted_alarm_prefs.xml" />
+        <exclude domain="sharedpref" path="encrypted_location_prefs.xml" />
+        <!-- Blanket include is architecturally required in Android's whitelist-based
+             <data-extraction-rules> format — without it, nothing is backed up. The
+             default prefs file is allowed: it holds only non-sensitive settings. -->
+        <include domain="sharedpref" path="." />
+    </cloud-backup>
+    <device-transfer>
+        <!-- Exclude encrypted SharedPreferences files (same sensitive data as cloud-backup). -->
+        <exclude domain="sharedpref" path="encrypted_mosque_repo.xml" />
+        <exclude domain="sharedpref" path="encrypted_alarm_prefs.xml" />
+        <exclude domain="sharedpref" path="encrypted_location_prefs.xml" />
+        <!-- Blanket include is architecturally required in Android's whitelist-based
+             <data-extraction-rules> format. -->
+        <include domain="sharedpref" path="." />
+        <include domain="database" path="." />
+    </device-transfer>
+</data-extraction-rules>

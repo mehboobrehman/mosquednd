@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Islamic Dark Theme Colors -->
+    <color name="navy_primary">#0a1628</color>
+    <color name="navy_dark">#060d16</color>
+    <color name="navy_light">#122240</color>
+    <color name="gold_primary">#c9a227</color>
+    <color name="gold_dark">#9a7a1d</color>
+    <color name="gold_light">#e0bc4a</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_60">#99FFFFFF</color>
+    
+    <!-- Light Theme Background & Surface -->
+    <color name="light_background">#FFF8F0</color>
+    <color name="light_surface">#FFFFFF</color>
+    <color name="light_on_background">#1C1B1F</color>
+    <color name="light_on_surface">#1C1B1F</color>
+    <color name="light_surface_variant">#E7E0EC</color>
+    <color name="light_on_surface_variant">#49454F</color>
+    
+    <!-- Light Prayer Times Colors (used in values/ resource set) -->
+    <color name="next_prayer_highlight">#FFF0CC</color>
+    <color name="card_default">#FFFFFF</color>
+    <color name="text_primary">#1C1B1F</color>
+    <color name="text_secondary">#666666</color>
+    
+    <!-- Prayer strip colors -->
+    <color name="prayer_strip_fajr">#FF9800</color>
+    <color name="prayer_strip_sunrise">#009688</color>
+    <color name="prayer_strip_dhuhr">#C9A227</color>
+    <color name="prayer_strip_asr">#FFA726</color>
+    <color name="prayer_strip_maghrib">#FF5722</color>
+    <color name="prayer_strip_isha">#3F51B5</color>
+
+    <!-- Calibration status colors -->
+    <color name="calibration_high">#4CAF50</color>
+    <color name="calibration_medium">#FFC107</color>
+    <color name="calibration_low">#F44336</color>
+
+    <!-- Accessible gold for light theme (≥ 4.5:1 on #FFF8F0) -->
+    <color name="gold_dark_accessible">#7A6215</color>
+
+    <!-- Emerald / Gold compass colors (light mode defaults — slightly lighter background) -->
+    <color name="compass_bg">#2C3E50</color>
+    <color name="compass_gold_primary">#D4AF37</color>
+    <color name="compass_gold_light">#F5E6A3</color>
+    <color name="compass_gold_dark">#8B6914</color>
+    <color name="compass_ivory">#F5F0E1</color>
+    <color name="compass_emerald">#007B5E</color>
+    <color name="compass_kaaba_body">#5A5A5A</color>
+    <color name="compass_kaaba_roof">#D4AF37</color>
+</resources>

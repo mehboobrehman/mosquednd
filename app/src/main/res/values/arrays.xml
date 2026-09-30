@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="theme_entries">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>System</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>system</item>
+    </string-array>
+
+    <string-array name="method_entries">
+        <item>Muslim World League</item>
+        <item>Islamic Society of North America</item>
+        <item>Egyptian General Authority</item>
+        <item>Umm Al-Qura</item>
+        <item>Karachi</item>
+        <item>Tehran</item>
+        <item>Shia Ithna-Ashari (Jafari)</item>
+    </string-array>
+
+    <string-array name="method_values">
+        <item>mwl</item>
+        <item>isna</item>
+        <item>egypt</item>
+        <item>umm_al_qura</item>
+        <item>karachi</item>
+        <item>tehran</item>
+        <item>jafari</item>
+    </string-array>
+
+    <string-array name="sect_entries">
+        <item>@string/sect_hanafi</item>
+        <item>@string/sect_hanbali</item>
+        <item>@string/sect_maliki</item>
+        <item>@string/sect_shafii</item>
+        <item>@string/sect_jafari</item>
+        <item>@string/sect_zaydi</item>
+        <item>@string/sect_ibadi</item>
+        <item>@string/sect_custom</item>
+    </string-array>
+
+    <string-array name="sect_values">
+        <item>hanafi</item>
+        <item>hanbali</item>
+        <item>maliki</item>
+        <item>shafii</item>
+        <item>jafari</item>
+        <item>zaydi</item>
+        <item>ibadi</item>
+        <item>custom</item>
+    </string-array>
+
+    <string-array name="asr_entries">
+        <item>Standard (Shafi\'i, Maliki, Hanbali)</item>
+        <item>Hanafi</item>
+    </string-array>
+
+    <string-array name="asr_values">
+        <item>standard</item>
+        <item>hanafi</item>
+    </string-array>
+
+    <string-array name="auto_dnd_duration_entries">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>45 minutes</item>
+        <item>60 minutes</item>
+        <item>90 minutes</item>
+        <item>120 minutes</item>
+        <item>180 minutes</item>
+    </string-array>
+
+    <string-array name="auto_dnd_duration_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+        <item>180</item>
+    </string-array>
+
+    <string-array name="hijri_offset_entries">
+        <item>-2 days (earlier)</item>
+        <item>-1 day (earlier)</item>
+        <item>Default</item>
+        <item>+1 day (later)</item>
+        <item>+2 days (later)</item>
+    </string-array>
+
+    <string-array name="hijri_offset_values">
+        <item>-2</item>
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+
+</resources>

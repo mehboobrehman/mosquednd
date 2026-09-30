@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Exclude encrypted SharedPreferences files (contain sensitive mosque, alarm,
+         location, DND, and custom-Adhan data). These hold ALL sensitive keys:
+           encrypted_mosque_repo.xml  -> mosques_json (mosque coordinates/names)
+           encrypted_alarm_prefs.xml  -> per-prayer offsets, alarm toggles, master alarm,
+                                         custom Adhan URI, per-prayer DND schedules,
+                                         AND the global auto-DND toggle + duration
+                                         (pref_auto_dnd_enabled, pref_auto_dnd_duration_min)
+           encrypted_location_prefs.xml -> last-known/override GPS coordinates
+         Android backup rules operate at the SharedPreferences FILE level (not per-key),
+         so every sensitive key was migrated into one of these excluded encrypted files. -->
+    <exclude domain="sharedpref" path="encrypted_mosque_repo.xml" />
+    <exclude domain="sharedpref" path="encrypted_alarm_prefs.xml" />
+    <exclude domain="sharedpref" path="encrypted_location_prefs.xml" />
+
+    <!-- <full-backup-content> valid domains: root, file, database, sharedpref, external.
+         The 'sharedpref' and 'file' domains are backed up by default, so no explicit
+         <include> is required for them. 'cache' is not a valid domain here and cache
+         dirs are never backed up (correct — cache is ephemeral). 'external' is not
+         backed up by default, so it needs an explicit include.
+         The default SharedPreferences file (<package>_preferences.xml) is intentionally
+         allowed: it holds only non-sensitive settings (theme, sect, calculation method,
+         Asr method, adhan/geofence/master toggles, detection radius, hijri offset,
+         onboarding) which SHOULD be restored on reinstall. -->
+    <include domain="sharedpref" path="." />
+    <include domain="file" path="." />
+    <include domain="external" path="." />
+</full-backup-content>

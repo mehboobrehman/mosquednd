@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Existing -->
+    <dimen name="next_prayer_stroke_width">1.5dp</dimen>
+
+    <!-- Spacing system -->
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">16dp</dimen>
+    <dimen name="spacing_lg">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+    <dimen name="spacing_xxl">48dp</dimen>
+
+    <!-- Card dimensions -->
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="card_elevation">3dp</dimen>
+
+    <!-- Text sizes -->
+    <dimen name="text_size_xs">11sp</dimen>
+    <dimen name="text_size_sm">13sp</dimen>
+    <dimen name="text_size_md">16sp</dimen>
+    <dimen name="text_size_lg">20sp</dimen>
+    <dimen name="text_size_xl">28sp</dimen>
+    <dimen name="text_size_xxl">36sp</dimen>
+
+    <!-- Bottom navigation -->
+    <dimen name="bottom_nav_height">56dp</dimen>
+    <dimen name="fab_margin_bottom">64dp</dimen>
+
+    <!-- Qibla compass -->
+    <dimen name="compass_size">280dp</dimen>
+    <dimen name="compass_stroke_width">1.5dp</dimen>
+    <dimen name="compass_tick_length_minor">8dp</dimen>
+    <dimen name="compass_tick_length_major">14dp</dimen>
+    <dimen name="compass_label_size">14sp</dimen>
+    <dimen name="compass_intercardinal_size">11sp</dimen>
+    <dimen name="kaaba_size">80dp</dimen>
+    <dimen name="kaaba_offset_top">12dp</dimen>
+    <dimen name="kaaba_stroke_width">1.5dp</dimen>
+
+    <!-- Onboarding -->
+    <dimen name="onboarding_dot_size">8dp</dimen>
+    <dimen name="onboarding_dot_margin">6dp</dimen>
+</resources>

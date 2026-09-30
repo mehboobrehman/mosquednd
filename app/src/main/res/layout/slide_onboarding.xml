@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:paddingTop="80dp"
+        android:paddingBottom="40dp">
+
+        <!-- Illustration area: tinted background + large icon -->
+        <FrameLayout
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginBottom="48dp">
+
+            <ImageView
+                android:id="@+id/illustration_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/illustration_circle"
+                android:scaleType="center" />
+
+            <ImageView
+                android:id="@+id/illustration_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:tint="@color/gold_primary"
+                android:src="@drawable/ic_help"
+                android:contentDescription="@null" />
+        </FrameLayout>
+
+        <!-- Slide title -->
+        <TextView
+            android:id="@+id/slide_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="?attr/colorOnSurface"
+            android:textAlignment="center"
+            android:layout_marginBottom="16dp"
+            android:textStyle="bold" />
+
+        <!-- Slide description -->
+        <TextView
+            android:id="@+id/slide_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+</ScrollView>
