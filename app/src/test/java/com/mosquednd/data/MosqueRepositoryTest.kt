@@ -153,6 +153,29 @@ class MosqueRepositoryTest {
         }
     }
 
+    @Test(expected = android.database.sqlite.SQLiteConstraintException::class)
+    fun testDuplicateEntityIdAndVersionRejected() = runBlocking {
+        val historyDao = database.mosqueHistoryDao()
+        val entry1 = MosqueHistoryEntity(
+            entityId = "m1",
+            version = 1,
+            snapshotJson = "{}",
+            changedBy = "user",
+            changeReason = "create",
+            createdAt = System.currentTimeMillis()
+        )
+        val entry2 = MosqueHistoryEntity(
+            entityId = "m1",
+            version = 1,
+            snapshotJson = "{}",
+            changedBy = "user",
+            changeReason = "update",
+            createdAt = System.currentTimeMillis()
+        )
+        historyDao.insert(entry1)
+        historyDao.insert(entry2)
+    }
+
     @Test
     fun testRestoreVersionCreatesNewVersionPreservingHistory() = runBlocking {
         val mosqueId = UUID.randomUUID().toString()
