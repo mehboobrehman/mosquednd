@@ -20,17 +20,21 @@ const DEFAULT_PORT = 5000;
 const FALLBACK_PORT = 5001;
 const LOGS_DIR = path.join(__dirname, '../logs');
 const LOG_FILE_PATH = path.join(LOGS_DIR, 'device-stream.log');
+const RELEASE_APK_PATH = path.join(__dirname, '../app/build/outputs/apk/release/MosqueDND.apk');
 const APK_PATH = path.join(__dirname, '../app/build/outputs/apk/debug/MosqueDND.apk');
 const FALLBACK_APK_PATH = path.join(__dirname, '../app/build/outputs/apk/debug/app-debug.apk');
 
 function getResolvedApkPath() {
+    if (fs.existsSync(RELEASE_APK_PATH)) {
+        return RELEASE_APK_PATH;
+    }
     if (fs.existsSync(APK_PATH)) {
         return APK_PATH;
     }
     if (fs.existsSync(FALLBACK_APK_PATH)) {
         return FALLBACK_APK_PATH;
     }
-    return APK_PATH;
+    return RELEASE_APK_PATH;
 }
 
 // Ensure ./logs/ directory exists synchronously
