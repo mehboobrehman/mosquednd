@@ -107,6 +107,8 @@ www/
 *.html
 *.jpeg
 *.png
+!telemetry_qr.png
+!distribution_qr.png
 *.pdf
 *.eps
 *.json
