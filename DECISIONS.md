@@ -1250,3 +1250,8 @@ On the itel S685LN, gravity routinely spikes to 11.0-12.4 m/s2 while the device 
 Mosque entities are small (~200 bytes JSON) and writes are infrequent user actions. Full snapshots cost negligible storage (~few KB over years of use), make reads and rollbacks O(1) without patch-chain replay complexity, and make audit history crash-safe and resilient against corrupted intermediary state. Monotonic versions allocated via maxVersion+1 in db.withTransaction. Append-only history enforced via DAO API design without update/delete methods. Tombstones appended on deletion so historical…
 
 **Impact**: MosqueEntity and MosqueHistoryEntity in Room database; MosqueRepository rewritten to use Room with Dispatchers.IO sync wrapper and atomic withTransaction versioning; migration from legacy EncryptedSha…
+
+## Qibla Direction Compass Dial Modular Implementation
+**When**: 2026-10-14 07:35:51
+
+Created a breathtaking, modular Qibla Direction Compass Dial under app/src/main/assets/web/ adhering to all spatial math, modern Islamic aesthetics, and robust sensor fallback requirements.
