@@ -20,8 +20,8 @@ android {
         applicationId "com.mosquednd"
         minSdk 26
         targetSdk 34
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
 
         // Gulshan-e-Hadeed coordinates (approximate center)
         buildConfigField "double", "DEFAULT_LAT", "24.8967"
@@ -30,7 +30,7 @@ android {
 
         // Semantic Versioning and Build Metadata Injection
         def versionPropsFile = file('version.properties')
-        def semVer = "1.0.1"
+        def semVer = "1.0.2"
         if (versionPropsFile.exists()) {
             def props = new Properties()
             props.load(new FileInputStream(versionPropsFile))

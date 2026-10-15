@@ -37,6 +37,32 @@ function getResolvedApkPath() {
     return RELEASE_APK_PATH;
 }
 
+function getApkVersion() {
+    try {
+        const versionPropsPath = path.join(__dirname, '../app/version.properties');
+        if (fs.existsSync(versionPropsPath)) {
+            const content = fs.readFileSync(versionPropsPath, 'utf8');
+            const match = content.match(/VERSION_NAME\s*=\s*(.+)/);
+            if (match && match[1].trim()) {
+                return match[1].trim();
+            }
+        }
+    } catch (err) {}
+
+    try {
+        const buildGradlePath = path.join(__dirname, '../app/build.gradle');
+        if (fs.existsSync(buildGradlePath)) {
+            const content = fs.readFileSync(buildGradlePath, 'utf8');
+            const match = content.match(/versionName\s+"([^"]+)"/);
+            if (match && match[1].trim()) {
+                return match[1].trim();
+            }
+        }
+    } catch (err) {}
+
+    return 'Unknown';
+}
+
 // Ensure ./logs/ directory exists synchronously
 if (!fs.existsSync(LOGS_DIR)) {
     try {
@@ -165,6 +191,8 @@ const server = http.createServer((req, res) => {
             }
         }
 
+        const apkVersion = getApkVersion();
+
         const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -282,6 +310,10 @@ const server = http.createServer((req, res) => {
         <p class="subtitle">Android Debug Build Distribution</p>
         
         <div class="details-box">
+            <div class="detail-row">
+                <span class="detail-label">Version</span>
+                <span class="detail-value">v${apkVersion}</span>
+            </div>
             <div class="detail-row">
                 <span class="detail-label">File Name</span>
                 <span class="detail-value">MosqueDND.apk</span>
