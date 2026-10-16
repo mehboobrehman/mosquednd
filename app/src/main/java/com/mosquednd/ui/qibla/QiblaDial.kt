@@ -209,8 +209,10 @@ fun QiblaDial(
                     // 1. Background
                     drawRect(ColorDarkBackground)
 
-                    // Apply global rotation for the dial
-                    rotate(degrees = -state.userHeading, pivot = Offset(centerX, centerY)) {
+                    // Apply global rotation for the compass dial: rotates based on user heading (-state.userHeading)
+                    // keeping North at the correct orientation on the compass card.
+                    val dialRotation = -state.userHeading
+                    rotate(degrees = dialRotation, pivot = Offset(centerX, centerY)) {
                         // 2. Glowing aura when aligned (drawn behind other elements)
                         if (state.isAligned) {
                             drawCircle(
@@ -278,10 +280,9 @@ fun QiblaDial(
                             }
                         }
 
-                        // 6. Degree and cardinal text markers
+                        // 6. Degree and cardinal text markers (counter-rotated by +state.userHeading so text remains upright)
                         textMarkers.forEach { marker ->
                             withTransform({
-                                // Rotate to the correct position, then rotate text upright
                                 rotate(degrees = marker.degree.toFloat(), pivot = Offset(centerX, centerY))
                                 rotate(degrees = state.userHeading, pivot = Offset(centerX, centerY - dialRadius * 0.82f))
                             }) {
@@ -298,51 +299,25 @@ fun QiblaDial(
                         }
                     } // End of global rotation for dial
 
-                    // 7. Kaaba indicator needle (rotates independently to point at Qibla)
-                    withTransform({
-                        rotate(degrees = state.qiblaBearing, pivot = Offset(centerX, centerY))
-                    }) {
+                    // 7. Kaaba needle and icon rotates based on Qibla bearing relative to user heading (state.qiblaBearing - state.userHeading)
+                    val needleRotation = state.qiblaBearing - state.userHeading
+                    rotate(degrees = needleRotation, pivot = Offset(centerX, centerY)) {
                         drawPath(kaabaNeedlePath, ColorKaabaGold)
-                        drawCircle(
+                        val kaabaWidth = dialRadius * 0.12f
+                        val kaabaHeight = dialRadius * 0.1f
+                        val kaabaLeft = centerX - kaabaWidth / 2
+                        val kaabaTop = (centerY - dialRadius * 0.7f) - kaabaHeight / 2
+                        drawRect(
                             color = ColorKaabaBody,
-                            radius = dialRadius * 0.05f,
-                            center = Offset(centerX, centerY - dialRadius * 0.7f)
+                            topLeft = Offset(kaabaLeft, kaabaTop),
+                            size = Size(kaabaWidth, kaabaHeight)
                         )
-                        drawCircle(
-                            color = ColorKaabaWhite,
-                            radius = dialRadius * 0.02f,
-                            center = Offset(centerX, centerY - dialRadius * 0.7f)
+                        drawRect(
+                            color = ColorKaabaGold,
+                            topLeft = Offset(kaabaLeft, kaabaTop),
+                            size = Size(kaabaWidth, kaabaHeight * 0.25f)
                         )
                     }
-
-                    // 8. Pitch/Roll spirit level guide
-                    val levelIndicatorRadius = dialRadius * 0.15f
-                    val levelBubbleRadius = dialRadius * 0.03f
-                    val maxOffset = dialRadius * 0.2f
-
-                    // Target circle
-                    drawCircle(
-                        color = ColorLevelTarget,
-                        radius = levelIndicatorRadius,
-                        center = Offset(centerX, centerY),
-                        style = Stroke(width = radius * 0.005f)
-                    )
-                    drawCircle(
-                        color = ColorLevelTarget,
-                        radius = levelIndicatorRadius / 2,
-                        center = Offset(centerX, centerY),
-                        style = Stroke(width = radius * 0.005f)
-                    )
-
-                    // Level bubble (shows if device is flat)
-                    val clampedPitchX = (state.pitchRollOffset.x * maxOffset).coerceIn(-maxOffset, maxOffset)
-                    val clampedPitchY = (state.pitchRollOffset.y * maxOffset).coerceIn(-maxOffset, maxOffset)
-
-                    drawCircle(
-                        color = ColorLevelBubbleLevel,
-                        radius = levelBubbleRadius,
-                        center = Offset(centerX + clampedPitchX, centerY + clampedPitchY)
-                    )
                 }
             }
         )

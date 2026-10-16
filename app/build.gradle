@@ -20,22 +20,56 @@ android {
         applicationId "com.mosquednd"
         minSdk 26
         targetSdk 34
-        versionCode 3
-        versionName "1.0.2"
 
         // Gulshan-e-Hadeed coordinates (approximate center)
         buildConfigField "double", "DEFAULT_LAT", "24.8967"
         buildConfigField "double", "DEFAULT_LNG", "67.2369"
         buildConfigField "String", "SEARCH_RADIUS", "\"5000\""
 
-        // Semantic Versioning and Build Metadata Injection
+        // Semantic Versioning, Automatic versionCode Incrementing, and Build Metadata Injection
         def versionPropsFile = file('version.properties')
         def semVer = "1.0.2"
+        def computedVersionCode = 3
+        
         if (versionPropsFile.exists()) {
             def props = new Properties()
             props.load(new FileInputStream(versionPropsFile))
-            semVer = props.getProperty("VERSION_NAME", "1.0.0")
+            semVer = props.getProperty("VERSION_NAME", "1.0.2")
+            if (props.containsKey("VERSION_CODE")) {
+                computedVersionCode = props.getProperty("VERSION_CODE").toInteger()
+            }
+            
+            // Check if auto-increment is enabled or check git commit count / tags
+            def autoIncrement = props.getProperty("AUTO_INCREMENT", "true").toBoolean()
+            if (autoIncrement) {
+                try {
+                    def stdout = new java.io.ByteArrayOutputStream()
+                    exec {
+                        commandLine 'git', 'rev-list', '--count', 'HEAD'
+                        standardOutput = stdout
+                        ignoreExitValue = true
+                    }
+                    def gitCount = stdout.toString().trim()
+                    if (!gitCount.isEmpty() && gitCount.isInteger()) {
+                        computedVersionCode = gitCount.toInteger()
+                    }
+                } catch (Exception e) {
+                    // Fallback to incrementing existing versionCode if git is unavailable
+                    computedVersionCode++
+                }
+                
+                // Update version.properties back with the latest computed versionCode so it persists
+                try {
+                    props.setProperty("VERSION_CODE", computedVersionCode.toString())
+                    props.store(new java.io.FileOutputStream(versionPropsFile), "Automatically updated by build.gradle")
+                } catch (Exception e) {
+                    // ignore write errors
+                }
+            }
         }
+
+        versionCode computedVersionCode
+        versionName semVer
         
         def commitHash = "unknown"
         try {
