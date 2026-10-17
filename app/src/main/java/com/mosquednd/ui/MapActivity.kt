@@ -26,7 +26,9 @@ import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.annotations.Polygon
 import com.mapbox.mapboxsdk.annotations.PolygonOptions
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.google.android.gms.location.LocationServices
 import com.mosquednd.R
 import com.mosquednd.data.Mosque
@@ -284,15 +286,22 @@ class MapActivity : AppCompatActivity() {
             5000
         )
         
-        val timestamp = PlaceDetectorCache.getCacheTimestamp(cacheKey)
-        
-        if (timestamp != null && !PlaceDetectorCache.isExpired(cacheKey)) {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val dateStr = dateFormat.format(Date(timestamp))
-            binding.textCacheDate.text = getString(R.string.map_data_from, dateStr)
-            binding.layoutCacheInfo.visibility = View.VISIBLE
-        } else {
-            binding.layoutCacheInfo.visibility = View.GONE
+        lifecycleScope.launch {
+            val timestamp = withContext(Dispatchers.IO) {
+                PlaceDetectorCache.getCacheTimestamp(cacheKey)
+            }
+            val isExpired = withContext(Dispatchers.IO) {
+                PlaceDetectorCache.isExpired(cacheKey)
+            }
+            
+            if (timestamp != null && !isExpired) {
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val dateStr = dateFormat.format(Date(timestamp))
+                binding.textCacheDate.text = getString(R.string.map_data_from, dateStr)
+                binding.layoutCacheInfo.visibility = View.VISIBLE
+            } else {
+                binding.layoutCacheInfo.visibility = View.GONE
+            }
         }
     }
     
