@@ -1,5 +1,6 @@
 package com.mosquednd.ui.prayer
 
+import java.util.Calendar
 import android.Manifest
 import android.app.AlarmManager
 import android.content.Context
@@ -49,7 +50,6 @@ import com.mosquednd.util.LocationProvider
 import com.mosquednd.util.LogHelper
 import com.mosquednd.util.formatOffset
 import com.mosquednd.widget.PrayerTimesWidget
-import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
 class PrayerTimesFragment : Fragment(),
@@ -529,10 +529,12 @@ class PrayerTimesFragment : Fragment(),
         for (type in PrayerType.entries) {
             if (type == PrayerType.SUNRISE) continue
             val prayerTime = timesMap[type]?.time ?: continue
+            val alarmOffset = PrayerAlarmPrefs.getOffset(type)
+            val rawMs = prayerTime.timeInMillis - (alarmOffset * 60 * 1000)
             val offset = PrayerAlarmPrefs.getDNDOffset(type)
             val duration = PrayerAlarmPrefs.getDNDDuration(type)
 
-            val startCal = prayerTime.clone() as Calendar
+            val startCal = Calendar.getInstance().apply { timeInMillis = rawMs }
             startCal.add(Calendar.MINUTE, offset)
 
             val endCal = startCal.clone() as Calendar
@@ -679,6 +681,8 @@ class PrayerTimesFragment : Fragment(),
                     }
                 }
                 PrayerAlarmPrefs.setOffset(prayerType, offset)
+                calculatePrayerTimes()
+                triggerWidgetUpdate()
                 // Reschedule alarms only if master alarm is enabled
                 if (PrayerAlarmPrefs.isMasterAlarmEnabled()) {
                     lastTimesMap?.let { times ->
