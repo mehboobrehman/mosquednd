@@ -151,6 +151,12 @@
         android:layout_marginTop="16dp">
 
         <Preference
+            android:key="pref_whats_new"
+            android:title="What's New / Changelog"
+            android:summary="View recent updates and feature history"
+            app:iconSpaceReserved="false" />
+
+        <Preference
             android:key="pref_app_version"
             android:title="App Version"
             android:summary="1.0.0"

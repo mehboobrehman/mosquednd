@@ -36,6 +36,7 @@ import com.mosquednd.util.AgentLogger
 import com.mosquednd.geofence.GeofenceConfig
 import com.mosquednd.util.LocationProvider
 import com.mosquednd.util.LogHelper
+import com.mosquednd.whatsnew.WhatsNewBottomSheetFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.Manifest
 import android.app.AlarmManager
@@ -130,6 +131,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setupReliabilityPreference()
         setupLogServerPreference()
         setupAboutVersionPreferences()
+        setupWhatsNewPreference()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -833,6 +835,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
             } else {
                 Toast.makeText(context, "Not required on this Android version", Toast.LENGTH_SHORT).show()
             }
+            true
+        }
+    }
+
+    private fun setupWhatsNewPreference() {
+        val whatsNewPref = findPreference<Preference>("pref_whats_new")
+        whatsNewPref?.setOnPreferenceClickListener {
+            LogHelper.logTelemetry(LogHelper.TelemetryCategory.NAVIGATION, "WHATS_NEW_CLICKED", mapOf("source" to "settings"))
+            WhatsNewBottomSheetFragment.show(parentFragmentManager)
             true
         }
     }

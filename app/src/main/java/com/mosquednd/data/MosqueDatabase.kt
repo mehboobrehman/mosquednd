@@ -4,13 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 /**
  * Room database for MosqueDND.
  *
- * Two tables:
- *  - `mosques`        — current state of each mosque (one row per mosque).
- *  - `mosque_history` — append-only snapshot/audit trail (see [MosqueHistoryEntity]).
+ * Tables:
+ *  - `mosques`             — current state of each mosque (one row per mosque).
+ *  - `mosque_history`      — append-only snapshot/audit trail (see [MosqueHistoryEntity]).
+ *  - `nearby_mosque_cache` — key-value Room cache for Overpass API responses.
  *
  * SNAPSHOT-based versioning (vs delta/patch chains): a mosque entity is a small
  * ~200-byte JSON object and writes are rare user actions, so storing the full
@@ -24,17 +27,26 @@ import androidx.room.RoomDatabase
  * survives deletion of the current row (delete writes a tombstone entry instead).
  */
 @Database(
-    entities = [MosqueEntity::class, MosqueHistoryEntity::class],
-    version = 1,
+    entities = [MosqueEntity::class, MosqueHistoryEntity::class, NearbyMosqueCacheEntity::class],
+    version = 2,
     exportSchema = false
 )
 abstract class MosqueDatabase : RoomDatabase() {
     abstract fun mosqueDao(): MosqueDao
     abstract fun mosqueHistoryDao(): MosqueHistoryDao
+    abstract fun nearbyMosqueCacheDao(): NearbyMosqueCacheDao
 
     companion object {
         @Volatile
         private var INSTANCE: MosqueDatabase? = null
+
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `nearby_mosque_cache` (`cacheKey` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `jsonPayload` TEXT NOT NULL, PRIMARY KEY(`cacheKey`))"
+                )
+            }
+        }
 
         fun getInstance(context: Context): MosqueDatabase {
             return INSTANCE ?: synchronized(this) {
@@ -53,6 +65,9 @@ abstract class MosqueDatabase : RoomDatabase() {
                 context.applicationContext,
                 MosqueDatabase::class.java,
                 "mosquednd.db"
-            ).fallbackToDestructiveMigration().build()
+            )
+            .addMigrations(MIGRATION_1_2)
+            .fallbackToDestructiveMigration()
+            .build()
     }
 }

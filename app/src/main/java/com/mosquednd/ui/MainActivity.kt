@@ -34,6 +34,8 @@ import com.mosquednd.ui.settings.SettingsFragment
 import com.mosquednd.ui.settings.SettingsActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.mosquednd.util.LogHelper
+import com.mosquednd.whatsnew.WhatsNewBottomSheetFragment
+import com.mosquednd.whatsnew.WhatsNewManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -297,6 +299,10 @@ class MainActivity : AppCompatActivity() {
         if (pendingNavigateToPrayerTimes) {
             pendingNavigateToPrayerTimes = false
             binding.bottomNavigation.selectedItemId = R.id.nav_prayer_times
+        }
+
+        if (WhatsNewManager.shouldShow(this)) {
+            WhatsNewBottomSheetFragment.show(supportFragmentManager)
         }
     }
 
