@@ -69,7 +69,8 @@ object PlaceDetector {
     
     private val overpassServers = listOf(
         "https://overpass-api.de/api/interpreter",
-        "https://overpass.kumi.systems/api/interpreter"
+        "https://overpass.kumi.systems/api/interpreter",
+        "https://maps.mail.ru/osm/tools/overpass/api/interpreter"
     )
 
     /**
@@ -85,6 +86,7 @@ object PlaceDetector {
             (
               node["amenity"="place_of_worship"]["religion"="muslim"](around:$radius,$lat,$lng);
               way["amenity"="place_of_worship"]["religion"="muslim"](around:$radius,$lat,$lng);
+              relation["amenity"="place_of_worship"]["religion"="muslim"](around:$radius,$lat,$lng);
             );
             out center;
         """.trimIndent()
@@ -99,15 +101,21 @@ object PlaceDetector {
                 connection.requestMethod = "GET"
                 connection.connectTimeout = 15000
                 connection.readTimeout = 15000
+                connection.setRequestProperty("User-Agent", "MosqueDND/1.0 (Android; android@mosquednd.com)")
 
-                val response = connection.inputStream.bufferedReader().use { it.readText() }
-                Log.d(TAG, "Success fetching from: $serverUrl")
-                return response
+                val responseCode = connection.responseCode
+                if (responseCode == java.net.HttpURLConnection.HTTP_OK) {
+                    val response = connection.inputStream.bufferedReader().use { it.readText() }
+                    Log.d(TAG, "Success fetching from: $serverUrl")
+                    return response
+                } else {
+                    Log.w(TAG, "Server $serverUrl returned HTTP error: $responseCode")
+                }
             } catch (e: java.io.IOException) {
                 Log.w(TAG, "Failed to fetch from $serverUrl, trying next server", e)
-                connection?.disconnect()
             } catch (e: Exception) {
                 Log.e(TAG, "Error fetching from $serverUrl", e)
+            } finally {
                 connection?.disconnect()
             }
         }
