@@ -309,7 +309,7 @@ class PrayerTimesFragment : Fragment(),
             startActivity(intent)
         }
         binding.btnLocationRetry?.setOnClickListener {
-            LocationProvider.requestFreshLocation { lat, lng ->
+            LocationProvider.requestFreshLocation(requireContext()) { lat, lng ->
                 LocationProvider.cacheLocation(lat, lng)
                 if (PrayerAlarmPrefs.isMasterAlarmEnabled()) {
                     lastTimesMap?.let { times ->

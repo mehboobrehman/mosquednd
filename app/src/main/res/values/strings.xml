@@ -161,7 +161,7 @@
     <string name="help_dnd_duration_title">Default DND duration</string>
     <string name="help_dnd_duration_message">The DND window silences adhan and non-Fajr reminders. If the end time is earlier than the start time, it wraps overnight (for example, 10 PM to 6 AM).</string>
 
-    <!-- Location Error Handling -->
+    <!-- Location & Overpass Error Feedback & Loading States -->
     <string name="location_source_gps">Using GPS</string>
     <string name="location_source_manual">Manual location</string>
     <string name="location_source_manual_location_info">Manual location (%1$s, %2$s)</string>
@@ -178,6 +178,15 @@
     <string name="qibla_enable_location">Enable Location</string>
     <string name="qibla_location_error_title">Location unavailable</string>
     <string name="qibla_location_error_message">Unable to determine your location. Enable GPS or set manually.</string>
+
+    <!-- New granular error feedback strings -->
+    <string name="error_permissions_denied">Permissions denied</string>
+    <string name="error_waiting_for_gps">Waiting for GPS</string>
+    <string name="error_api_timeout">API timeout</string>
+    <string name="error_network_io">Network connection error</string>
+    <string name="error_rate_limited">Overpass rate limit exceeded (HTTP 429)</string>
+    <string name="error_server_unavailable">Overpass server unavailable or gateway timeout</string>
+    <string name="error_gps_disabled">GPS is disabled. Please enable location services.</string>
 
     <!-- Map Cache -->
     <string name="map_data_from">Data from %s</string>

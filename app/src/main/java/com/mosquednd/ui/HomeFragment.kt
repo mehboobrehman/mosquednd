@@ -91,7 +91,7 @@ class HomeFragment : Fragment() {
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true) {
-            LocationProvider.requestFreshLocation { lat, lng ->
+            LocationProvider.requestFreshLocation(requireContext()) { lat, lng ->
                 Log.d(TAG, "Permissions-granted location cached: $lat, $lng")
             }
             startMonitoringFlow()

@@ -4,6 +4,12 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.mapbox.mapboxsdk.geometry.LatLng
+import java.net.HttpURLConnection
+import java.net.SocketTimeoutException
+import java.io.IOException
+import java.net.URLEncoder
+import java.net.URL
+import org.json.JSONObject
 
 object PlaceDetector {
     
@@ -14,9 +20,26 @@ object PlaceDetector {
         val latLng: LatLng?,
         val address: String
     )
-    
+
     /**
-     * Find nearby mosques from Overpass API, with caching.
+     * Enum representing granular Overpass API error states.
+     */
+    enum class OverpassError {
+        NONE,
+        TIMEOUT,
+        RATE_LIMITED,
+        SERVER_UNAVAILABLE,
+        NETWORK_IO,
+        UNKNOWN
+    }
+
+    // Thread-safe / volatile last error tracker for UI feedback
+    @Volatile
+    var lastError: OverpassError = OverpassError.NONE
+        private set
+
+    /**
+     * Find nearby mosques from Overpass API, with caching and granular error state tracking.
      *
      * @param location  Center point for the search.
      * @param radius    Search radius in metres (default 5000).
@@ -28,6 +51,7 @@ object PlaceDetector {
         radius: Int = 5000,
         forceRefresh: Boolean = false
     ): List<MosquePlace> = withContext(Dispatchers.IO) {
+        lastError = OverpassError.NONE
         val cacheKey = PlaceDetectorCache.calculateCacheKey(
             location.latitude,
             location.longitude,
@@ -50,7 +74,7 @@ object PlaceDetector {
         // Fetch fresh data from Overpass
         val json = fetchRawOverpassJson(location, radius)
         if (json == null) {
-            Log.e(TAG, "All Overpass servers failed")
+            Log.e(TAG, "All Overpass servers failed. Last error state: $lastError")
             return@withContext emptyList()
         }
 
@@ -91,36 +115,49 @@ object PlaceDetector {
             out center;
         """.trimIndent()
         
-        val encodedQuery = java.net.URLEncoder.encode(query, "UTF-8")
+        val encodedQuery = URLEncoder.encode(query, "UTF-8")
 
         for (serverUrl in overpassServers) {
-            var connection: java.net.HttpURLConnection? = null
+            var connection: HttpURLConnection? = null
             try {
-                val url = java.net.URL("$serverUrl?data=$encodedQuery")
-                connection = url.openConnection() as java.net.HttpURLConnection
+                val url = URL("$serverUrl?data=$encodedQuery")
+                connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "GET"
                 connection.connectTimeout = 15000
                 connection.readTimeout = 15000
                 connection.setRequestProperty("User-Agent", "MosqueDND/1.0 (Android; android@mosquednd.com)")
 
                 val responseCode = connection.responseCode
-                if (responseCode == java.net.HttpURLConnection.HTTP_OK) {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
                     val response = connection.inputStream.bufferedReader().use { it.readText() }
                     Log.d(TAG, "Success fetching from: $serverUrl")
+                    lastError = OverpassError.NONE
                     return response
                 } else {
                     Log.w(TAG, "Server $serverUrl returned HTTP error: $responseCode")
                     when (responseCode) {
-                        429 -> Log.w(TAG, "Rate limit exceeded (HTTP 429) on Overpass server: $serverUrl")
-                        503, 504 -> Log.w(TAG, "Overpass server unavailable or gateway timeout (HTTP $responseCode): $serverUrl")
-                        else -> Log.w(TAG, "Overpass server returned error code $responseCode on: $serverUrl")
+                        429 -> {
+                            lastError = OverpassError.RATE_LIMITED
+                            Log.w(TAG, "Rate limit exceeded (HTTP 429) on Overpass server: $serverUrl")
+                        }
+                        503, 504 -> {
+                            lastError = OverpassError.SERVER_UNAVAILABLE
+                            Log.w(TAG, "Overpass server unavailable or gateway timeout (HTTP $responseCode): $serverUrl")
+                        }
+                        else -> {
+                            lastError = OverpassError.SERVER_UNAVAILABLE
+                            Log.w(TAG, "Overpass server returned error code $responseCode on: $serverUrl")
+                        }
                     }
                 }
-            } catch (e: java.net.SocketTimeoutException) {
+            } catch (e: SocketTimeoutException) {
+                lastError = OverpassError.TIMEOUT
                 Log.w(TAG, "API timeout connecting to Overpass server: $serverUrl — ${e.message}", e)
-            } catch (e: java.io.IOException) {
+            } catch (e: IOException) {
+                lastError = OverpassError.NETWORK_IO
                 Log.w(TAG, "Network IO failure connecting to Overpass server: $serverUrl — ${e.message}, trying next server", e)
             } catch (e: Exception) {
+                lastError = OverpassError.UNKNOWN
                 Log.e(TAG, "Unexpected error fetching from Overpass server: $serverUrl — ${e.message}", e)
             } finally {
                 connection?.disconnect()
@@ -134,7 +171,7 @@ object PlaceDetector {
         val results = mutableListOf<MosquePlace>()
         
         try {
-            val jsonObject = org.json.JSONObject(json)
+            val jsonObject = JSONObject(json)
             val elements = jsonObject.getJSONArray("elements")
             
             for (i in 0 until elements.length()) {
@@ -167,7 +204,7 @@ object PlaceDetector {
         return results
     }
     
-    private fun buildAddress(tags: org.json.JSONObject?): String {
+    private fun buildAddress(tags: JSONObject?): String {
         if (tags == null) return ""
         
         val parts = mutableListOf<String>()
