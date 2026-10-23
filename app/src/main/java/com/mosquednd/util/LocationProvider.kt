@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.mosquednd.MosqueDNDApp
 import com.mosquednd.R
 import java.util.Calendar
@@ -115,7 +116,7 @@ object LocationProvider {
         Toast.makeText(context, context.getString(R.string.error_waiting_for_gps), Toast.LENGTH_SHORT).show()
 
         try {
-            fusedLocationClient.lastLocation
+            fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, CancellationTokenSource().token)
                 .addOnSuccessListener { location ->
                     if (location != null) {
                         val isMock = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

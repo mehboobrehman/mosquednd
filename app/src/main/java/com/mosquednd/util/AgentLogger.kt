@@ -36,6 +36,9 @@ object AgentLogger {
     private const val DEFAULT_PORT = 5000
     private const val MAX_PENDING_LOGS = 50
     private const val RETRY_COOLDOWN_MS = 30_000L
+    private const val HEALTH_CHECK_INTERVAL_MS = 60_000L
+
+    private val healthCheckScheduler = Executors.newSingleThreadScheduledExecutor()
 
     private val executor = Executors.newSingleThreadExecutor()
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -51,6 +54,55 @@ object AgentLogger {
     private var isInitialized = false
     @Volatile
     private var lastDiscoveryAttemptTime: Long = 0L
+
+    /**
+     * Periodically verifies the cached log server is still reachable via GET /api/config.
+     * If the server becomes unreachable, clears the cached IP and triggers subnet re-discovery
+     * (unless the user manually pinned the IP), so logs stop failing silently.
+     */
+    private fun startHealthCheckScheduler() {
+        healthCheckScheduler.scheduleAtFixedRate({
+            try {
+                healthCheckServer()
+            } catch (e: Exception) {
+                Log.w(TAG, "Health check task failed unexpectedly", e)
+            }
+        }, HEALTH_CHECK_INTERVAL_MS, HEALTH_CHECK_INTERVAL_MS, TimeUnit.MILLISECONDS)
+    }
+
+    private fun healthCheckServer() {
+        val serverIp = cachedServerIp ?: return
+        // Never override a user's manual server choice
+        if (manualOverrideActive.get()) return
+
+        try {
+            val baseUrl = if (serverIp.startsWith("http")) serverIp else "http://$serverIp:$DEFAULT_PORT"
+            val url = URL("$baseUrl/api/config")
+            val connection = (url.openConnection() as HttpURLConnection).apply {
+                requestMethod = "GET"
+                connectTimeout = 3000
+                readTimeout = 3000
+            }
+            val responseCode = connection.responseCode
+            connection.disconnect()
+            if (responseCode !in 200..299) {
+                Log.w(TAG, "Health check: HTTP $responseCode from $serverIp — clearing cached IP")
+                clearCachedServerIp()
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Health check: $serverIp unreachable — clearing cached IP: ${e.message}")
+            clearCachedServerIp()
+        }
+    }
+
+    private fun clearCachedServerIp() {
+        cachedServerIp = null
+        appContext?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            ?.edit()?.remove(KEY_SERVER_IP)?.apply()
+        Log.i(TAG, "Cached server IP cleared — subnet auto-discovery re-enabled")
+        // Trigger re-discovery on the executor
+        executor.execute { startSubnetDiscovery() }
+    }
 
     @Volatile
     private var appContext: Context? = null
@@ -93,6 +145,10 @@ object AgentLogger {
                 }
 
                 isInitialized = true
+
+                // Start periodic server health monitoring
+                startHealthCheckScheduler()
+
                 Log.d(TAG, "AgentLogger initialized. DeviceId: $cachedDeviceId, ServerIp: $cachedServerIp")
 
                 // Toast: init complete
@@ -234,9 +290,10 @@ object AgentLogger {
 
         // If server IP not yet discovered, buffer the log and trigger discovery
         if (cachedServerIp == null) {
-            if (pendingLogs.size < MAX_PENDING_LOGS) {
-                pendingLogs.offer(LogEntry(level, message, stack, timestamp))
+            if (pendingLogs.size >= MAX_PENDING_LOGS) {
+                pendingLogs.poll() // drop oldest entry to make room for the new one
             }
+            pendingLogs.offer(LogEntry(level, message, stack, timestamp))
             // Trigger discovery if not already running and cooldown expired
             val now = System.currentTimeMillis()
             if (!isDiscovering.get() && (now - lastDiscoveryAttemptTime > RETRY_COOLDOWN_MS)) {
@@ -298,6 +355,12 @@ object AgentLogger {
             connection.disconnect()
         } catch (e: Exception) {
             Log.e(TAG, "doSendToServer: Failed to send log to $serverIp — ${e.javaClass.simpleName}: ${e.message}")
+            // Re-queue the entry for retry — never silently drop a log on send failure
+            val entry = LogEntry(level, message, stack, timestamp)
+            if (pendingLogs.size >= MAX_PENDING_LOGS) {
+                pendingLogs.poll() // drop oldest to make room
+            }
+            pendingLogs.offer(entry)
         }
     }
 
@@ -310,10 +373,17 @@ object AgentLogger {
         val serverIp = cachedServerIp ?: return
         val deviceId = cachedDeviceId ?: "unknown-android-device"
 
-        var entry = pendingLogs.poll()
-        while (entry != null) {
+        // Drain the queue into a batch first, so entries that fail sending
+        // (and get re-queued by doSendToServer) are not re-polled in this cycle.
+        val batch = mutableListOf<LogEntry>()
+        var polled: LogEntry? = pendingLogs.poll()
+        while (polled != null) {
+            batch.add(polled)
+            polled = pendingLogs.poll()
+        }
+
+        for (entry in batch) {
             doSendToServer(serverIp, deviceId, entry.level, entry.message, entry.stack, entry.timestamp)
-            entry = pendingLogs.poll()
         }
         Log.d(TAG, "Flushed pending log buffer to server")
     }
@@ -352,8 +422,8 @@ object AgentLogger {
                                     // Use raw socket HTTP to bypass Android Network Security Config.
                                     // NSC only whitelists ~35 exact IPs; raw sockets are not subject to NSC rules.
                                     val socket = Socket()
-                                    socket.connect(InetSocketAddress(candidateIp, port), 600)
-                                    socket.soTimeout = 600
+                                    socket.connect(InetSocketAddress(candidateIp, port), 2000)
+                                    socket.soTimeout = 2000
 
                                     val output = socket.getOutputStream()
                                     val input = socket.getInputStream()

@@ -39,6 +39,7 @@ class TelemetryLogger {
   private serverPort: number = 5000;
   private deviceId: string = 'ts-dev-client';
   private logs: LogEntry[] = [];
+  private pendingDispatch: LogEntry[] = [];
   private maxLogs = 100;
   private status: 'active' | 'disconnected' | 'probing' = 'disconnected';
   private storage: Storage | null = null;
@@ -121,6 +122,10 @@ class TelemetryLogger {
       status: this.status
     };
     this.statusListeners.forEach(l => l(config));
+    // When the server becomes reachable again, flush any logs queued during outage
+    if (newStatus === 'active') {
+      this.flushPendingDispatch();
+    }
   }
 
   private async probeIp(ip: string, port: number): Promise<boolean> {
@@ -206,6 +211,7 @@ class TelemetryLogger {
         // Try to reconnect once on log if disconnected
         this.testConnection().then(active => {
             if (active) this.dispatchLog(entry);
+            else this.pendingDispatch.push(entry); // re-queue for retry on next reconnect
         });
     }
   }
@@ -217,17 +223,31 @@ class TelemetryLogger {
     const timeout = setTimeout(() => controller.abort(), 2000);
 
     try {
-      await fetch(`http://${this.serverIp}:${this.serverPort}/api/log`, {
+      const response = await fetch(`http://${this.serverIp}:${this.serverPort}/api/log`, {
         method: 'POST',
         signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(entry)
       });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
     } catch (e) {
-      // If dispatch fails, mark as disconnected for future logs to trigger reconnect
+      // Re-queue the entry for retry on next reconnect — never silently drop
       if (this.status === 'active') this.updateStatus('disconnected');
+      this.pendingDispatch.push(entry);
     } finally {
       clearTimeout(timeout);
+    }
+  }
+
+  /** Flushes any logs that were queued while the server was unreachable. */
+  private async flushPendingDispatch() {
+    if (this.pendingDispatch.length === 0) return;
+    const queue = [...this.pendingDispatch];
+    this.pendingDispatch = [];
+    for (const entry of queue) {
+      await this.dispatchLog(entry);
     }
   }
 

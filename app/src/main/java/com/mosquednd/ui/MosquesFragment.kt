@@ -30,6 +30,8 @@ class MosquesFragment : Fragment() {
     private var _binding: FragmentMosquesBinding? = null
     private val binding get() = _binding!!
     
+    private lateinit var mosqueAdapter: MosqueAdapter
+    
     private val TAG = "MosquesFragment"
 
     private val locationPermissionLauncher = registerForActivityResult(
@@ -60,16 +62,53 @@ class MosquesFragment : Fragment() {
         
         LogHelper.logTelemetry(LogHelper.TelemetryCategory.STARTUP, "FRAGMENT_CREATE", mapOf("fragment" to "MosquesFragment"))
 
+        mosqueAdapter = MosqueAdapter(
+            onDeleteClick = { mosque ->
+                MosqueRepository.deleteMosque(mosque.id)
+                GeofenceService.enqueueRemoveGeofence(requireContext(), mosque.id)
+                refreshMosquesList()
+                Toast.makeText(requireContext(), "Removed ${mosque.name}", Toast.LENGTH_SHORT).show()
+            },
+            onItemClick = { mosque ->
+                val intent = Intent(requireContext(), MapActivity::class.java).apply {
+                    putExtra("mosque_lat", mosque.latitude)
+                    putExtra("mosque_lng", mosque.longitude)
+                    putExtra("mosque_name", mosque.name)
+                    putExtra("mosque_radius", mosque.geofenceRadius)
+                }
+                startActivity(intent)
+            }
+        )
+        binding.recyclerMosques.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext())
+        binding.recyclerMosques.adapter = mosqueAdapter
+
+        binding.fabAddMosque.setOnClickListener {
+            LogHelper.logTelemetry(LogHelper.TelemetryCategory.ACTION, "BUTTON_CLICK", mapOf("button" to "fabAddMosque", "fragment" to "MosquesFragment"))
+            launchMapActivity()
+        }
+
+        binding.btnDetectNearbyHeader.setOnClickListener {
+            LogHelper.logTelemetry(LogHelper.TelemetryCategory.ACTION, "BUTTON_CLICK", mapOf("button" to "btnDetectNearbyHeader", "fragment" to "MosquesFragment"))
+            checkLocationPermissionAndFetch()
+        }
+
         binding.btnAddMosqueEmpty.setOnClickListener { 
             LogHelper.logTelemetry(LogHelper.TelemetryCategory.ACTION, "BUTTON_CLICK", mapOf("button" to "btnAddMosqueEmpty", "fragment" to "MosquesFragment"))
-            hasAttemptedAutoFetch = true
-            checkLocationPermissionAndFetch()
+            launchMapActivity()
         }
 
         binding.btnDetectNearbyEmpty.setOnClickListener {
             LogHelper.logTelemetry(LogHelper.TelemetryCategory.ACTION, "BUTTON_CLICK", mapOf("button" to "btnDetectNearbyEmpty", "fragment" to "MosquesFragment"))
-            hasAttemptedAutoFetch = true
             checkLocationPermissionAndFetch()
+        }
+
+        binding.layoutInstructionsToggle.setOnClickListener {
+            LogHelper.logTelemetry(LogHelper.TelemetryCategory.ACTION, "BUTTON_CLICK", mapOf("button" to "layoutInstructionsToggle", "fragment" to "MosquesFragment"))
+            toggleInstructions()
+        }
+        binding.btnInstructionsToggle.setOnClickListener {
+            LogHelper.logTelemetry(LogHelper.TelemetryCategory.ACTION, "BUTTON_CLICK", mapOf("button" to "btnInstructionsToggle", "fragment" to "MosquesFragment"))
+            toggleInstructions()
         }
     }
 
@@ -104,13 +143,13 @@ class MosquesFragment : Fragment() {
 
     private fun refreshMosquesList() {
         val mosques = MosqueRepository.getAllMosques()
+        mosqueAdapter.submitList(mosques)
         if (mosques.isEmpty()) {
             binding.emptyState.visibility = View.VISIBLE
             binding.recyclerMosques.visibility = View.GONE
         } else {
             binding.emptyState.visibility = View.GONE
             binding.recyclerMosques.visibility = View.VISIBLE
-            // Update adapter if needed
         }
     }
 
