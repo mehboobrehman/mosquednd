@@ -205,74 +205,79 @@ class MapActivity : AppCompatActivity() {
             val geoPoint = LatLng(target.latitude, target.longitude)
             lastDetectionGeoPoint = geoPoint
             
+            binding.progressBar.visibility = View.VISIBLE
             lifecycleScope.launch {
-                val places = PlaceDetector.findNearbyMosques(geoPoint, forceRefresh = forceRefresh)
-                
-                if (places.isEmpty()) {
-                    Toast.makeText(this@MapActivity, getString(R.string.map_no_mosques_found), Toast.LENGTH_SHORT).show()
-                    updateCacheInfo(geoPoint)
-                    return@launch
-                }
-                
-                val names = places.map { it.name }.toTypedArray()
-                val checkedItems = BooleanArray(places.size) { false }
-                
-                MaterialAlertDialogBuilder(this@MapActivity)
-                    .setTitle(R.string.map_select_mosques_title)
-                    .setMultiChoiceItems(names, checkedItems) { _: android.content.DialogInterface, which: Int, isChecked: Boolean ->
-                        checkedItems[which] = isChecked
+                try {
+                    val places = PlaceDetector.findNearbyMosques(geoPoint, forceRefresh = forceRefresh)
+                    
+                    if (places.isEmpty()) {
+                        Toast.makeText(this@MapActivity, getString(R.string.map_no_mosques_found), Toast.LENGTH_SHORT).show()
+                        updateCacheInfo(geoPoint)
+                        return@launch
                     }
-                    .setPositiveButton("Save") { _: android.content.DialogInterface, _: Int ->
-                        val currentCount = MosqueRepository.getAllMosques().size
-                        
-                        if (currentCount >= 100) {
-                            Toast.makeText(
-                                this@MapActivity,
-                                "Geofence limit reached ($currentCount/100)",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            return@setPositiveButton
+                    
+                    val names = places.map { it.name }.toTypedArray()
+                    val checkedItems = BooleanArray(places.size) { false }
+                    
+                    MaterialAlertDialogBuilder(this@MapActivity)
+                        .setTitle(R.string.map_select_mosques_title)
+                        .setMultiChoiceItems(names, checkedItems) { _: android.content.DialogInterface, which: Int, isChecked: Boolean ->
+                            checkedItems[which] = isChecked
                         }
-                        
-                        if (currentCount >= 95) {
-                            Toast.makeText(
-                                this@MapActivity,
-                                "Approaching geofence limit ($currentCount/100)",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        
-                        var savedCount = 0
-                        for (i in places.indices) {
-                            if (checkedItems[i]) {
-                                val place = places[i]
-                                place.latLng?.let { mosqueLocation ->
-                                    val mosque = Mosque(
-                                        id = Mosque.generateId(),
-                                        name = place.name,
-                                        latitude = mosqueLocation.latitude,
-                                        longitude = mosqueLocation.longitude,
-                                        address = place.address ?: ""
-                                    )
-                                    MosqueRepository.addMosque(mosque)
-                                    GeofenceService.enqueueAddGeofence(this@MapActivity, mosque)
-                                    savedCount++
+                        .setPositiveButton("Save") { _: android.content.DialogInterface, _: Int ->
+                            val currentCount = MosqueRepository.getAllMosques().size
+                            
+                            if (currentCount >= 100) {
+                                Toast.makeText(
+                                    this@MapActivity,
+                                    "Geofence limit reached ($currentCount/100)",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                return@setPositiveButton
+                            }
+                            
+                            if (currentCount >= 95) {
+                                Toast.makeText(
+                                    this@MapActivity,
+                                    "Approaching geofence limit ($currentCount/100)",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            
+                            var savedCount = 0
+                            for (i in places.indices) {
+                                if (checkedItems[i]) {
+                                    val place = places[i]
+                                    place.latLng?.let { mosqueLocation ->
+                                        val mosque = Mosque(
+                                            id = Mosque.generateId(),
+                                            name = place.name,
+                                            latitude = mosqueLocation.latitude,
+                                            longitude = mosqueLocation.longitude,
+                                            address = place.address ?: ""
+                                        )
+                                        MosqueRepository.addMosque(mosque)
+                                        GeofenceService.enqueueAddGeofence(this@MapActivity, mosque)
+                                        savedCount++
+                                    }
                                 }
                             }
+                            
+                            if (savedCount > 0) {
+                                Toast.makeText(
+                                    this@MapActivity,
+                                    "Saved $savedCount mosque(s)",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
-                        
-                        if (savedCount > 0) {
-                            Toast.makeText(
-                                this@MapActivity,
-                                "Saved $savedCount mosque(s)",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                    .setNegativeButton("Cancel", null)
-                    .show()
-                
-                updateCacheInfo(geoPoint)
+                        .setNegativeButton("Cancel", null)
+                        .show()
+                    
+                    updateCacheInfo(geoPoint)
+                } finally {
+                    binding.progressBar.visibility = View.GONE
+                }
             }
         } catch (e: SecurityException) {
             Toast.makeText(this, getString(R.string.map_location_permission_required), Toast.LENGTH_SHORT).show()

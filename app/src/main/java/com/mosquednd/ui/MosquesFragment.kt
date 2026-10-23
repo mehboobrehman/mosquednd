@@ -1,5 +1,6 @@
 package com.mosquednd.ui
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,21 +9,41 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mosquednd.R
 import com.mosquednd.data.Mosque
 import com.mosquednd.data.MosqueRepository
 import com.mosquednd.databinding.FragmentMosquesBinding
 import com.mosquednd.service.GeofenceService
+import com.mosquednd.util.LocationProvider
 import com.mosquednd.util.LogHelper
+import com.mosquednd.util.PlaceDetector
+import kotlinx.coroutines.launch
 
 class MosquesFragment : Fragment() {
 
     private var _binding: FragmentMosquesBinding? = null
     private val binding get() = _binding!!
     private lateinit var mosqueAdapter: MosqueAdapter
+    private var hasAttemptedAutoDetect = false
+
+    private val locationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+        ) {
+            fetchAndShowNearbyMosques()
+        } else {
+            Toast.makeText(requireContext(), R.string.map_location_permission_required, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     companion object {
         private const val TAG = "MosquesFragment"
@@ -72,11 +93,13 @@ class MosquesFragment : Fragment() {
         }
         binding.btnDetectNearbyHeader.setOnClickListener { 
             LogHelper.logTelemetry(LogHelper.TelemetryCategory.ACTION, "BUTTON_CLICK", mapOf("button" to "btnDetectNearbyHeader", "fragment" to "MosquesFragment"))
-            launchMapActivityWithAutoDetect() 
+            hasAttemptedAutoDetect = false
+            checkAndPerformAutoDiscovery()
         }
         binding.btnDetectNearbyEmpty.setOnClickListener { 
             LogHelper.logTelemetry(LogHelper.TelemetryCategory.ACTION, "BUTTON_CLICK", mapOf("button" to "btnDetectNearbyEmpty", "fragment" to "MosquesFragment"))
-            launchMapActivityWithAutoDetect() 
+            hasAttemptedAutoDetect = false
+            checkAndPerformAutoDiscovery()
         }
         binding.layoutInstructionsToggle.setOnClickListener { 
             LogHelper.logTelemetry(LogHelper.TelemetryCategory.ACTION, "BUTTON_CLICK", mapOf("button" to "layoutInstructionsToggle", "fragment" to "MosquesFragment"))
@@ -84,15 +107,97 @@ class MosquesFragment : Fragment() {
         }
     }
 
-    private fun launchMapActivity() {
-        val intent = Intent(requireContext(), MapActivity::class.java)
-        startActivity(intent)
+    private fun checkAndPerformAutoDiscovery() {
+        if (hasAttemptedAutoDetect) return
+        hasAttemptedAutoDetect = true
+
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+            locationPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        } else {
+            fetchAndShowNearbyMosques()
+        }
     }
 
-    private fun launchMapActivityWithAutoDetect() {
-        val intent = Intent(requireContext(), MapActivity::class.java).apply {
-            putExtra("auto_detect", true)
+    private fun fetchAndShowNearbyMosques() {
+        binding.progressBar.visibility = View.VISIBLE
+        LocationProvider.requestFreshLocation { lat, lng ->
+            val geoPoint = LatLng(lat, lng)
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    val places = PlaceDetector.findNearbyMosques(geoPoint, forceRefresh = false)
+                    if (!isAdded) return@launch
+                    
+                    if (places.isEmpty()) {
+                        Toast.makeText(requireContext(), R.string.map_no_mosques_found, Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
+
+                    val names = places.map { it.name }.toTypedArray()
+                    val checkedItems = BooleanArray(places.size) { false }
+
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.map_select_mosques_title)
+                        .setMultiChoiceItems(names, checkedItems) { _, which, isChecked ->
+                            checkedItems[which] = isChecked
+                        }
+                        .setPositiveButton("Save") { _, _ ->
+                            val currentCount = MosqueRepository.getAllMosques().size
+                            if (currentCount >= 100) {
+                                Toast.makeText(requireContext(), "Geofence limit reached ($currentCount/100)", Toast.LENGTH_SHORT).show()
+                                return@setPositiveButton
+                            }
+
+                            var savedCount = 0
+                            for (i in places.indices) {
+                                if (checkedItems[i]) {
+                                    val place = places[i]
+                                    place.latLng?.let { mosqueLocation ->
+                                        val mosque = Mosque(
+                                            id = Mosque.generateId(),
+                                            name = place.name,
+                                            latitude = mosqueLocation.latitude,
+                                            longitude = mosqueLocation.longitude,
+                                            address = place.address ?: ""
+                                        )
+                                        MosqueRepository.addMosque(mosque)
+                                        GeofenceService.enqueueAddGeofence(requireContext(), mosque)
+                                        savedCount++
+                                    }
+                                }
+                            }
+
+                            if (savedCount > 0) {
+                                Toast.makeText(requireContext(), "Saved $savedCount mosque(s)", Toast.LENGTH_SHORT).show()
+                                loadMosques()
+                            }
+                        }
+                        .setNegativeButton("Cancel", null)
+                        .show()
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error finding nearby mosques", e)
+                    if (isAdded) {
+                        Toast.makeText(requireContext(), "Error finding nearby mosques: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                } finally {
+                    if (isAdded) {
+                        binding.progressBar.visibility = View.GONE
+                    }
+                }
+            }
         }
+    }
+
+    private fun launchMapActivity() {
+        val intent = Intent(requireContext(), MapActivity::class.java)
         startActivity(intent)
     }
 
@@ -139,6 +244,11 @@ class MosquesFragment : Fragment() {
         val isEmpty = mosques.isEmpty()
         binding.recyclerMosques.visibility = if (isEmpty) View.GONE else View.VISIBLE
         binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        
+        if (isEmpty) {
+            checkAndPerformAutoDiscovery()
+        }
+
         // FAB always visible — persistent primary action per Material Design
         instructionsExpanded = false
         binding.textInstructions.visibility = View.GONE

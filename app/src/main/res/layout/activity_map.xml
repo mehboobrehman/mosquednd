@@ -166,5 +166,12 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_my_location"
         android:contentDescription="My Location" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
     
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -141,7 +141,7 @@ object LocationProvider {
                     }
                 }
                 .addOnFailureListener { e ->
-                    LogHelper.loge(TAG, "Failed to get fresh location: ${e.message}")
+                    LogHelper.loge(TAG, "Failed to get fresh location (GPS signal lost, location services disabled, or timeout): ${e.message}")
                     val (lat, lng) = getLastKnownLocation()
                     onResult(lat, lng)
                 }

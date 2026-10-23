@@ -110,11 +110,18 @@ object PlaceDetector {
                     return response
                 } else {
                     Log.w(TAG, "Server $serverUrl returned HTTP error: $responseCode")
+                    when (responseCode) {
+                        429 -> Log.w(TAG, "Rate limit exceeded (HTTP 429) on Overpass server: $serverUrl")
+                        503, 504 -> Log.w(TAG, "Overpass server unavailable or gateway timeout (HTTP $responseCode): $serverUrl")
+                        else -> Log.w(TAG, "Overpass server returned error code $responseCode on: $serverUrl")
+                    }
                 }
+            } catch (e: java.net.SocketTimeoutException) {
+                Log.w(TAG, "API timeout connecting to Overpass server: $serverUrl — ${e.message}", e)
             } catch (e: java.io.IOException) {
-                Log.w(TAG, "Failed to fetch from $serverUrl, trying next server", e)
+                Log.w(TAG, "Network IO failure connecting to Overpass server: $serverUrl — ${e.message}, trying next server", e)
             } catch (e: Exception) {
-                Log.e(TAG, "Error fetching from $serverUrl", e)
+                Log.e(TAG, "Unexpected error fetching from Overpass server: $serverUrl — ${e.message}", e)
             } finally {
                 connection?.disconnect()
             }
