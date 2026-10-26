@@ -47,6 +47,8 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceGroupAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import java.io.InputStream
 import java.util.Date
 
@@ -126,6 +128,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setupDetectionRadiusListener()
         setupHijriOffsetListener()
         setupRingtonePreference()
+        setupGoogleAuthPreference()
         setupDataPreferences()
         setupOnboardingPreference()
         setupReliabilityPreference()
@@ -159,6 +162,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         LogHelper.logTelemetry(LogHelper.TelemetryCategory.STARTUP, "FRAGMENT_RESUME", mapOf("fragment" to "SettingsFragment"))
         super.onResume()
         updateRingtoneSummary()
+        updateGoogleAuthPreferenceSummary()
     }
 
     override fun onPause() {
@@ -517,10 +521,60 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    /**
-     * Registers the import file picker launcher and sets click listeners for
-     * the Export Data and Import Data preferences.
-     */
+    private fun setupGoogleAuthPreference() {
+        val googleAuthPref = findPreference<Preference>("google_sign_in")
+        googleAuthPref?.setOnPreferenceClickListener { _ ->
+            val context = requireContext()
+            if (com.mosquednd.auth.GoogleAuthManager.isSignedin(context)) {
+                val user = com.mosquednd.auth.GoogleAuthManager.getSignedInUser(context)
+                MaterialAlertDialogBuilder(context)
+                    .setTitle(R.string.google_sign_out_title)
+                    .setMessage(getString(R.string.google_sign_out_confirm))
+                    .setPositiveButton(R.string.remove) { _, _ ->
+                        com.mosquednd.auth.GoogleAuthManager.signOut(context)
+                        updateGoogleAuthPreferenceSummary()
+                        Toast.makeText(context, R.string.google_sign_out_success, Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
+            } else {
+                lifecycleScope.launch {
+                    try {
+                        val user = com.mosquednd.auth.GoogleAuthManager.signIn(context)
+                        updateGoogleAuthPreferenceSummary()
+                        Toast.makeText(
+                            context,
+                            getString(R.string.google_sign_in_success, user.email),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Google Sign-In failed", e)
+                        Toast.makeText(
+                            context,
+                            getString(R.string.google_sign_in_failed, e.localizedMessage ?: "Unknown error"),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+            true
+        }
+        updateGoogleAuthPreferenceSummary()
+    }
+
+    private fun updateGoogleAuthPreferenceSummary() {
+        val googleAuthPref = findPreference<Preference>("google_sign_in") ?: return
+        val context = requireContext()
+        if (com.mosquednd.auth.GoogleAuthManager.isSignedin(context)) {
+            val user = com.mosquednd.auth.GoogleAuthManager.getSignedInUser(context)
+            val email = user?.email ?: ""
+            googleAuthPref.title = getString(R.string.google_sign_out_title)
+            googleAuthPref.summary = getString(R.string.google_sign_in_summary_signed_in, email)
+        } else {
+            googleAuthPref.title = getString(R.string.google_sign_in_title)
+            googleAuthPref.summary = getString(R.string.google_sign_in_summary_signed_out)
+        }
+    }
     private fun setupDataPreferences() {
         // Register the SAF file picker for JSON files
         importFileLauncher = registerForActivityResult(

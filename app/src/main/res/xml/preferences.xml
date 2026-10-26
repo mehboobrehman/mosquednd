@@ -97,6 +97,16 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/account_category">
+
+        <Preference
+            android:key="google_sign_in"
+            android:title="@string/google_sign_in_title"
+            android:summary="@string/google_sign_in_summary_signed_out"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/category_data">
 
         <Preference
