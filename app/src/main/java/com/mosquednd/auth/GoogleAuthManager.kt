@@ -1,5 +1,6 @@
 package com.mosquednd.auth
 
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
@@ -8,6 +9,8 @@ import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.credentials.exceptions.NoCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -64,7 +67,8 @@ object GoogleAuthManager {
      * Returns GoogleUser on success, or throws an exception on failure/cancellation.
      */
     suspend fun signIn(context: Context): GoogleUser = withContext(Dispatchers.IO) {
-        val credentialManager = CredentialManager.create(context)
+        val activity = context as? Activity ?: throw IllegalArgumentException("Context must be an Activity instance for Google Sign-In")
+        val credentialManager = CredentialManager.create(activity)
 
         val googleIdOption = GetGoogleIdOption.Builder()
             .setServerClientId(CLIENT_ID)
@@ -78,12 +82,18 @@ object GoogleAuthManager {
 
         try {
             val result = credentialManager.getCredential(
-                context = context,
+                context = activity,
                 request = request
             )
-            return@withContext handleCredentialResponse(context, result)
+            return@withContext handleCredentialResponse(activity, result)
+        } catch (e: GetCredentialCancellationException) {
+            Log.i(TAG, "Google Sign-In cancelled by user", e)
+            throw e
+        } catch (e: NoCredentialException) {
+            Log.w(TAG, "No Google credentials available on device", e)
+            throw e
         } catch (e: GetCredentialException) {
-            Log.e(TAG, "GetCredentialException during Google Sign-In", e)
+            Log.e(TAG, "GetCredentialException during Google Sign-In: type=${e.type}, message=${e.message}", e)
             throw e
         } catch (e: Exception) {
             Log.e(TAG, "Unexpected exception during Google Sign-In", e)

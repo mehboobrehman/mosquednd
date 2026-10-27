@@ -540,20 +540,42 @@ class SettingsFragment : PreferenceFragmentCompat() {
             } else {
                 lifecycleScope.launch {
                     try {
-                        val user = com.mosquednd.auth.GoogleAuthManager.signIn(context)
+                        val activity = requireActivity()
+                        val user = com.mosquednd.auth.GoogleAuthManager.signIn(activity)
                         updateGoogleAuthPreferenceSummary()
                         Toast.makeText(
                             context,
                             getString(R.string.google_sign_in_success, user.email),
                             Toast.LENGTH_SHORT
                         ).show()
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Google Sign-In failed", e)
+                    } catch (e: androidx.credentials.exceptions.GetCredentialCancellationException) {
+                        Log.i(TAG, "Google Sign-In cancelled by user", e)
+                        // User cancelled, no error toast needed or gentle cancellation message
+                    } catch (e: androidx.credentials.exceptions.NoCredentialException) {
+                        Log.w(TAG, "No Google credentials available on device", e)
                         Toast.makeText(
                             context,
-                            getString(R.string.google_sign_in_failed, e.localizedMessage ?: "Unknown error"),
+                            "No Google accounts found on this device. Please add a Google account in Android Settings.",
                             Toast.LENGTH_LONG
                         ).show()
+                    } catch (e: androidx.credentials.exceptions.GetCredentialException) {
+                        Log.e(TAG, "GetCredentialException during Google Sign-In: type=${e.type}, message=${e.message}", e)
+                        val msg = if (e.message?.contains("no credentials available", true) == true ||
+                                    e.message?.contains("No credential", true) == true) {
+                            "No Google accounts found on this device. Please add a Google account in Android Settings."
+                        } else {
+                            getString(R.string.google_sign_in_failed, e.localizedMessage ?: "Unknown error")
+                        }
+                        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Google Sign-In failed", e)
+                        val msg = if (e.message?.contains("no credentials available", true) == true ||
+                                    e.message?.contains("No credential", true) == true) {
+                            "No Google accounts found on this device. Please add a Google account in Android Settings."
+                        } else {
+                            getString(R.string.google_sign_in_failed, e.localizedMessage ?: "Unknown error")
+                        }
+                        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                     }
                 }
             }

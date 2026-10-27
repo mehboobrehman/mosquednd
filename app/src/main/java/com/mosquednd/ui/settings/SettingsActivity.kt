@@ -31,6 +31,16 @@ class SettingsActivity : AppCompatActivity() {
         setupBottomNavigation()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Ensure no icon of the bottom navigation bar is shown as selected when on Settings screen
+        binding.bottomNavigation.menu.setGroupCheckable(0, true, false)
+        for (i in 0 until binding.bottomNavigation.menu.size()) {
+            binding.bottomNavigation.menu.getItem(i).isChecked = false
+        }
+        binding.bottomNavigation.menu.setGroupCheckable(0, true, true)
+    }
+
     private fun setupBottomNavigation() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             val intent = Intent(this, MainActivity::class.java).apply {

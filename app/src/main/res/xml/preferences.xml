@@ -3,6 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:preferenceTheme="@style/PreferenceThemeOverlay">
 
+    <PreferenceCategory android:title="@string/account_category">
+
+        <Preference
+            android:key="google_sign_in"
+            android:title="@string/google_sign_in_title"
+            android:summary="@string/google_sign_in_summary_signed_out"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/prayer_calculation">
 
         <ListPreference
@@ -93,16 +103,6 @@
             android:title="@string/pref_detection_radius_warning"
             android:summary="@string/pref_detection_radius_warning"
             android:visible="false"
-            app:iconSpaceReserved="false" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/account_category">
-
-        <Preference
-            android:key="google_sign_in"
-            android:title="@string/google_sign_in_title"
-            android:summary="@string/google_sign_in_summary_signed_out"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
