@@ -130,7 +130,7 @@ export const CompassDialUI: React.FC<CompassDialUIProps> = ({
                     dominantBaseline="central"
                     transform={`rotate(${deg}, ${Math.sin(angleRad) * 140}, ${-Math.cos(angleRad) * 140})`}
                   >
-                    {deg === 0 ? 'N' : deg === 90 ? 'E' : deg === 180 ? 'S' : deg === 270 ? 'W' : deg}
+                    {deg === 0 ? '0' : deg === 90 ? '90' : deg === 180 ? '180' : deg === 270 ? '270' : deg}
                   </text>
                 )}
               </g>
@@ -141,13 +141,13 @@ export const CompassDialUI: React.FC<CompassDialUIProps> = ({
         {/* Cardinal Points Elaborate Badges */}
         <g transform="translate(200, 200)" fontSize="16" fontWeight="900" fontFamily="serif" textAnchor="middle" dominantBaseline="central">
           {/* North */}
-          <text x="0" y="-115" fill="url(#goldGrad)">N</text>
+          <text x="0" y="-145" fill="url(#goldGrad)">N</text>
           {/* East */}
-          <text x="115" y="0" fill="url(#goldGrad)">E</text>
+          <text x="145" y="0" fill="url(#goldGrad)">E</text>
           {/* South */}
-          <text x="0" y="115" fill="url(#goldGrad)">S</text>
+          <text x="0" y="145" fill="url(#goldGrad)">S</text>
           {/* West */}
-          <text x="-115" y="0" fill="url(#goldGrad)">W</text>
+          <text x="-145" y="0" fill="url(#goldGrad)">W</text>
         </g>
 
         {/* Qibla Marker on the Rotating Dial (Points to Qibla relative to North) */}
