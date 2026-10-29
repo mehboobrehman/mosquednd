@@ -155,7 +155,7 @@ class OnboardingActivity : AppCompatActivity() {
                     downX = event.x
                     downY = event.y
                     downTime = System.currentTimeMillis()
-                    false // let children handle the rest of the gesture
+                    true // return true so ACTION_MOVE and ACTION_UP are received by this listener
                 }
                 MotionEvent.ACTION_UP -> {
                     val dx = event.x - downX

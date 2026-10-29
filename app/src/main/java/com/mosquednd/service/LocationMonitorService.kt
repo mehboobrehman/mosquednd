@@ -239,7 +239,7 @@ class LocationMonitorService : android.app.Service() {
             if (consensusReached) {
                 if (PrayerAlarmPrefs.isAutoDNDEnabled()) {
                     val durationMinutes = PrayerAlarmPrefs.getAutoDNDDurationMin()
-                    DNDController.enableDND(this, durationMinutes)
+                    DNDController.enableDND(this, durationMinutes, nearestMosque.name)
                     LogHelper.logd(TAG, "Consensus reached — auto-DND enabled")
                 } else {
                     LogHelper.logw(TAG, "Auto-DND is disabled in settings — skipping DND enable")

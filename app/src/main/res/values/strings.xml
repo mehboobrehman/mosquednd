@@ -415,6 +415,11 @@ The app automatically schedules DND alarms and restores normal notifications whe
     <string name="google_sign_in_failed">Google sign-in failed: %1$s</string>
     <string name="google_sign_out_success">Signed out successfully</string>
 
+    <!-- AutoDND Activity Log -->
+    <string name="activity_log_title">Activity Log</string>
+    <string name="clear_log">Clear Log</string>
+    <string name="activity_log_empty">No recent DND activity</string>
+
     <!-- Privacy Policy -->
     <string name="privacy_policy_url">https://www.mosquednd.app/privacy</string>
 </resources>

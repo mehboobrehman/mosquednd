@@ -1,4 +1,4 @@
-package com.mosquednd.ui
+package com.mosquednd.ui.home
 
 import android.Manifest
 import android.app.AlarmManager
@@ -9,6 +9,9 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -24,19 +27,27 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mosquednd.MosqueDNDApp
 import com.mosquednd.R
+import com.mosquednd.data.DNDLogRepository
 import com.mosquednd.databinding.FragmentHomeBinding
 import com.mosquednd.service.LocationMonitorService
 import com.mosquednd.util.DNDController
 import com.mosquednd.geofence.GeofenceConfig
 import com.mosquednd.util.BootPrefs
 import com.mosquednd.util.LocationProvider
-import androidx.lifecycle.lifecycleScope
 import com.mosquednd.ui.BackgroundLocationRationaleFragment
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -66,6 +77,7 @@ class HomeFragment : Fragment() {
 
     private var isMonitoringToggleProcessing = false
     private var isBound = false
+    private lateinit var activityLogAdapter: ActivityLogAdapter
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -95,7 +107,7 @@ class HomeFragment : Fragment() {
                 Log.d(TAG, "Permissions-granted location cached: $lat, $lng")
             }
             startMonitoringFlow()
-} else {
+        } else {
             Log.w(TAG, "Location permission denied — monitoring cannot start")
             Toast.makeText(requireContext(), getString(R.string.map_location_permission_required), Toast.LENGTH_LONG).show()
             revertMonitoringState()
@@ -117,7 +129,7 @@ class HomeFragment : Fragment() {
                 )
             ) {
                 showBackgroundLocationSettingsDialog()
-} else {
+            } else {
                 Toast.makeText(
                     requireContext(),
                     R.string.background_location_required,
@@ -140,6 +152,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
+        setupActivityLog()
     }
 
     override fun onResume() {
@@ -169,6 +182,90 @@ class HomeFragment : Fragment() {
         binding.spinnerInterval.setSelection(1)
 
         setupRadiusUI()
+    }
+
+    private fun setupActivityLog() {
+        activityLogAdapter = ActivityLogAdapter()
+        binding.recyclerActivityLog.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = activityLogAdapter
+        }
+
+        // Setup swipe-to-delete using ItemTouchHelper
+        val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val logItem = activityLogAdapter.getItemAt(position)
+                
+                viewLifecycleOwner.lifecycleScope.launch {
+                    DNDLogRepository.deleteLog(requireContext(), logItem.id)
+                    Toast.makeText(requireContext(), getString(R.string.monitoring_stopped), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                val background = ColorDrawable(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
+                
+                if (dX > 0) {
+                    background.setBounds(itemView.left, itemView.top, itemView.left + dX.toInt(), itemView.bottom)
+                } else if (dX < 0) {
+                    background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                } else {
+                    background.setBounds(0, 0, 0, 0)
+                }
+                background.draw(c)
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerActivityLog)
+
+        // Clear Log button click handler
+        binding.btnClearLog.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Clear Activity Log")
+                .setMessage("Are you sure you want to clear all AutoDND activity logs?")
+                .setPositiveButton("Clear") { _, _ ->
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        DNDLogRepository.clearAll(requireContext())
+                        Toast.makeText(requireContext(), "Activity log cleared", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
+
+        // Observe logs flow
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                DNDLogRepository.getRecentLogsFlow(requireContext()).collectLatest { logs ->
+                    activityLogAdapter.submitList(logs)
+                    if (logs.isEmpty()) {
+                        binding.textEmptyLog.visibility = View.VISIBLE
+                        binding.recyclerActivityLog.visibility = View.GONE
+                    } else {
+                        binding.textEmptyLog.visibility = View.GONE
+                        binding.recyclerActivityLog.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
     }
 
     private fun updateDNDCard() {
@@ -232,7 +329,7 @@ class HomeFragment : Fragment() {
             BootPrefs.setMonitoringEnabled(requireContext(), false)
             Toast.makeText(requireContext(), getString(R.string.monitoring_stopped), Toast.LENGTH_SHORT).show()
             provideHapticFeedback()
-} catch (e: SecurityException) {
+        } catch (e: SecurityException) {
             Log.e(TAG, "SecurityException stopping monitoring", e)
             showMonitoringError(getString(R.string.monitoring_error_stop, "permission denied"))
             updateMonitorUI()

@@ -10,7 +10,6 @@ interface CompassDialUIProps {
 export const CompassDialUI: React.FC<CompassDialUIProps> = ({
   heading,
   qiblaBearing,
-  relativeAngle,
   isAligned,
 }) => {
   // Generate degree tick marks (every 10 deg major, 5 deg minor)
@@ -138,16 +137,16 @@ export const CompassDialUI: React.FC<CompassDialUIProps> = ({
           })}
         </g>
 
-        {/* Cardinal Points Elaborate Badges */}
+        {/* Cardinal Points Elaborate Badges (Counter-rotated by heading so they always stay upright) */}
         <g transform="translate(200, 200)" fontSize="16" fontWeight="900" fontFamily="serif" textAnchor="middle" dominantBaseline="central">
           {/* North */}
-          <text x="0" y="-145" fill="url(#goldGrad)">N</text>
+          <text x="0" y="-145" fill="url(#goldGrad)" transform={`rotate(${heading}, 0, -145)`}>N</text>
           {/* East */}
-          <text x="145" y="0" fill="url(#goldGrad)">E</text>
+          <text x="145" y="0" fill="url(#goldGrad)" transform={`rotate(${heading}, 145, 0)`}>E</text>
           {/* South */}
-          <text x="0" y="145" fill="url(#goldGrad)">S</text>
+          <text x="0" y="145" fill="url(#goldGrad)" transform={`rotate(${heading}, 0, 145)`}>S</text>
           {/* West */}
-          <text x="-145" y="0" fill="url(#goldGrad)">W</text>
+          <text x="-145" y="0" fill="url(#goldGrad)" transform={`rotate(${heading}, -145, 0)`}>W</text>
         </g>
 
         {/* Qibla Marker on the Rotating Dial (Points to Qibla relative to North) */}

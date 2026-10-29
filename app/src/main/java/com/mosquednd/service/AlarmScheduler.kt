@@ -346,8 +346,8 @@ object AlarmScheduler {
             val duration = PrayerAlarmPrefs.getDNDDuration(type)
 
             val alarmOffset = PrayerAlarmPrefs.getOffset(type)
-            val rawMs = prayerTime.timeInMillis - (alarmOffset * 60 * 1000)
-            val startCal = Calendar.getInstance().apply { timeInMillis = rawMs }
+            val adhanAlertMillis = prayerTime.timeInMillis - (alarmOffset * 60 * 1000)
+            val startCal = Calendar.getInstance().apply { timeInMillis = adhanAlertMillis }
             startCal.add(Calendar.MINUTE, offset)
 
             // Skip prayers whose start window has already passed — don't schedule retroactive DND windows

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.mosquednd.MosqueDNDApp
 import com.mosquednd.R
+import com.mosquednd.data.DNDLogRepository
 import com.mosquednd.receiver.DNDTimerExpiryReceiver
 
 object DNDController {
@@ -19,7 +20,7 @@ object DNDController {
         DNDTimer(onTimeout = {
             val ctx = MosqueDNDApp.instance
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                disableDND(ctx)
+                disableDND(ctx, "Auto-disabled after timer expiry")
                 Toast.makeText(ctx, R.string.dnd_auto_disabled, Toast.LENGTH_LONG).show()
             }
         })
@@ -44,7 +45,7 @@ object DNDController {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun enableDND(context: Context, durationMinutes: Int = 30) {
+    fun enableDND(context: Context, durationMinutes: Int = 30, mosqueName: String? = null) {
         if (!hasDNDAccess(context)) {
             LogHelper.logw(TAG, "Cannot enable DND — DND access not granted")
             Toast.makeText(context, "DND access not granted — enable it in Settings", Toast.LENGTH_SHORT).show()
@@ -61,6 +62,14 @@ object DNDController {
         autoDisableTimer.reset()
 
         LogHelper.logd(TAG, "DND enabled (INTERRUPTION_FILTER_NONE) — auto-disable timer started ($durationMinutes min)")
+
+        // Log DND activation
+        val desc = if (mosqueName != null) {
+            "AutoDND enabled for $mosqueName ($durationMinutes min)"
+        } else {
+            "AutoDND enabled ($durationMinutes min)"
+        }
+        DNDLogRepository.insertLog(context, "DND_ENABLED", desc, mosqueName)
     }
 
     private fun scheduleAlarmManagerExpiry(context: Context, durationMinutes: Int) {
@@ -84,7 +93,7 @@ object DNDController {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun disableDND(context: Context) {
+    fun disableDND(context: Context, reason: String = "Manual disable") {
         if (!hasDNDAccess(context)) {
             LogHelper.logw(TAG, "Cannot disable DND — DND access not granted")
             Toast.makeText(context, "DND access not granted — enable it in Settings", Toast.LENGTH_SHORT).show()
@@ -97,6 +106,9 @@ object DNDController {
         notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
         autoDisableTimer.cancel()
         LogHelper.logd(TAG, "DND disabled (INTERRUPTION_FILTER_ALL) — timer cancelled")
+
+        // Log DND deactivation
+        DNDLogRepository.insertLog(context, "DND_DISABLED", reason)
     }
 
     // ── Auto-disable timer (geofence) ──

@@ -14,6 +14,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
  *  - `mosques`             — current state of each mosque (one row per mosque).
  *  - `mosque_history`      — append-only snapshot/audit trail (see [MosqueHistoryEntity]).
  *  - `nearby_mosque_cache` — key-value Room cache for Overpass API responses.
+ *  - `dnd_logs`            — AutoDND activity logs.
  *
  * SNAPSHOT-based versioning (vs delta/patch chains): a mosque entity is a small
  * ~200-byte JSON object and writes are rare user actions, so storing the full
@@ -27,14 +28,20 @@ import androidx.sqlite.db.SupportSQLiteDatabase
  * survives deletion of the current row (delete writes a tombstone entry instead).
  */
 @Database(
-    entities = [MosqueEntity::class, MosqueHistoryEntity::class, NearbyMosqueCacheEntity::class],
-    version = 2,
+    entities = [
+        MosqueEntity::class,
+        MosqueHistoryEntity::class,
+        NearbyMosqueCacheEntity::class,
+        DNDLogEntity::class
+    ],
+    version = 3,
     exportSchema = false
 )
 abstract class MosqueDatabase : RoomDatabase() {
     abstract fun mosqueDao(): MosqueDao
     abstract fun mosqueHistoryDao(): MosqueHistoryDao
     abstract fun nearbyMosqueCacheDao(): NearbyMosqueCacheDao
+    abstract fun dndLogDao(): DNDLogDao
 
     companion object {
         @Volatile
@@ -44,6 +51,14 @@ abstract class MosqueDatabase : RoomDatabase() {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL(
                     "CREATE TABLE IF NOT EXISTS `nearby_mosque_cache` (`cacheKey` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `jsonPayload` TEXT NOT NULL, PRIMARY KEY(`cacheKey`))"
+                )
+            }
+        }
+
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `dnd_logs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `eventName` TEXT NOT NULL, `description` TEXT NOT NULL, `mosqueName` TEXT)"
                 )
             }
         }
@@ -66,8 +81,7 @@ abstract class MosqueDatabase : RoomDatabase() {
                 MosqueDatabase::class.java,
                 "mosquednd.db"
             )
-            .addMigrations(MIGRATION_1_2)
-            .fallbackToDestructiveMigration()
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
             .build()
     }
 }

@@ -26,6 +26,15 @@
         android:layout_height="wrap_content"
         android:textColor="?attr/colorHijriDate"
         android:textSize="@dimen/text_size_sm"
+        android:visibility="gone" />
+
+    <!-- Current Location -->
+    <TextView
+        android:id="@+id/text_current_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_xs"
         android:layout_marginBottom="@dimen/spacing_sm"
         android:visibility="gone" />
 

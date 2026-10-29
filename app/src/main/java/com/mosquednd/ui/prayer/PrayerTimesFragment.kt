@@ -517,6 +517,16 @@ class PrayerTimesFragment : Fragment(),
             Log.e(TAG, "Failed to get Hijri date: ${e.message}")
             binding.textHijriDate.visibility = View.GONE
         }
+        
+        // Also show current location
+        val location = LocationProvider.getLastKnownLocation()
+        val locationName = if (location.first != 0.0 || location.second != 0.0) {
+            "Lat: ${"%.4f".format(location.first)}, Lng: ${"%.4f".format(location.second)}"
+        } else {
+            "Location Unavailable"
+        }
+        binding.textCurrentLocation?.text = locationName
+        binding.textCurrentLocation?.visibility = View.VISIBLE
     }
 
     /**

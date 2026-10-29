@@ -5,6 +5,34 @@ object ReleaseNoteRepository {
     fun getReleaseNotes(): List<ReleaseNote> {
         return listOf(
             ReleaseNote(
+                versionName = "v1.0.7",
+                versionCode = 13, // Assuming a new version code for 1.0.7
+                releaseDate = "October 2026", // Keeping date consistent, or update if needed
+                summary = "Enhanced location accuracy, improved DND scheduling, and refined UI.",
+                items = listOf(
+                    WhatsNewItem(
+                        ReleaseNoteCategory.IMPROVEMENTS,
+                        "Location Accuracy",
+                        "Improved GPS and network location services for more precise mosque detection."
+                    ),
+                    WhatsNewItem(
+                        ReleaseNoteCategory.CHANGES,
+                        "DND Scheduling Logic",
+                        "Refined Do Not Disturb scheduling to better align with prayer alert times and user offsets."
+                    ),
+                    WhatsNewItem(
+                        ReleaseNoteCategory.CHANGES,
+                        "UI Refinements",
+                        "Minor adjustments to the user interface for a smoother and more intuitive experience."
+                    ),
+                     WhatsNewItem(
+                        ReleaseNoteCategory.BUG_FIXES,
+                        "Sticky Notifications",
+                        "Addressed an issue with persistent notifications that were not clearing correctly."
+                    )
+                )
+            ),
+            ReleaseNote(
                 versionName = "v1.0.3",
                 versionCode = 12,
                 releaseDate = "October 2026",
