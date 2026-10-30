@@ -21,6 +21,10 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
+import com.mosquednd.data.AgentLogDao
+import com.mosquednd.data.AgentLogEntity
+import com.mosquednd.data.MosqueDatabase
+import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 
 /**
@@ -34,7 +38,7 @@ object AgentLogger {
     private const val KEY_SERVER_IP = "server_ip"
     private const val KEY_DEVICE_ID = "device_id"
     private const val DEFAULT_PORT = 5000
-    private const val MAX_PENDING_LOGS = 50
+    private const val MAX_PENDING_LOGS = 500
     private const val RETRY_COOLDOWN_MS = 30_000L
     private const val HEALTH_CHECK_INTERVAL_MS = 60_000L
 
@@ -107,8 +111,9 @@ object AgentLogger {
     @Volatile
     private var appContext: Context? = null
 
-    private data class LogEntry(val level: String, val message: String, val stack: String?, val timestamp: String)
-    private val pendingLogs = ConcurrentLinkedQueue<LogEntry>()
+    @Volatile
+    private var agentLogDao: AgentLogDao? = null
+
     private val isDiscovering = AtomicBoolean(false)
     /** True once the user (or app code) pinned a server IP via setServerIpFromUser().
      *  Prevents a late subnet-discovery hit from overwriting the manual override. */
@@ -132,6 +137,10 @@ object AgentLogger {
 
                 // Load cached server IP or save default if provided
                 val savedIp = prefs.getString(KEY_SERVER_IP, null)
+
+                // Initialize AgentLogDao
+                agentLogDao = MosqueDatabase.getInstance(context).agentLogDao()
+
                 if (!defaultServerIp.isNullOrEmpty()) {
                     cachedServerIp = defaultServerIp
                     prefs.edit().putString(KEY_SERVER_IP, defaultServerIp).apply()
@@ -288,29 +297,24 @@ object AgentLogger {
     fun logToAgent(level: String, message: String, stack: String?) {
         val timestamp = dateFormat.format(Date())
 
-        // If server IP not yet discovered, buffer the log and trigger discovery
-        if (cachedServerIp == null) {
-            if (pendingLogs.size >= MAX_PENDING_LOGS) {
-                pendingLogs.poll() // drop oldest entry to make room for the new one
-            }
-            pendingLogs.offer(LogEntry(level, message, stack, timestamp))
-            // Trigger discovery if not already running and cooldown expired
-            val now = System.currentTimeMillis()
-            if (!isDiscovering.get() && (now - lastDiscoveryAttemptTime > RETRY_COOLDOWN_MS)) {
-                startSubnetDiscovery()
-            }
-            return
-        }
-
-        val serverIp = cachedServerIp ?: return
-        val deviceId = cachedDeviceId ?: "unknown-android-device"
-
-        sendLogToServer(serverIp, deviceId, level, message, stack, timestamp)
-    }
-
-    private fun sendLogToServer(serverIp: String, deviceId: String, level: String, message: String, stack: String?, timestamp: String) {
         executor.execute {
-            doSendToServer(serverIp, deviceId, level, message, stack, timestamp)
+            val dao = agentLogDao
+            if (dao != null) {
+                runBlocking {
+                    dao.insert(AgentLogEntity(level = level, message = message, stack = stack, timestamp = timestamp))
+                    dao.trimOldLogs()
+                }
+            }
+
+            if (cachedServerIp != null) {
+                flushPendingLogs()
+            } else {
+                // Trigger discovery if not already running and cooldown expired
+                val now = System.currentTimeMillis()
+                if (!isDiscovering.get() && (now - lastDiscoveryAttemptTime > RETRY_COOLDOWN_MS)) {
+                    startSubnetDiscovery()
+                }
+            }
         }
     }
 
@@ -318,7 +322,7 @@ object AgentLogger {
      * Performs the actual HTTP POST to the log server.
      * Must be called from a background thread (never wraps in executor to avoid deadlock).
      */
-    private fun doSendToServer(serverIp: String, deviceId: String, level: String, message: String, stack: String?, timestamp: String) {
+    private fun doSendToServer(id: Long, serverIp: String, deviceId: String, level: String, message: String, stack: String?, timestamp: String) {
         try {
             val baseUrl = if (serverIp.startsWith("http")) serverIp else "http://$serverIp:$DEFAULT_PORT"
             val url = URL("$baseUrl/api/log")
@@ -349,43 +353,40 @@ object AgentLogger {
             }
 
             val responseCode = connection.responseCode
-            if (responseCode !in 200..299) {
+            if (responseCode in 200..299) {
+                runBlocking {
+                    agentLogDao?.deleteById(id)
+                }
+            } else {
                 Log.w(TAG, "doSendToServer: HTTP $responseCode from $baseUrl/api/log")
             }
             connection.disconnect()
         } catch (e: Exception) {
             Log.e(TAG, "doSendToServer: Failed to send log to $serverIp — ${e.javaClass.simpleName}: ${e.message}")
-            // Re-queue the entry for retry — never silently drop a log on send failure
-            val entry = LogEntry(level, message, stack, timestamp)
-            if (pendingLogs.size >= MAX_PENDING_LOGS) {
-                pendingLogs.poll() // drop oldest to make room
-            }
-            pendingLogs.offer(entry)
+            // No need to re-queue, it stays in DB for next flush
         }
     }
 
     /**
-     * Flushes all pending log entries to the server.
+     * Flushes all pending log entries from the database to the server.
      * Must be called from the executor thread — does NOT wrap in executor.execute
      * to avoid deadlock (single-thread executor would block on itself).
      */
     private fun flushPendingLogs() {
+        val dao = agentLogDao ?: return
         val serverIp = cachedServerIp ?: return
         val deviceId = cachedDeviceId ?: "unknown-android-device"
 
-        // Drain the queue into a batch first, so entries that fail sending
-        // (and get re-queued by doSendToServer) are not re-polled in this cycle.
-        val batch = mutableListOf<LogEntry>()
-        var polled: LogEntry? = pendingLogs.poll()
-        while (polled != null) {
-            batch.add(polled)
-            polled = pendingLogs.poll()
+        runBlocking {
+            val logs = dao.getAllLogs()
+            if (logs.isNotEmpty()) {
+                Log.d(TAG, "Flushing ${logs.size} pending logs to server...")
+                for (log in logs) {
+                    doSendToServer(log.id, serverIp, deviceId, log.level, log.message, log.stack, log.timestamp)
+                }
+                Log.d(TAG, "Finished flushing pending log buffer")
+            }
         }
-
-        for (entry in batch) {
-            doSendToServer(serverIp, deviceId, entry.level, entry.message, entry.stack, entry.timestamp)
-        }
-        Log.d(TAG, "Flushed pending log buffer to server")
     }
 
     private fun startSubnetDiscovery() {

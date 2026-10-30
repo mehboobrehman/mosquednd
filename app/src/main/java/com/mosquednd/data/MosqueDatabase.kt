@@ -32,9 +32,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         MosqueEntity::class,
         MosqueHistoryEntity::class,
         NearbyMosqueCacheEntity::class,
-        DNDLogEntity::class
+        DNDLogEntity::class,
+        AgentLogEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class MosqueDatabase : RoomDatabase() {
@@ -42,6 +43,7 @@ abstract class MosqueDatabase : RoomDatabase() {
     abstract fun mosqueHistoryDao(): MosqueHistoryDao
     abstract fun nearbyMosqueCacheDao(): NearbyMosqueCacheDao
     abstract fun dndLogDao(): DNDLogDao
+    abstract fun agentLogDao(): AgentLogDao
 
     companion object {
         @Volatile
@@ -59,6 +61,14 @@ abstract class MosqueDatabase : RoomDatabase() {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL(
                     "CREATE TABLE IF NOT EXISTS `dnd_logs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `eventName` TEXT NOT NULL, `description` TEXT NOT NULL, `mosqueName` TEXT)"
+                )
+            }
+        }
+
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `agent_logs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `level` TEXT NOT NULL, `message` TEXT NOT NULL, `stack` TEXT, `timestamp` TEXT NOT NULL)"
                 )
             }
         }
@@ -81,7 +91,7 @@ abstract class MosqueDatabase : RoomDatabase() {
                 MosqueDatabase::class.java,
                 "mosquednd.db"
             )
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
 }
