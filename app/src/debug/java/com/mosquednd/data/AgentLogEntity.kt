@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Room entity representing an AgentLogger log entry.
+ * Room entity representing an AgentLogger log entry (Debug build only).
  */
 @Entity(tableName = "agent_logs")
 data class AgentLogEntity(

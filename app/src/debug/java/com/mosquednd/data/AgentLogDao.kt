@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 /**
- * DAO for AgentLogger logs (`agent_logs` table).
+ * DAO for AgentLogger logs (Debug build only).
  */
 @Dao
 interface AgentLogDao {
