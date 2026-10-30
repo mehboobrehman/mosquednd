@@ -89,6 +89,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MosqueDND" />
 
+        <!-- Debug Drawer Activity -->
+        <activity
+            android:name=".ui.settings.DebugDrawerActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MosqueDND" />
+
         <!-- Full-Screen Adhan Alarm Activity -->
         <activity
             android:name=".ui.prayer.AdhanAlarmActivity"

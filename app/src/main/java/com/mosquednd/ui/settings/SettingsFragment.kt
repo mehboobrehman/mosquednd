@@ -924,11 +924,30 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    private var debugTapCount = 0
+    private var lastDebugTapTime = 0L
+
     private fun setupAboutVersionPreferences() {
         val versionInfo = com.mosquednd.AppVersionInfo.getCurrent()
 
         val versionPref = findPreference<Preference>("pref_app_version")
         versionPref?.summary = "${versionInfo.versionName} (${versionInfo.versionCode})"
+        versionPref?.setOnPreferenceClickListener {
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastDebugTapTime > 1000) {
+                debugTapCount = 0
+            }
+            debugTapCount++
+            lastDebugTapTime = currentTime
+            
+            if (debugTapCount == 3) {
+                debugTapCount = 0
+                // Launch Debug Activity
+                val intent = Intent(requireContext(), com.mosquednd.ui.settings.DebugDrawerActivity::class.java)
+                startActivity(intent)
+            }
+            true
+        }
 
         val hashPref = findPreference<Preference>("pref_build_hash")
         hashPref?.summary = versionInfo.gitCommitHash
