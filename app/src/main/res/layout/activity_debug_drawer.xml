@@ -1,42 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp">
-
-    <TextView
-        android:id="@+id/telemetry_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Telemetry Status"
-        android:textSize="16sp"
-        android:paddingBottom="16dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_clear_data"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/telemetry_status"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Clear Data" />
+            android:text="Telemetry Status"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingBottom="12dp" />
 
-        <Button
-            android:id="@+id/btn_trigger_sync"
-            android:layout_width="wrap_content"
+        <!-- Remote Config & Feature Flags Section -->
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Trigger Sync"
-            android:layout_marginStart="8dp" />
+            android:text="Remote Config &amp; Feature Flags"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_blue_dark"
+            android:paddingBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingBottom="8dp">
+
+            <CheckBox
+                android:id="@+id/cb_force_401"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Force 401 Unauthorized (Chaos Test)"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingBottom="8dp">
+
+            <CheckBox
+                android:id="@+id/cb_verbose_logging"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Enable Verbose Logging"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingBottom="12dp">
+
+            <Button
+                android:id="@+id/btn_fetch_config"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fetch /api/config Now"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_config_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Config synced"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp">
+
+            <Button
+                android:id="@+id/btn_clear_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clear Logs" />
+
+            <Button
+                android:id="@+id/btn_trigger_sync"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trigger Sync"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Agent Logs Buffer:"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingBottom="4dp" />
+
+        <TextView
+            android:id="@+id/logs_view"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:textSize="11sp"
+            android:background="#FFF5F5F5"
+            android:padding="8dp"
+            android:scrollbars="vertical" />
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/logs_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:textSize="12sp"
-        android:scrollbars="vertical" />
-</LinearLayout>
+</ScrollView>

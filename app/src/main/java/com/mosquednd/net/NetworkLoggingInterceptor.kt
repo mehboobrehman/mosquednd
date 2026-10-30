@@ -3,6 +3,8 @@ package com.mosquednd.net
 import com.mosquednd.util.AgentLogger
 import okhttp3.Interceptor
 import okhttp3.Response
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
 import java.io.IOException
 import java.nio.charset.Charset
@@ -18,6 +20,20 @@ class NetworkLoggingInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val startTime = System.nanoTime()
+
+        // Feature Flag: If force401Error is enabled and this is an API call, simulate 401 Unauthorized
+        if (com.mosquednd.config.RemoteConfigManager.force401Error && !request.url.encodedPath.contains("/api/config")) {
+            AgentLogger.w("⚠️ [FeatureFlag] force401Error active — intercepting request to simulate 401 Unauthorized: ${request.url}", "NetworkLog")
+            return okhttp3.Response.Builder()
+                .request(request)
+                .protocol(okhttp3.Protocol.HTTP_1_1)
+                .code(401)
+                .message("Unauthorized (Simulated by RemoteConfig Feature Flag)")
+                .body("{\"error\": \"Unauthorized simulated by feature flag\"}".toResponseBody("application/json".toMediaTypeOrNull()))
+                .sentRequestAtMillis(System.currentTimeMillis())
+                .receivedResponseAtMillis(System.currentTimeMillis())
+                .build()
+        }
 
         val connection = chain.connection()
         val requestLog = buildString {

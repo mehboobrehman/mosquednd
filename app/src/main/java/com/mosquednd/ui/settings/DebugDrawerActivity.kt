@@ -2,11 +2,13 @@ package com.mosquednd.ui.settings
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.mosquednd.R
+import com.mosquednd.config.RemoteConfigManager
 import com.mosquednd.data.AgentLogDao
 import com.mosquednd.data.MosqueDatabase
 import com.mosquednd.util.AgentLogger
@@ -17,6 +19,9 @@ import kotlinx.coroutines.withContext
 class DebugDrawerActivity : AppCompatActivity() {
 
     private lateinit var dao: AgentLogDao
+    private lateinit var cbForce401: CheckBox
+    private lateinit var cbVerboseLogging: CheckBox
+    private lateinit var tvConfigStatus: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,13 +30,45 @@ class DebugDrawerActivity : AppCompatActivity() {
         dao = MosqueDatabase.getInstance(this).agentLogDao()
 
         findViewById<TextView>(R.id.telemetry_status).text = "Telemetry Server: ${AgentLogger.getServerIp(this) ?: "Disconnected"}"
-        
+
+        cbForce401 = findViewById(R.id.cb_force_401)
+        cbVerboseLogging = findViewById(R.id.cb_verbose_logging)
+        tvConfigStatus = findViewById(R.id.tv_config_status)
+
+        // Set initial state from RemoteConfigManager
+        cbForce401.isChecked = RemoteConfigManager.force401Error
+        cbVerboseLogging.isChecked = RemoteConfigManager.enableVerboseLogging
+        tvConfigStatus.text = "Sync interval: ${RemoteConfigManager.syncIntervalMinutes}m"
+
+        cbForce401.setOnCheckedChangeListener { _, isChecked ->
+            RemoteConfigManager.setFeatureFlag(this, "force401Error", isChecked)
+            Toast.makeText(this, "Force 401 set to $isChecked", Toast.LENGTH_SHORT).show()
+        }
+
+        cbVerboseLogging.setOnCheckedChangeListener { _, isChecked ->
+            RemoteConfigManager.setFeatureFlag(this, "enableVerboseLogging", isChecked)
+            Toast.makeText(this, "Verbose logging set to $isChecked", Toast.LENGTH_SHORT).show()
+        }
+
+        findViewById<Button>(R.id.btn_fetch_config).setOnClickListener {
+            tvConfigStatus.text = "Fetching /api/config..."
+            RemoteConfigManager.fetchConfig(this) { success, error ->
+                lifecycleScope.launch(Dispatchers.Main) {
+                    if (success) {
+                        tvConfigStatus.text = "Config fetched successfully (${RemoteConfigManager.syncIntervalMinutes}m)"
+                        cbForce401.isChecked = RemoteConfigManager.force401Error
+                        cbVerboseLogging.isChecked = RemoteConfigManager.enableVerboseLogging
+                        Toast.makeText(this@DebugDrawerActivity, "Config updated from server", Toast.LENGTH_SHORT).show()
+                    } else {
+                        tvConfigStatus.text = "Fetch failed: ${error ?: "unknown"}"
+                        Toast.makeText(this@DebugDrawerActivity, "Failed: ${error ?: "unknown"}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
         findViewById<Button>(R.id.btn_clear_data).setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                // Delete all logs
-                // Note: The DAO didn't have a clear all, so we'll delete based on logic or a simple trick.
-                // Assuming AgentLogDao has no delete all, I'll delete all logs.
-                // Re-reading DAO, no deleteAll. I will add one if needed, but I can fetch all and delete by IDs.
                 val logs = dao.getAllLogs()
                 dao.deleteByIds(logs.map { it.id })
                 withContext(Dispatchers.Main) {
@@ -42,9 +79,6 @@ class DebugDrawerActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_trigger_sync).setOnClickListener {
-            // Need to flush logs. AgentLogger.flushPendingLogs() is private.
-            // I should use AgentLogger.i() or similar or just check connectivity.
-            // Wait, AgentLogger.i() internally calls logToAgent which flushes if server is there.
             AgentLogger.i("Sync triggered from Debug Drawer")
             Toast.makeText(this, "Sync triggered", Toast.LENGTH_SHORT).show()
         }
