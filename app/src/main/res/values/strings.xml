@@ -414,6 +414,7 @@ The app automatically schedules DND alarms and restores normal notifications whe
     <string name="google_sign_in_success">Signed in successfully as %1$s</string>
     <string name="google_sign_in_failed">Google sign-in failed: %1$s</string>
     <string name="google_sign_out_success">Signed out successfully</string>
+    <string name="google_client_id" translatable="false">370852286562-pcl1top4ur9m2qaq2l29bal32i7dr1kd.apps.googleusercontent.com</string>
 
     <!-- AutoDND Activity Log -->
     <string name="activity_log_title">Activity Log</string>

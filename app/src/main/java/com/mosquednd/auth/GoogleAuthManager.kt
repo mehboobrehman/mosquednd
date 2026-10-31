@@ -73,7 +73,8 @@ object GoogleAuthManager {
         val googleIdOption = GetGoogleIdOption.Builder()
             .setServerClientId(CLIENT_ID)
             .setFilterByAuthorizedAccounts(false)
-            .setAutoSelectEnabled(false)
+            .setAutoSelectEnabled(true)
+            .setNonce(java.util.UUID.randomUUID().toString())
             .build()
 
         val request = GetCredentialRequest.Builder()
