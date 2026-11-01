@@ -145,7 +145,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            outputFileName = "MosqueDND.apk"
+            outputFileName = "MosqueDND-${variant.buildType.name}-v${variant.versionName}.apk"
         }
     }
 }
