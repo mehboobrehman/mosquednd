@@ -5,6 +5,29 @@ object ReleaseNoteRepository {
     fun getReleaseNotes(): List<ReleaseNote> {
         return listOf(
             ReleaseNote(
+                versionName = "v1.0.11",
+                versionCode = 37,
+                releaseDate = "November 2026",
+                summary = "Adhan alarm offset persistence fix, live telemetry logging, and release build robustness.",
+                items = listOf(
+                    WhatsNewItem(
+                        ReleaseNoteCategory.WHATS_NEW,
+                        "Adhan Alarm Offset Controls",
+                        "Enhanced alarm offset configurations and persistent management for prayer notifications."
+                    ),
+                    WhatsNewItem(
+                        ReleaseNoteCategory.BUG_FIXES,
+                        "Alarm Offset Persistence",
+                        "Fixed a bug where custom Adhan alarm timing offsets were not properly saved across app restarts."
+                    ),
+                    WhatsNewItem(
+                        ReleaseNoteCategory.IMPROVEMENTS,
+                        "Live Telemetry & Robustness",
+                        "Improved live telemetry logging and release build robustness for stability."
+                    )
+                )
+            ),
+            ReleaseNote(
                 versionName = "v1.0.10",
                 versionCode = 36,
                 releaseDate = "November 2026",

@@ -17,6 +17,9 @@ interface AgentLogDao {
     @Query("SELECT * FROM agent_logs ORDER BY id ASC")
     suspend fun getAllLogs(): List<AgentLogEntity>
 
+    @Query("SELECT * FROM agent_logs ORDER BY id ASC LIMIT :limit")
+    suspend fun getLogs(limit: Int): List<AgentLogEntity>
+
     @Query("DELETE FROM agent_logs WHERE id = :id")
     suspend fun deleteById(id: Long)
 
@@ -26,6 +29,6 @@ interface AgentLogDao {
     @Query("SELECT COUNT(*) FROM agent_logs")
     suspend fun getCount(): Int
 
-    @Query("DELETE FROM agent_logs WHERE id NOT IN (SELECT id FROM agent_logs ORDER BY id DESC LIMIT 500)")
-    suspend fun trimOldLogs()
+    @Query("DELETE FROM agent_logs WHERE id NOT IN (SELECT id FROM agent_logs ORDER BY id DESC LIMIT :maxSize)")
+    suspend fun trimOldLogs(maxSize: Int = 500)
 }

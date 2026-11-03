@@ -66,7 +66,7 @@ class WhatsNewManagerTest {
         
         val latest = ReleaseNoteRepository.getLatestReleaseNote()
         assertNotNull(latest)
-        assertEquals("v1.0.10", latest?.versionName)
+        assertEquals("v1.0.11", latest?.versionName)
         
         val v102 = ReleaseNoteRepository.getReleaseNoteForVersion("v1.0.2")
         assertNotNull(v102)

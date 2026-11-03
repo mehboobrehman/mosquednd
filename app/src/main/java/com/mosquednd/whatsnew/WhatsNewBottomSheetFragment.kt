@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mosquednd.AppVersionInfo
 
 class WhatsNewBottomSheetFragment : BottomSheetDialogFragment() {
 
@@ -61,7 +62,12 @@ class WhatsNewBottomSheetFragment : BottomSheetDialogFragment() {
 @Composable
 fun WhatsNewContent(onDismiss: () -> Unit) {
     val releaseNotes = remember { ReleaseNoteRepository.getReleaseNotes() }
-    var selectedVersion by remember { mutableStateOf(releaseNotes.first()) }
+    val currentVersion = remember { AppVersionInfo.getCurrent().versionName }
+    var selectedVersion by remember {
+        mutableStateOf(
+            ReleaseNoteRepository.getReleaseNoteForVersion(currentVersion) ?: releaseNotes.first()
+        )
+    }
     var menuExpanded by remember { mutableStateOf(false) }
 
     Surface(

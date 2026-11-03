@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MosqueDND Telemetry Envelope",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "sessionId",
+    "deviceId",
+    "sequenceNumber",
+    "monotonicTimestamp",
+    "wallClockTimestamp",
+    "messageType",
+    "payload"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string"
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deviceId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sequenceNumber": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "monotonicTimestamp": {
+      "type": "number",
+      "minimum": 0
+    },
+    "wallClockTimestamp": {
+      "type": "string"
+    },
+    "messageType": {
+      "type": "string",
+      "enum": ["log", "metric", "crash", "heartbeat", "handshake", "status"]
+    },
+    "payload": {
+      "type": "object",
+      "required": ["level", "message"],
+      "properties": {
+        "level": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "stack": {
+          "type": ["string", "null"]
+        },
+        "metrics": {
+          "type": "object"
+        }
+      }
+    },
+    "authToken": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}
