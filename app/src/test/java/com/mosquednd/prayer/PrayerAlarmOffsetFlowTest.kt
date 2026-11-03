@@ -104,4 +104,20 @@ class PrayerAlarmOffsetFlowTest {
         assertEquals(23, fajrWrapped / 60)
         assertEquals(45, fajrWrapped % 60)
     }
+
+    @Test
+    fun `test offset persistence and preference change listener notification`() {
+        var notifiedKey: String? = null
+        val listener = android.content.SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            notifiedKey = key
+        }
+        PrayerAlarmPrefs.prefs.registerOnSharedPreferenceChangeListener(listener)
+
+        PrayerAlarmPrefs.setOffset(PrayerType.FAJR, 20)
+        assertEquals(20, PrayerAlarmPrefs.getOffset(PrayerType.FAJR))
+        assertNotNull("Preference change listener should be notified", notifiedKey)
+        assertTrue(PrayerAlarmPrefs.isOffsetKey(notifiedKey))
+
+        PrayerAlarmPrefs.prefs.unregisterOnSharedPreferenceChangeListener(listener)
+    }
 }

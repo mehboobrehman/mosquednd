@@ -74,7 +74,7 @@ object PrayerAlarmPrefs {
         testPrefs = prefs
     }
 
-    private val prefs get() = testPrefs ?: encryptedPrefs ?: MosqueDNDApp.prefs
+    internal val prefs get() = testPrefs ?: encryptedPrefs ?: MosqueDNDApp.prefs
 
     fun getOffset(type: PrayerType, default: Int = 0): Int {
         val key = offsetKey(type)

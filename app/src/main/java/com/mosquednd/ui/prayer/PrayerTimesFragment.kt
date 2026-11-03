@@ -332,6 +332,10 @@ class PrayerTimesFragment : Fragment(),
         super.onResume()
         // Register listener so preferences changes trigger recalculation
         MosqueDNDApp.prefs.registerOnSharedPreferenceChangeListener(this)
+        val alarmPrefs = PrayerAlarmPrefs.prefs
+        if (alarmPrefs !== MosqueDNDApp.prefs) {
+            alarmPrefs.registerOnSharedPreferenceChangeListener(this)
+        }
         // Reschedule alarms if location or timezone changed while fragment was not resumed
         rescheduleIfLocationOrTimezoneChanged()
         // ── Day-change detection: handles force-stop + reopen on a different calendar day ──
@@ -352,6 +356,10 @@ class PrayerTimesFragment : Fragment(),
         LogHelper.logTelemetry(LogHelper.TelemetryCategory.STARTUP, "FRAGMENT_PAUSE", mapOf("fragment" to "PrayerTimesFragment"))
         super.onPause()
         MosqueDNDApp.prefs.unregisterOnSharedPreferenceChangeListener(this)
+        val alarmPrefs = PrayerAlarmPrefs.prefs
+        if (alarmPrefs !== MosqueDNDApp.prefs) {
+            alarmPrefs.unregisterOnSharedPreferenceChangeListener(this)
+        }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
