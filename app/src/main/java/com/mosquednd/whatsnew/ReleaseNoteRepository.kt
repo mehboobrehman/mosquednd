@@ -5,6 +5,70 @@ object ReleaseNoteRepository {
     fun getReleaseNotes(): List<ReleaseNote> {
         return listOf(
             ReleaseNote(
+                versionName = "v1.0.10",
+                versionCode = 36,
+                releaseDate = "November 2026",
+                summary = "Live telemetry logging integration and release build stubbing.",
+                items = listOf(
+                    WhatsNewItem(
+                        ReleaseNoteCategory.IMPROVEMENTS,
+                        "Telemetry Logging",
+                        "Added live telemetry logging and server auto-discovery for debug builds."
+                    ),
+                    WhatsNewItem(
+                        ReleaseNoteCategory.IMPROVEMENTS,
+                        "Release Build Isolation",
+                        "Zero-overhead stubbing of telemetry in release builds."
+                    ),
+                    WhatsNewItem(
+                        ReleaseNoteCategory.CHANGES,
+                        "Release Version Packaging",
+                        "Version bump to v1.0.10 (versionCode 36)."
+                    )
+                )
+            ),
+            ReleaseNote(
+                versionName = "v1.0.9",
+                versionCode = 35,
+                releaseDate = "November 2026",
+                summary = "Distinct build artifact packaging and automated release deployment.",
+                items = listOf(
+                    WhatsNewItem(
+                        ReleaseNoteCategory.IMPROVEMENTS,
+                        "APK Naming",
+                        "Configured distinct APK file naming for debug and release builds."
+                    ),
+                    WhatsNewItem(
+                        ReleaseNoteCategory.CHANGES,
+                        "Release Pipeline",
+                        "Automated build artifact generation and GitHub release packaging."
+                    )
+                )
+            ),
+            ReleaseNote(
+                versionName = "v1.0.8",
+                versionCode = 34,
+                releaseDate = "November 2026",
+                summary = "Nearby mosque detection fallbacks, persistent location UI, and Google Sign-in fix.",
+                items = listOf(
+                    WhatsNewItem(
+                        ReleaseNoteCategory.WHATS_NEW,
+                        "Mosque Detection Fallbacks",
+                        "Implemented 3-level fallback mechanism (Overpass API servers, local persistence cache, alternative service)."
+                    ),
+                    WhatsNewItem(
+                        ReleaseNoteCategory.WHATS_NEW,
+                        "Location Display",
+                        "Added persistent location coordinates view across all main screens."
+                    ),
+                    WhatsNewItem(
+                        ReleaseNoteCategory.BUG_FIXES,
+                        "Google Sign-In Fix",
+                        "Configured AndroidManifest and CredentialManager for Google account sign-in."
+                    )
+                )
+            ),
+            ReleaseNote(
                 versionName = "v1.0.7",
                 versionCode = 13, // Assuming a new version code for 1.0.7
                 releaseDate = "October 2026", // Keeping date consistent, or update if needed
