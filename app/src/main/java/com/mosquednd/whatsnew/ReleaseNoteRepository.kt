@@ -264,6 +264,15 @@ object ReleaseNoteRepository {
     }
 
     fun getReleaseNoteForVersion(versionName: String): ReleaseNote? {
-        return getReleaseNotes().find { it.versionName == versionName }
+        val cleanInput = versionName.trim().let {
+            if (it.startsWith("v", ignoreCase = true)) it.substring(1) else it
+        }.trim()
+        
+        return getReleaseNotes().find { note ->
+            val cleanNote = note.versionName.trim().let {
+                if (it.startsWith("v", ignoreCase = true)) it.substring(1) else it
+            }.trim()
+            cleanNote.equals(cleanInput, ignoreCase = true)
+        }
     }
 }

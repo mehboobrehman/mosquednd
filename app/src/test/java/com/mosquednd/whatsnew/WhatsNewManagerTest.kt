@@ -76,4 +76,19 @@ class WhatsNewManagerTest {
         assertTrue(categories?.contains(ReleaseNoteCategory.WHATS_NEW) == true)
         assertTrue(categories?.contains(ReleaseNoteCategory.BUG_FIXES) == true)
     }
+
+    @Test
+    fun testGetReleaseNoteForVersionVariantMatching() {
+        val noteWithoutV = ReleaseNoteRepository.getReleaseNoteForVersion("1.0.11")
+        val noteWithV = ReleaseNoteRepository.getReleaseNoteForVersion("v1.0.11")
+        val noteWithUppercaseV = ReleaseNoteRepository.getReleaseNoteForVersion("V1.0.11")
+
+        assertNotNull("Should find release note for '1.0.11'", noteWithoutV)
+        assertNotNull("Should find release note for 'v1.0.11'", noteWithV)
+        assertNotNull("Should find release note for 'V1.0.11'", noteWithUppercaseV)
+
+        assertEquals("v1.0.11", noteWithoutV?.versionName)
+        assertEquals(noteWithoutV, noteWithV)
+        assertEquals(noteWithoutV, noteWithUppercaseV)
+    }
 }
