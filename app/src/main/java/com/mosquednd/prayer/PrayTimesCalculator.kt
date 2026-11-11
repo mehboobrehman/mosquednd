@@ -120,14 +120,25 @@ object PrayTimesCalculator {
         for ((type, hours) in offsetTimes) {
             val prayerCal = Calendar.getInstance(timeZone)
             prayerCal.time = date
-            val totalMinutes = round(hours * 60.0).toInt()
-            val normalized = ((totalMinutes % 1440) + 1440) % 1440
-            val h = normalized / 60
-            val m = normalized % 60
-            prayerCal.set(Calendar.HOUR_OF_DAY, h)
-            prayerCal.set(Calendar.MINUTE, m)
+            prayerCal.set(Calendar.HOUR_OF_DAY, 0)
+            prayerCal.set(Calendar.MINUTE, 0)
             prayerCal.set(Calendar.SECOND, 0)
             prayerCal.set(Calendar.MILLISECOND, 0)
+
+            if (hours.isNaN()) {
+                result[type] = PrayerTime(
+                    type = type,
+                    time = prayerCal,
+                    formattedTime = "--:--"
+                )
+                continue
+            }
+
+            val totalMinutes = round(hours * 60.0).toInt()
+            prayerCal.add(Calendar.MINUTE, totalMinutes)
+
+            val h = prayerCal.get(Calendar.HOUR_OF_DAY)
+            val m = prayerCal.get(Calendar.MINUTE)
 
             result[type] = PrayerTime(
                 type = type,
@@ -174,8 +185,8 @@ object PrayTimesCalculator {
         val cosHA = (sin(toRad(angle)) - sin(latRad) * sin(decRad)) /
                 (cos(latRad) * cos(decRad))
         return when {
-            cosHA < -1.0 -> 0.0
-            cosHA > 1.0 -> 0.0
+            cosHA < -1.0 -> Double.NaN
+            cosHA > 1.0 -> Double.NaN
             else -> toDeg(acos(cosHA)) / 15.0
         }
     }
@@ -188,8 +199,8 @@ object PrayTimesCalculator {
         val cosHA = (sin(angle) - sin(latRad) * sin(decRad)) /
                 (cos(latRad) * cos(decRad))
         return when {
-            cosHA < -1.0 -> 0.0
-            cosHA > 1.0 -> 0.0
+            cosHA < -1.0 -> Double.NaN
+            cosHA > 1.0 -> Double.NaN
             else -> toDeg(acos(cosHA)) / 15.0
         }
     }

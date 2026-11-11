@@ -571,4 +571,47 @@ class PrayTimesCalculatorTest {
             assertTrue("$type ($min) should be in 0-1440 range", min >= 0 && min < 1440)
         }
     }
+
+    // ---------------------------------------------------------------
+    // Test 21: High latitude (70°N) without adjustment returns NaN
+    // ---------------------------------------------------------------
+    @Test
+    fun testHighLatitude_None_ReturnsNaN() {
+        val date = makeDate(2024, 6, 21, "UTC")
+        val times = PrayTimesCalculator.calculate(
+            date, 70.0, 0.0,
+            method = CalculationMethod.MWL,
+            highLatitudeMethod = HighLatitudeMethod.NONE,
+            timeZone = TimeZone.getTimeZone("UTC")
+        )
+
+        assertEquals("--:--", times[PrayerType.FAJR]!!.formattedTime)
+        assertEquals("--:--", times[PrayerType.ISHA]!!.formattedTime)
+    }
+
+    // ---------------------------------------------------------------
+    // Test 22: Isha midnight wrap advances day (+1)
+    // ---------------------------------------------------------------
+    @Test
+    fun testIshaMidnightWrap_AdvancesDay() {
+        val date = makeDate(2024, 6, 21, "Asia/Karachi")
+        // Normal Isha is ~20:47. Add 300 min offset -> ~01:47 next day.
+        val tz = TimeZone.getTimeZone("Asia/Karachi")
+        val times = PrayTimesCalculator.calculate(
+            date, KARACHI_LAT, KARACHI_LNG,
+            offsets = mapOf(PrayerType.ISHA to 300),
+            timeZone = tz
+        )
+
+        val isha = times[PrayerType.ISHA]!!
+        assertEquals("01:47", isha.formattedTime)
+
+        val cal = isha.time
+        val inputCal = Calendar.getInstance(tz)
+        inputCal.time = date
+
+        // Check that day of month is input day + 1
+        // Note: June 21 + 1 = June 22.
+        assertEquals("Day should be incremented", inputCal.get(Calendar.DAY_OF_MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH))
+    }
 }

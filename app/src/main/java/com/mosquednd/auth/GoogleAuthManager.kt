@@ -14,6 +14,7 @@ import androidx.credentials.exceptions.NoCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import com.mosquednd.util.EncryptedPrefsManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -32,7 +33,47 @@ object GoogleAuthManager {
     private const val KEY_ID_TOKEN = "id_token"
 
     private fun getPrefs(context: Context): SharedPreferences {
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val encryptedPrefs = try {
+            EncryptedPrefsManager.getEncryptedPrefs(context, PREFS_NAME)
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to get encrypted prefs, falling back to standard prefs", e)
+            return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        }
+
+        val migrationKey = "google_auth_migrated_to_encrypted"
+        if (!encryptedPrefs.getBoolean(migrationKey, false)) {
+            try {
+                val oldPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                if (oldPrefs.all.isNotEmpty()) {
+                    Log.i(TAG, "Migrating Google Auth prefs from plain to encrypted SharedPreferences")
+                    val editor = encryptedPrefs.edit()
+                    for ((key, value) in oldPrefs.all) {
+                        when (value) {
+                            is String -> editor.putString(key, value)
+                            is Boolean -> editor.putBoolean(key, value)
+                            is Int -> editor.putInt(key, value)
+                            is Long -> editor.putLong(key, value)
+                            is Float -> editor.putFloat(key, value)
+                            is Set<*> -> {
+                                @Suppress("UNCHECKED_CAST")
+                                editor.putStringSet(key, value as Set<String>)
+                            }
+                        }
+                    }
+                    editor.putBoolean(migrationKey, true)
+                    editor.apply()
+
+                    oldPrefs.edit().clear().apply()
+                    Log.i(TAG, "Google Auth prefs migration complete")
+                } else {
+                    encryptedPrefs.edit().putBoolean(migrationKey, true).apply()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to migrate Google Auth prefs", e)
+            }
+        }
+
+        return encryptedPrefs
     }
 
     fun isSignedin(context: Context): Boolean {

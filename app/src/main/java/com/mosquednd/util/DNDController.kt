@@ -3,6 +3,7 @@ package com.mosquednd.util
 import android.app.AlarmManager
 import android.app.NotificationManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
@@ -15,6 +16,37 @@ import com.mosquednd.receiver.DNDTimerExpiryReceiver
 object DNDController {
 
     private const val TAG = "DNDController"
+    private const val PREFS_NAME = "dnd_controller_prefs"
+    private const val KEY_SAVED_FILTER = "saved_interruption_filter"
+    private const val KEY_APP_OWNED_DND = "app_owned_dnd"
+
+    private fun getPrefs(context: Context): SharedPreferences =
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    private fun saveDndState(context: Context, filter: Int) {
+        getPrefs(context).edit()
+            .putInt(KEY_SAVED_FILTER, filter)
+            .putBoolean(KEY_APP_OWNED_DND, true)
+            .apply()
+        LogHelper.logd(TAG, "Saved original DND filter ($filter) and marked as app-owned")
+    }
+
+    private fun getSavedDndState(context: Context): Int {
+        val filter = getPrefs(context).getInt(KEY_SAVED_FILTER, NotificationManager.INTERRUPTION_FILTER_ALL)
+        LogHelper.logd(TAG, "Retrieved saved DND filter: $filter")
+        return filter
+    }
+
+    private fun clearDndState(context: Context) {
+        getPrefs(context).edit()
+            .remove(KEY_SAVED_FILTER)
+            .putBoolean(KEY_APP_OWNED_DND, false)
+            .apply()
+        LogHelper.logd(TAG, "Cleared saved DND state and app-owned flag")
+    }
+
+    private fun isAppOwnedDnd(context: Context): Boolean =
+        getPrefs(context).getBoolean(KEY_APP_OWNED_DND, false)
 
     private val autoDisableTimer by lazy {
         DNDTimer(onTimeout = {
@@ -53,7 +85,15 @@ object DNDController {
         }
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
+        
+        // H2: Read and store the current interruption filter state if not already owned by app
+        if (!isAppOwnedDnd(context)) {
+            val currentFilter = notificationManager.currentInterruptionFilter
+            saveDndState(context, currentFilter)
+        }
+
+        // H1: Change the default interruption filter from INTERRUPTION_FILTER_NONE to INTERRUPTION_FILTER_ALARMS
+        notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALARMS)
 
         // Schedule AlarmManager expiry (survives process death)
         scheduleAlarmManagerExpiry(context, durationMinutes)
@@ -61,7 +101,7 @@ object DNDController {
         // Also start in-process Timer for real-time UI countdown
         autoDisableTimer.reset()
 
-        LogHelper.logd(TAG, "DND enabled (INTERRUPTION_FILTER_NONE) — auto-disable timer started ($durationMinutes min)")
+        LogHelper.logd(TAG, "DND enabled (INTERRUPTION_FILTER_ALARMS) — auto-disable timer started ($durationMinutes min)")
 
         // Log DND activation
         val desc = if (mosqueName != null) {
@@ -103,9 +143,19 @@ object DNDController {
         cancelAlarmManagerExpiry(context)
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+        
+        // H2: Restore the previously saved interruption filter instead of hardcoding INTERRUPTION_FILTER_ALL
+        if (isAppOwnedDnd(context)) {
+            val savedFilter = getSavedDndState(context)
+            notificationManager.setInterruptionFilter(savedFilter)
+            clearDndState(context)
+            LogHelper.logd(TAG, "DND disabled (restored saved filter: $savedFilter) — timer cancelled")
+        } else {
+            notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+            LogHelper.logd(TAG, "DND disabled (forced INTERRUPTION_FILTER_ALL, no saved state) — timer cancelled")
+        }
+
         autoDisableTimer.cancel()
-        LogHelper.logd(TAG, "DND disabled (INTERRUPTION_FILTER_ALL) — timer cancelled")
 
         // Log DND deactivation
         DNDLogRepository.insertLog(context, "DND_DISABLED", reason)
