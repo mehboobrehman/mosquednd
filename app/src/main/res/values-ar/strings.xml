@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مسجد لا إزعاج</string>
+    <string name="add_mosque">إضافة مسجد</string>
+    <string name="mosque">مسجد</string>
+    <string name="remove">إزالة</string>
+    <string name="no_mosques">لم تتم إضافة أي مساجد بعد</string>
+    <string name="tap_to_add">اضغط على + لإضافة موقع مسجد</string>
+    <string name="grant_dnd_access">منح صلاحية عدم الإزعاج</string>
+    <string name="dnd_access_required">مطلوب صلاحية عدم الإزعاج (DND) لتفعيل وضع عدم الإزعاج تلقائياً عند دخول نطاق المسجد.</string>
+    <string name="qibla_direction">اتجاه القبلة</string>
+    <string name="detect_nearby">مسجد قريب</string>
+    
+    <!-- Prayer Times -->
+    <string name="prayer_times">أوقات الصلاة</string>
+    <string name="next_prayer">القادمة</string>
+    <string name="fajr">الفجر</string>
+    <string name="sunrise">الشروق</string>
+    <string name="dhuhr">الظهر</string>
+    <string name="asr">العصر</string>
+    <string name="maghrib">المغرب</string>
+    <string name="isha">العشاء</string>
+    
+    <!-- Per-prayer Help -->
+    <string name="prayer_help_fajr">اضبط طريقة الحساب أو حد الزاوية لهذه الصلاة.</string>
+    <string name="prayer_help_dhuhr">اضبط التأخير بعد الزوال أو اختر مذهبًا مختلفًا لوقت العصر.</string>
+    <string name="prayer_help_asr">تكوين طريقة حساب العصر (الشافعي مقابل الحنفي).</string>
+    <string name="prayer_help_maghrib">اضبط الدقائق بعد الغروب للإفطار أو اضبط الزاوية.</string>
+    <string name="prayer_help_isha">اضبط الزاوية للعشاء أو حدد الفاصل الزمني.</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">الإعدادات</string>
+    <string name="action_settings">الإعدادات</string>
+    <string name="appearance">المظهر</string>
+    <string name="theme">السمة</string>
+    <string name="theme_summary">اختر الوضع الفاتح أو الداكن أو الافتراضي للنظام</string>
+    <string name="prayer_calculation">حساب الصلاة</string>
+    <string name="calculation_method">طريقة الحساب</string>
+    <string name="calculation_method_summary">الطريقة المستخدمة لحساب أوقات الصلاة</string>
+    <string name="help_calc_method_title">طرق حساب الصلاة</string>
+    <string name="help_calc_method_message">تستخدم الطرق المختلفة صيغًا مختلفة قليلاً لحساب أوقات الصلاة. رابطة العالم الإسلامي (MWL) هي الافتراضية. يمكنك تجربة طرق أخرى لمعرفة أيها يتطابق بشكل أفضل مع جدول مسجدي المحلي.</string>
+    <string name="asr_method">طريقة العصر</string>
+    <string name="asr_method_summary">طريقة حساب وقت صلاة العصر</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="adhan_notifications">إشعارات الأذان</string>
+    <string name="adhan_notifications_summary">تشغيل صوت الأذان في أوقات الصلاة</string>
+    <string name="geofence_enabled">السياج الجغرافي لعدم الإزعاج</string>
+    <string name="geofence_enabled_summary">تمكين وضع عدم الإزعاج تلقائياً في مواقع المساجد</string>
+    
+    <!-- Prayer Alarms -->
+    <string name="prayer_time_notification_title">وقت الصلاة</string>
+    <string name="prayer_time_notification_body">%1$s - حان وقت الصلاة</string>
+    <string name="channel_prayer_alerts">تنبيهات الصلاة</string>
+    <string name="channel_prayer_alerts_desc">إشعارات تنبيهات أوقات الصلاة</string>
+    
+    <!-- Widget -->
+    <string name="widget_next_prayer">الصلاة القادمة</string>
+    
+    <!-- Prayer Alarm Toggle -->
+    <string name="switch_alarm_toggle_desc">تبديل المنبه لهذه الصلاة</string>
+
+    <!-- Master Alarm Toggle -->
+    <string name="master_alarm_title">منبهات الصلاة</string>
+    <string name="master_alarm_summary">تمكين أو تعطيل جميع منبهات الصلاة</string>
+
+    <!-- Hijri Date -->
+    <string name="hijri_date_prefix">الهجري: </string>
+
+    <!-- Custom Adhan Ringtone -->
+    <string name="adhan_ringtone_title">نغمة الأذان</string>
+    <string name="adhan_ringtone_summary">حدد نغمة مخصصة للأذان</string>
+    <string name="adhan_ringtone_none">افتراضي</string>
+
+    <!-- Auto DND -->
+    <string name="dnd_auto_disabled">تم تعطيل عدم الإزعاج تلقائياً بعد 15 دقيقة</string>
+
+    <!-- Per-Prayer Alarm Offset -->
+    <string name="prayer_alarm_offset_title">إزاحة المنبه</string>
+    <string name="prayer_alarm_offset_message">ضبط وقت منبه %1$s\nأبكر = سالب، متأخر = موجب</string>
+    <string name="offset_adjusted_time">سيؤذن للأذان في تمام الساعة %s</string>
+    <string name="offset_previous_day">اليوم السابق</string>
+    <string name="offset_next_day">اليوم التالي</string>
+
+    <!-- Qibla Compass -->
+    <string name="calibration_status_calibrated">معايرة</string>
+    <string name="calibration_status_low_accuracy">دقة منخفضة</string>
+    <string name="calibration_status_uncalibrated">معايرة</string>
+    <string name="calibration_hint">حرك الهاتف على شكل رقم 8 للمعايرة</string>
+    <string name="retry">إعادة المحاولة</string>
+
+    <!-- Qibla Alignment -->
+    <string name="alignment_status_aligned">متوافق مع القبلة ✨</string>
+    <string name="magnetic_interference_warning">⚠ تم اكتشاف تداخل مغناطيسي. ابتعد عن الأجهزة الإلكترونية أو الأجسام المعدنية.</string>
+    <string name="accuracy_degraded_notice">انخفضت دقة المستشعر — قد يكون البوصلة أقل دقة</string>
+
+    <!-- Qibla Compass (new) -->
+    <string name="qibla_loading">جاري تهيئة البوصلة…</string>
+    <string name="qibla_permission_denied">تم رفض إذن الموقع</string>
+    <string name="qibla_permission_explanation">يتطلب تحديد اتجاه القبلة إذن الوصول إلى الموقع لحساب الاتجاه نحو مكة المكرمة.</string>
+    <string name="qibla_grant_permission">منح الإذن</string>
+    <string name="qibla_no_compass_sensor">لم يتم اكتشاف مستشعر بوصلة</string>
+    <string name="qibla_no_compass_explanation">لا يحتوي هذا الجهاز على مقياس مغناطيسي. اتجاه القبلة هو %1$d° من موقعك الحالي.</string>
+    <string name="qibla_label_location">الموقع</string>
+    <string name="qibla_label_distance">المسافة إلى الكعبة</string>
+    <string name="qibla_label_heading">الاتجاه</string>
+    <string name="qibla_label_calibration">المعايرة</string>
+    <string name="qibla_getting_location">جاري تحديد الموقع…</string>
+    <string name="qibla_location_unavailable">الموقع غير متوفر</string>
+    <string name="qibla_location_required">إذن الموقع مطلوب لتحديد اتجاه القبلة</string>
+    <string name="qibla_gps_off">نظام تحديد الموقع (GPS) متوقف. يرجى تمكين الموقع لحساب اتجاه القبلة.</string>
+    <string name="qibla_location_timeout">تعذر الحصول على الموقع. يرجى التحقق من إشارة GPS والمحاولة مرة أخرى.</string>
+    <string name="qibla_near_kaaba">أنت بالقرب من الكعبة. اتجاه القبلة غير مطبق.</string>
+    <string name="qibla_arrow_description">مؤشر اتجاه القبلة، %1$d درجة</string>
+    <string name="qibla_compass_description">قرص البوصلة، يواجه %1$d درجة (الغرب في الأعلى)</string>
+    <string name="qibla_kaaba_content_description">مؤشر اتجاه الكعبة</string>
+    <string name="kaaba_icon_content_description">هدف اتجاه الكعبة</string>
+
+    <!-- Compass Error / Info -->
+    <string name="compass_calibrate_instruction">معايرة الجهاز بالتحريك على شكل رقم 8</string>
+    <string name="compass_location_disabled">خدمات الموقع معطلة. قم تمكين GPS للحصول على اتجاه القبلة بدقة.</string>
+    <string name="compass_low_accuracy">دقة GPS منخفضة. قد يكون اتجاه القبلة تقريبيًا.</string>
+    <string name="compass_sensor_unavailable">مستشعر البوصلة غير متوفر على هذا الجهاز.</string>
+    <string name="calibration_help_title">معايرة البوصلة</string>
+    <string name="calibration_help_message">حرك هاتفك على شكل رقم 8 لتحسين الدقة. ابقِ الجهاز بعيدًا عن المغناطيس والأجسام المعدنية. النقطة الخضراء تعني أن البوصلة معايرة. النقطة الصفراء تعني دقة منخفضة. النقطة الحمراء تعني اكتشاف تداخل — انتقل إلى مكان مختلف.</string>
+
+    <!-- Import / Export -->
+    <string name="category_data">البيانات</string>
+    <string name="export_data_title">تصدير البيانات</string>
+    <string name="export_data_summary">حفظ إعدادات الصلاة والتنبيهات ومواقع المساجد في ملف</string>
+    <string name="import_data_title">استيراد البيانات</string>
+    <string name="import_data_summary">استعادة الإعدادات من ملف تم تصديره مسبقاً</string>
+    <string name="import_confirm_title">استيراد البيانات</string>
+    <string name="import_confirm_message">تم العثور على: %1$d إعدادات صلاة، %2$d تنبيهات، %3$d إزاحات، %4$d مساجد، %5$s السمة. هل تريد متابعة الاستيراد؟</string>
+    <string name="import_success">تم استيراد البيانات بنجاح</string>
+    <string name="import_error">فشل استيراد البيانات: %1$s</string>
+    <string name="import_invalid_format">تنسيق الملف غير صالح. يرجى اختيار ملف تصدير MosqueDND صالح.</string>
+    <string name="import_version_mismatch">إصدار تصدير غير مدعوم %1$d. يدعم هذا التطبيق الإصدار %2$d فقط.</string>
+    <string name="export_error_title">خطأ في التصدير</string>
+    <string name="export_error">فشل تصدير البيانات: %1$s</string>
+    <string name="export_success">تم تصدير البيانات بنجاح</string>
+    <string name="duplicate_mosques_found">تم تخطي %1$d مساجد مكررة</string>
+    <string name="import_nothing">لا يوجد شيء لاستيراده — لم يتم العثور على بيانات معروفة في الملف.</string>
+
+    <!-- Detection Radius -->
+    <string name="detection_radius_title">نصف قطر الاكتشاف</string>
+    <string name="detection_radius_summary">اضبط مدى قربك من المسجد</string>
+    <string name="radius_meters">%d م</string>
+    <string name="pref_detection_radius_title">نصف قطر الاكتشاف</string>
+    <string name="pref_detection_radius_summary">اكتشاف المساجد في حدود %d متر</string>
+    <string name="pref_detection_radius_warning">هذا النصف قطر كبير جداً وقد لا يكتشف المساجد القريبة. الموصى به: 1-50 كم.</string>
+
+    <!-- Auto DND -->
+    <string name="dnd_settings">عدم الإزعاج</string>
+    <string name="auto_dnd_title">تفعيل عدم الإزعاج تلقائياً عند دخول المسجد</string>
+    <string name="auto_dnd_summary_on">سيتم تمكين وضع عدم الإزعاج تلقائياً عند الاقتراب من مسجد</string>
+    <string name="auto_dnd_summary_off">اضغط لتمكين عدم الإزعاج التلقائي بالقرب من المساجد</string>
+
+    <!-- DND Duration -->
+    <string name="dnd_duration_title">مدة عدم الإزعاج الافتراضية</string>
+    <string name="dnd_duration_summary">اضبط مدة بقاء عدم الإزعاج نشطاً</string>
+    <string name="help_dnd_duration_title">مدة عدم الإزعاج الافتراضية</string>
+    <string name="help_dnd_duration_message">تقوم نافذة عدم الإزعاج كتم الأذان والتنبيهات غير الفجر. إذا كان وقت الانتهاء أبكر من وقت البدء، فإنه يمتد طوال الليل (على سبيل المثال، من 10 مساءً إلى 6 صباحاً).</string>
+
+    <!-- Location & Overpass Error Feedback & Loading States -->
+    <string name="location_source_gps">استخدام GPS</string>
+    <string name="location_source_manual">موقع يدوي</string>
+    <string name="location_source_manual_location_info">موقع يدوي (%1$s, %2$s)</string>
+    <string name="set_location_manually">تعيين يدوياً</string>
+    <string name="location_unavailable_title">الموقع غير متوفر</string>
+    <string name="location_unavailable_message">تعذر تحديد موقعك. قم بتعيينه يدوياً أو تمكين خدمات الموقع.</string>
+    <string name="location_manual_title">تعيين الموقع يدوياً</string>
+    <string name="location_manual_latitude_hint">خط العرض (-90 إلى 90)</string>
+    <string name="location_manual_longitude_hint">خط الطول (-180 إلى 180)</string>
+    <string name="location_invalid_input">إحداثيات غير صالحة. يرجى إدخال خط عرض وخط طول صحيحين.</string>
+    <string name="use_gps">استخدام GPS</string>
+    <string name="enable_location">تمكين الموقع</string>
+    <string name="qibla_location_set_manually">تعيين يدوياً</string>
+    <string name="qibla_enable_location">تمكين الموقع</string>
+    <string name="qibla_location_error_title">الموقع غير متوفر</string>
+    <string name="qibla_location_error_message">تعذر تحديد موقعك. قم بتمكين GPS أو التعيين يدوياً.</string>
+
+    <!-- New granular error feedback strings -->
+    <string name="error_permissions_denied">تم رفض الأذونات</string>
+    <string name="error_waiting_for_gps">في انتظار GPS</string>
+    <string name="error_api_timeout">انتهت مهلة API</string>
+    <string name="error_network_io">خطأ في اتصال الشبكة</string>
+    <string name="error_rate_limited">تم تجاوز حد طلبات Overpass (HTTP 429)</string>
+    <string name="error_server_unavailable">خادم Overpass غير متوفر أو انتهت مهلة البوابة</string>
+    <string name="error_gps_disabled">GPS معطل. يرجى تمكين خدمات الموقع.</string>
+
+    <!-- Map Cache -->
+    <string name="map_data_from">البيانات من %s</string>
+    <string name="map_refresh_data">تحديث البيانات</string>
+
+    <!-- Calendar Settings -->
+    <string name="calendar_settings">التقويم</string>
+    <string name="hijri_date_offset_title">إزاحة التاريخ الهجري</string>
+    <string name="hijri_date_offset_summary">ضبط تاريخ التقويم الهجري بـ ±2 أيام</string>
+    <string name="hijri_date_offset_help_title">إزاحة التاريخ الهجري</string>
+    <string name="hijri_date_offset_help_message">ضبط تاريخ التقويم الهجري (الإسلامي) المعروض من -2 إلى +2 أيام. استخدم هذا إذا كانت رؤية الهلال المحلية لديك تختلف عن التاريخ المحسب. تؤثر الإزاحة على عرض التاريخ فقط، ولا تؤثر على أوقات الصلاة.</string>
+
+    <!-- Per-Prayer DND Controls -->
+    <string name="dnd_toggle_label">صامت (عدم الإزعاج)</string>
+    <string name="dnd_toggle_content_desc">تبديل وضع عدم الإزعاج لهذه الصلاة</string>
+    <string name="dnd_offset_label">إزاحة عدم الإزعاج</string>
+    <string name="dnd_duration_label">المدة</string>
+    <string name="dnd_chip_5min">5 دقيقة</string>
+    <string name="dnd_chip_10min">10 دقيقة</string>
+    <string name="dnd_chip_15min">15 دقيقة</string>
+    <string name="dnd_chip_30min">30 دقيقة</string>
+    <string name="dnd_chip_60min">60 دقيقة</string>
+    <string name="dnd_time_range" formatted="false">عدم الإزعاج: %s - %s</string>
+    <string name="dnd_permission_snackbar">منح صلاحية عدم الإزعاج في الإعدادات لاستخدام وضع الصامت لكل صلاة</string>
+    <string name="dnd_alarm_scheduled_snackbar">تم جدولـة عدم الإزعاج لـ %s</string>
+    <string name="dnd_alarm_cancelled_snackbar">تم إلغاء عدم الإزعاج لـ %s</string>
+    <string name="dnd_toast_enabled">تم تفعيل عدم الإزعاج لـ %1$s — سيتم كتم صوت الهاتف أثناء الصلاة</string>
+    <string name="dnd_toast_disabled">تم تعطيل عدم الإزعاج لـ %1$s</string>
+    <string name="dnd_seekbar_content_desc">شريط التمرير لإزاحة عدم الإزعاج، %s</string>
+    <string name="dnd_chip_5min_desc">5 دقائق</string>
+    <string name="dnd_chip_10min_desc">10 دقائق</string>
+    <string name="dnd_chip_15min_desc">15 دقيقة</string>
+    <string name="dnd_chip_20min_desc">20 دقيقة</string>
+    <string name="dnd_chip_20min">20 دقيقة</string>
+    <string name="dnd_chip_30min_desc">30 دقيقة</string>
+    <string name="dnd_chip_60min_desc">60 دقائق</string>
+    <string name="dnd_chip_custom">مخصص</string>
+    <string name="dnd_chip_custom_desc">تعيين مدة مخصصة</string>
+
+    <string-array name="dnd_duration_preset_values">
+        <item>5 دقائق</item>
+        <item>10 دقائق</item>
+        <item>15 دقيقة</item>
+        <item>20 دقيقة</item>
+        <item>30 دقيقة</item>
+        <item>60 دقيقة</item>
+        <item>مخصص…</item>
+    </string-array>
+    <string name="dnd_custom_label">مخصص:</string>
+    <string name="dnd_custom_hint">دقائق</string>
+    <string name="dnd_custom_set">تعيين</string>
+    <string name="dnd_custom_value_set">تم تعيين مدة عدم الإزعاج المخصصة إلى %d دقيقة</string>
+    <string name="dnd_custom_invalid">يرجى إدخال رقم صالح (1-999)</string>
+    <string name="help_location_title">موقع الخلفية</string>
+    <string name="help_location_message">يحتاج MosqueDND إلى إذن موقع الخلفية لمعرفة متى تدخل نطاق سياج مسجد جغرافي. بدون ذلك، لن يعمل وضع عدم الإزعاج التلقائي. انقر هنا لفتح إعدادات التطبيق إذا قرفصت الإذن سابقاً.</string>
+    <string name="monitor_toggle_desc">انقر مرتين لتبديل مراقبة المساجد. TalkBack نشط — النقر الفردي يبدل مباشرة.</string>
+    <string name="help_button_desc">مساعدة</string>
+
+    <!-- Help section -->
+    <string name="dnd_help_title">حول وضع صامت (عدم الإزعاج)</string>
+
+    <!-- Qibla Compass - extracted from Compose files -->
+    <string name="qibla_bearing_format">القبلة: %d°</string>
+    <string name="qibla_near_pole_message">اتجاه القبلة غير محدد بالقرب من القطبين</string>
+    <string name="qibla_compass_not_responding">مستشعر البوصلة لا يستجيب</string>
+    <string name="qibla_permanently_denied_title">تم رفض الإذن بشكل دائم</string>
+    <string name="qibla_permanently_denied_message">افتح الإعدادات لمنح إذن الموقع لاتجاه القبلة</string>
+    <string name="qibla_calibrating">جاري المعايرة…</string>
+    <string name="qibla_magnetic_interference_status">تداخل مغناطيسي</string>
+    <string name="qibla_you_are_near_kaaba">أنت بالقرب من الكعبة</string>
+    <!-- Adhan/DND Overlap Validation -->
+    <string name="adhan_dnd_overlap">لا يمكن أن تتداخل فترات الأذان وعدم الإزعاج. قم بضبط إزاحة أو مدة عدم الإزعاج.</string>
+
+    <string name="dnd_help_message">إدارة فترات الصمت لكل وقت صلاة.
+
+• المدة: اختر المدة التي يبقى فيها وضع عدم الإزعاج نشطاً — من 5 إلى 60 دقيقة، أو تعيين قيمة مخصصة.
+• الإزاحة: اضبط وقت بدء عدم الإزعاج بالنسبة لـ وقت الصلاة (-60 إلى +60 دقيقة).
+• نطاق الوقت: يوضح لك وقت بدء وانتهاء عدم الإزعاج الدقيق لكل صلاة.
+
+يقوم التطبيق بجدولة منبهات عدم الإزعاج تلقائياً واستعادة الإشعارات العادية عند انتهاء الفترة، حتى لو كان التطبيق مغلقاً أو أُعيد تشغيل الجهاز.</string>
+
+    <!-- Battery Optimization -->
+    <string name="battery_optimization_title">تحسين البطارية</string>
+    <string name="battery_optimization_summary">تعطيل تحسين البطارية للحصول على تنبيهات صلاة وسياج جغرافي موثوقة</string>
+    <string name="battery_optimization_message">للحفاظ على عمل تنبيهات الصلاة واكتشاف المساجد بشكل موثوق، يرجى تعطيل تحسين البطارية لـ MosqueDND.</string>
+    <string name="battery_optimization_open_settings">فتح الإعدادات</string>
+    <string name="battery_optimization_not_now">ليس الآن</string>
+
+    <!-- Usage Access -->
+    <string name="usage_access_title">الوصول للاستخدام</string>
+    <string name="usage_access_message">يحتاج MosqueDND إلى الوصول للاستخدام لمعرفة متى تتداخل محسّنات البطارية أو تطبيقات التنظيف مع تنبيهات الصلاة. يساعدنا هذا في مطالبتك باستعادة الوظائف.</string>
+    <string name="usage_access_grant">منح الوصول</string>
+    <string name="usage_access_skip">تخطي</string>
+    <string name="usage_access_granted">تم منح الوصول للاستخدام</string>
+    <string name="usage_access_denied">لم يتم منح الوصول للاستخدام — قد لا تعمل بعض الميزات</string>
+
+    <!-- Onboarding strings -->
+    <string name="onboarding_title">أهلاً بك في مسجد لا إزعاج</string>
+    <string name="onboarding_skip">تخطي</string>
+    <string name="onboarding_next">التالي</string>
+    <string name="onboarding_done">تم</string>
+
+    <!-- Onboarding: Slide 1 — Prayer Times -->
+    <string name="onboarding_prayer_title">أوقات الصلاة</string>
+    <string name="onboarding_prayer_desc">أوقات صلاة إسلامية دقيقة بناءً على موقعك. يدعم طرق حساب متعددة وإشعارات منبه لكل صلاة.</string>
+
+    <!-- Onboarding: Slide 2 — Qibla Compass -->
+    <string name="onboarding_qibla_title">بوصلة القبلة</string>
+    <string name="onboarding_qibla_desc">اعثر على الاتجاه الدقيق للكعبة المشرفة باستخدام مستشعرات جهازك. تعمل في أي مكان في العالم.</string>
+
+    <!-- Onboarding: Slide 3 — Mosque Detection -->
+    <string name="onboarding_mosque_title">اكتشاف المساجد</string>
+    <string name="onboarding_mosque_desc">يكتشف المساجد القريبة تلقائياً باستخدام موقعك. احفظ المساجد من الخريطة لبناء قائمة مساجدك الشخصية.</string>
+
+    <!-- Onboarding: Slide 4 — Auto DND -->
+    <string name="onboarding_dnd_title">عدم الإزعاج التلقائي</string>
+    <string name="onboarding_dnd_desc">يُمكّن وضع عدم الإزعاج تلقائياً عندما تدخل نطاق سياج مسجد جغرافي. ركز في صلواتك بدون تبديل يدوي.</string>
+
+    <!-- Settings: Onboarding preference -->
+    <string name="pref_onboarding_title">إظهار المقدمة</string>
+    <string name="pref_onboarding_summary">تشغيل جولة استعراض الميزات مرة أخرى</string>
+    <string name="help_and_feedback">المساعدة والتعليقات</string>
+
+    <!-- Onboarding accessibility -->
+    <string name="onboarding_page_desc">الشريحة %1$d من %2$d</string>
+
+    <!-- Permission Wall -->
+    <!-- Help strings -->
+    <string name="help_monitoring_toggle">مساعدة حول تبديل المراقبة</string>
+    <string name="help_detection_radius_title">نصف قطر الاكتشاف</string>
+    <string name="help_detection_radius_message">يحدد نصف قطر السياج الجغرافي مدى قربك من المسجد المحفوظ قبل تمكين وضع عدم الإزعاج تلقائياً. نصف قطر أصغر (مثل 20 م) يتطلب أن تكون قريباً جداً، بينما نصف قطر أكبر (مثل 200 م) يُفعل أبكر ومن مسافة أبعد.</string>
+
+    <!-- Help: Asr Method -->
+    <string name="help_asr_method_title">الطريقة الفقهية</string>
+    <string name="help_asr_method_message">يحدد وقت بدء صلاة العصر. يحسب طريقة الشافعي (القياسية) العصر عندما يكون الظل مساوياً لارتفاع الجسم، بينما تحسبه الطريقة الحنفية عندما يكون الظل ضعف ارتفاع الجسم.</string>
+
+    <!-- Help: Adhan Notifications -->
+    <string name="help_adhan_notifications_title">إشعارات الأذان</string>
+    <string name="help_adhan_notifications_message">عند التمكين، ستتلقى إشعالاً ويُشغّل الأذان في كل وقت صلاة. يمكنك تخصيص الصلاة التي تُطلق الإشعارات واختيار ملف صوتي مخصص للأذان.</string>
+
+    <!-- Help: Geofence DND -->
+    <string name="help_geofence_enabled_title">عدم الإزعاج التلقائي بالقرب من المساجد</string>
+    <string name="help_geofence_enabled_message">عند التمكين، سيقوم التطبيق تلقائياً بتمكين وضع عدم الإزعاج عندما تدخل منطقة السياج الجغرافي للمسجد المحفوظ، وتיعطيل وضع عدم الإزعاج عند المغادرة.</string>
+
+    <!-- Help: Master Alarm -->
+    <string name="help_master_alarm_enabled_title">مفتاح المنبه الرئيسي</string>
+    <string name="help_master_alarm_enabled_message">عندما يكون المنبه الرئيسي متوقفاً، يتم تعطيل جميع مفاتيح منبهات الصلاة ولن تنطلق أي تنبيهات للأذان. قم بإعادة تمكين الصلوات الفردية من شاشة أوقات الصلاة.</string>
+
+    <!-- Help: Onboarding -->
+    <string name="help_onboarding_title">إظهار المقدمة</string>
+    <string name="help_onboarding_message">إعادة تشغيل شاشات الترحيب التمهيدية للتعرف على ميزات التطبيق وإعداد الأذونات من الصفر.</string>
+    <string name="help_map_save">مساعدة حول حفظ المساجد</string>
+    <string name="help_map_save_title">حفظ مسجد</string>
+    <string name="help_map_save_message">انقر على الخريطة لوضع علامة، ثم أدخل اسم المسجد. يتحكم نصف قطر السياج الجغرافي في مدى قربك قبل تفعيل وضع عدم الإزعاج. يمكنك ضبط النصف قطر باستخدام الشريط المنزلق أو استخدام \"اكتشاف القريب\" للعثور على المساجد تلقائياً من خريطة الشارع المفتوحة.\n\nيتم حفظ المساجد محلياً واستخدامها لإدارة عدم الإزعاج حول أوقات الصلاة.</string>
+
+    <!-- Mosques Empty State -->
+    <string name="mosques_empty_help_text">احفظ مساجدك المحلية لتمكين وضع عدم الإزعاج تلقائياً عند الصلاة. يكتشف MosqueDND متى تدخل سياج مسجد جغرافي ويكتم صوت هاتفك لتتمكن من التركيز على صلواتك.</string>
+    <string name="mosques_instructions_label">التعليمات</string>
+    <string name="mosques_instructions_expand_desc">توسيع التعليمات</string>
+    <string name="mosques_instructions_collapse_desc">طي التعليمات</string>
+    <string name="mosques_instructions_content">1. انقر على "إضافة مسجد" لفتح الخريطة\n2. ابحث عن المساجد القريبة أو تصفحها\n3. انقر على مسجد لحفظه\n4. اضبط نصف قطر السياج الجغرافي إذا لزم الأمر</string>
+    <string name="mosques_instructions_expanded">تم توسيع التعليمات</string>
+    <string name="mosques_instructions_collapsed">تم طي التعليمات</string>
+
+    <!-- Sect Selector -->
+    <string name="sect_selector_title">اختر مذهبك الفقهي</string>
+    <string name="sect_hanafi">حنفي</string>
+    <string name="sect_hanbali">حنبلي</string>
+    <string name="sect_maliki">مالکی</string>
+    <string name="sect_shafii">شافعي</string>
+    <string name="sect_jafari">شيعي جعفری</string>
+    <string name="sect_zaydi">زيدي</string>
+    <string name="sect_ibadi">أباضي</string>
+    <string name="sect_custom">مخصص</string>
+    <string name="sect_help_hanafi">يضبط العصر على الطريقة الحنفية. طريقة الحساب محفوظة.</string>
+    <string name="sect_help_hanbali">يضبط العصر على الطريقة القياسية. طريقة الحساب محفوظة.</string>
+    <string name="sect_help_maliki">يضبط العصر على الطريقة القياسية. طريقة الحساب محفوظة.</string>
+    <string name="sect_help_shafii">يضبط العصر على الطريقة القياسية. طريقة الحساب محفوظة.</string>
+    <string name="sect_help_jafari">يستخدم طريقة حساب جعفرية مع طريقة عصر قياسية.</string>
+    <string name="sect_help_zaydi">يضبط العصر على الطريقة القياسية. طريقة الحساب محفوظة.</string>
+    <string name="sect_help_ibadi">يضبط العصر على الطريقة القياسية. طريقة الحساب محفوظة.</string>
+    <string name="sect_help_custom">تعيين طريقتي الحساب والعصر يدوياً.</string>
+    <string name="pref_sect_title">المذهب الفقهي</string>
+    <string name="pref_sect_summary">حدد مذهبك الفقهي الإسلامي</string>
+    <string name="pref_sect_help_title">المذهب الفقهي</string>
+    <string name="pref_sect_help_message">حدد المذهب الفقهي الذي تتبعه. يتطابق هذا مع مجموعة طريقة الحساب وطريقة العصر المناسبة:\n\n• حنفي → حساب قياسي، عصر حنفي\n• حنبلي، مالكي، شافعي، زيدي، أباضي → حساب قياسي، عصر قياسي\n• شيعي جعفری → حساب جعفري، عصر قياسي\n• مخصص → اترك كلاهما كمحدد يدويًا</string>
+
+    <!-- Exact Alarm Permission -->
+    <string name="exact_alarm_permission_title">إذن المنبهات والتذكيرات</string>
+    <string name="exact_alarm_permission_message">يستخدم MosqueDND منبهات دقيقة لجدولة وقت الصلاة بدقة. يرجى منح إذن المنبهات والتذكيرات في الإعدادات.</string>
+    <string name="exact_alarm_open_settings">فتح الإعدادات</string>
+    <string name="monitoring_status_on">المراقبة: تشغيل</string>
+    <string name="monitoring_status_off">المراقبة: إيقاف</string>
+    <string name="background_location_needed">مطلوب موقع الخلفية</string>
+    <string name="background_location_required">موقع الخلفية مطلوب</string>
+    <!-- Background location rationale disclosure (shown before the system permission prompt) -->
+    <string name="bg_rationale_title">إذن موقع الخلفية</string>
+    <string name="bg_rationale_message">يستخدم MosqueDND موقع الخلفية فقط لاكتشاف متى تكون بالقرب من مسجد محفوظ وتفعيل وضع عدم الإزعاج تلقائياً.\n\n• يعمل فقط أثناء تشغيل المراقبة.\n• يتم تخزين موقعك محلياً على هذا الجهاز.\n• لا يتم مشاركة أي بيانات موقع مع أي طرف ثالث.\n\nانقر فوق متابعة لمنح هذا الإذن.</string>
+    <string name="bg_rationale_proceed">متابعة</string>
+    <string name="bg_rationale_dismiss">ليس الآن</string>
+    <string name="monitoring_started">بدأت المراقبة</string>
+    <string name="monitoring_stopped">توقفت المراقبة</string>
+    <string name="monitoring_error_stop">فشل إيقاف المراقبة: %s</string>
+    <string name="monitoring_error_start">فشل بدء المراقبة: %s</string>
+    <string name="map_location_permission_required">إذن الموقع مطلوب</string>
+    <string name="radius_meters_format">%.0f م</string>
+    <string name="map_select_mosques_title">حدد المساجد للحفظ</string>
+    <string name="map_no_mosques_found">لم يتم العثور على مساجد قريبة</string>
+    <string name="map_select_location_prompt">يرجى تحديد موقع على الخريطة</string>
+    <string name="map_mosque_added">تم إضافة المسجد</string>
+    <string name="about_title">حول مسجد لا إزعاج</string>
+    <string name="about_message">يفعّل تلقائياً وضع عدم الإزعاج عند دخول نطاقات المساجد الجغرافية في گلشان-هـ-حديد والمناطق المحيطة.</string>
+    <string name="remove_mosque_title">إزالة المسجد</string>
+    <string name="remove_mosque_message">إزالة %1$s من السياج الجغرافي؟</string>
+    <string name="mosque_removed">تمت إزالة المسجد</string>
+    <string name="coord_format">%.4f, %.4f</string>
+
+    <!-- Google Sign-In -->
+    <string name="account_category">حساب Google</string>
+    <string name="google_sign_in_title">تسجيل الدخول بحساب Google</string>
+    <string name="google_sign_in_summary_signed_out">سجل الدخول باستخدام Google لمزامنة التفضيلات والنسخ الاحتياطي</string>
+    <string name="google_sign_in_summary_signed_in">مسجل الدخول باسم %1$s</string>
+    <string name="google_sign_out_title">تسجيل الخروج</string>
+    <string name="google_sign_out_confirm">هل أنت متأكد أنك تريد تسجيل الخروج من حساب Google الخاص بك؟</string>
+    <string name="google_sign_in_success">تم تسجيل الدخول بنجاح باسم %1$s</string>
+    <string name="google_sign_in_failed">فشل تسجيل الدخول بحساب Google: %1$s</string>
+    <string name="google_sign_out_success">تم تسجيل الخروج بنجاح</string>
+    <string name="google_client_id" translatable="false">370852286562-pcl1top4ur9m2qaq2l29bal32i7dr1kd.apps.googleusercontent.com</string>
+
+    <!-- AutoDND Activity Log -->
+    <string name="activity_log_title">سجل النشاط</string>
+    <string name="clear_log">مسح السجل</string>
+    <string name="activity_log_empty">لا يوجد نشاط عدم إزعاج حديث</string>
+
+    <!-- Privacy Policy -->
+    <string name="privacy_policy_url">https://www.mosquednd.app/privacy</string>
+</resources>

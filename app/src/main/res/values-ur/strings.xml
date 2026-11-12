@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مسجد ڈی این ڈی</string>
+    <string name="add_mosque">مسجد شامل کریں</string>
+    <string name="mosque">مسجد</string>
+    <string name="remove">هٹائیں</string>
+    <string name="no_mosques">ابھی تک کوئی مسجد شامل نہیں کی گئی</string>
+    <string name="tap_to_add">مسجد کا مقام شامل کرنے کے لیے + پر ٹیپ کریں</string>
+    <string name="grant_dnd_access">ڈی این ڈی تک رسائی دیں</string>
+    <string name="dnd_access_required">مسجد کے دائرے میں داخل ہونے پر خود بخود ڈسٹرب نہ کریں (DND) موڈ کو فعال کرنے کے لیے ڈی این ڈی تک رسائی درکار ہے۔</string>
+    <string name="qibla_direction">قبلہ کا رخ</string>
+    <string name="detect_nearby">قریبی مسجد</string>
+    
+    <!-- Prayer Times -->
+    <string name="prayer_times">نماز کے اوقات</string>
+    <string name="next_prayer">اگلی</string>
+    <string name="fajr">فجر</string>
+    <string name="sunrise">طلوع آفتاب</string>
+    <string name="dhuhr">ظہر</string>
+    <string name="asr">عصر</string>
+    <string name="maghrib">مغرب</string>
+    <string name="isha">عشاء</string>
+    
+    <!-- Per-prayer Help -->
+    <string name="prayer_help_fajr">اس نماز کے لیے حساب کا طریقہ یا زاویہ کی حد کو ایڈجسٹ کریں۔</string>
+    <string name="prayer_help_dhuhr">زوال کے بعد کا وقت مقرر کریں یا عصر کے وقت کے لیے دوسرا مسلک منتخب کریں۔</string>
+    <string name="prayer_help_asr">عصر کے حساب کا طریقہ ترتیب دیں (شافعی بنام حنفی)۔</string>
+    <string name="prayer_help_maghrib">افطار کے لیے غروب آفتاب کے بعد کے منٹ مقرر کریں یا زاویہ ایڈجسٹ کریں۔</string>
+    <string name="prayer_help_isha">عشاء کے لیے زاویہ ایڈجسٹ کریں یا وقت کا وقفہ مقرر کریں۔</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">ترتیبات</string>
+    <string name="action_settings">ترتیبات</string>
+    <string name="appearance">ظاہری شکل</string>
+    <string name="theme">تھیم</string>
+    <string name="theme_summary">ہلکی، گہری، یا سسٹم ڈیفالٹ منتخب کریں</string>
+    <string name="prayer_calculation">نماز کا حساب</string>
+    <string name="calculation_method">حساب کا طریقہ</string>
+    <string name="calculation_method_summary">نماز کے اوقات کا حساب لگانے کا طریقہ</string>
+    <string name="help_calc_method_title">نماز کے حساب کے طریقے</string>
+    <string name="help_calc_method_message">مختلف طریقے نماز کے اوقات کے حساب کے لیے تھوڑے مختلف فارمولے استعمال کرتے ہیں۔ MWL (مسلم ورلڈ لیگ) ڈیفالٹ ہے۔ آپ یہ دیکھنے کے لیے دوسرے طریقے آزما سکتے ہیں کہ کون سا آپ کی مقامی مسجد کے شیڈول سے بہترین میل کھاتا ہے۔</string>
+    <string name="asr_method">عصر کا طریقہ</string>
+    <string name="asr_method_summary">عصر کی نماز کے وقت کے حساب کا طریقہ</string>
+    <string name="notifications">اطلاعات</string>
+    <string name="adhan_notifications">اذان کی اطلاعات</string>
+    <string name="adhan_notifications_summary">نماز کے اوقات میں اذان کی آواز چلائیں</string>
+    <string name="geofence_enabled">جیو فینس ڈی این ڈی</string>
+    <string name="geofence_enabled_summary">مسجد کے مقامات پر خود بخود ڈی این ڈی کو فعال کریں</string>
+    
+    <!-- Prayer Alarms -->
+    <string name="prayer_time_notification_title">نماز کا وقت</string>
+    <string name="prayer_time_notification_body">%1$s - نماز کا وقت</string>
+    <string name="channel_prayer_alerts">نماز کے انتباہات</string>
+    <string name="channel_prayer_alerts_desc">نماز کے وقت کے انتباہات کی اطلاعات</string>
+    
+    <!-- Widget -->
+    <string name="widget_next_prayer">اگلی نماز</string>
+    
+    <!-- Prayer Alarm Toggle -->
+    <string name="switch_alarm_toggle_desc">اس نماز کے لیے الارم ٹوگل کریں</string>
+
+    <!-- Master Alarm Toggle -->
+    <string name="master_alarm_title">نماز کے الارم</string>
+    <string name="master_alarm_summary">تمام نماز کے الارم کو فعال یا غیر فعال کریں</string>
+
+    <!-- Hijri Date -->
+    <string name="hijri_date_prefix">ہجری: </string>
+
+    <!-- Custom Adhan Ringtone -->
+    <string name="adhan_ringtone_title">اذان کی رنگ ٹون</string>
+    <string name="adhan_ringtone_summary">اذان کے لیے حسب ضرورت رنگ ٹون منتخب کریں</string>
+    <string name="adhan_ringtone_none">ڈیفالٹ</string>
+
+    <!-- Auto DND -->
+    <string name="dnd_auto_disabled">15 منٹ بعد ڈی این ڈی خود بخود غیر فعال ہو گیا</string>
+
+    <!-- Per-Prayer Alarm Offset -->
+    <string name="prayer_alarm_offset_title">الارم کا آفسٹ</string>
+    <string name="prayer_alarm_offset_message">%1$s کا الارم وقت ایڈجسٹ کریں\nپہلے = منفی، بعد میں = مثبت</string>
+    <string name="offset_adjusted_time">اذان %s پر ہوگی</string>
+    <string name="offset_previous_day">پچھلا دن</string>
+    <string name="offset_next_day">اگلا دن</string>
+
+    <!-- Qibla Compass -->
+    <string name="calibration_status_calibrated">کیلیبریٹ شدہ</string>
+    <string name="calibration_status_low_accuracy">کم درستگی</string>
+    <string name="calibration_status_uncalibrated">کیلیبریٹ کریں</string>
+    <string name="calibration_hint">کیلیبریٹ کرنے کے لیے فون کو 8 کی شکل میں حرکت دیں</string>
+    <string name="retry">دوبارہ کوشش کریں</string>
+
+    <!-- Qibla Alignment -->
+    <string name="alignment_status_aligned">قبلہ کے ساتھ درست ✨</string>
+    <string name="magnetic_interference_warning">⚠ مقناطیسی مداخلت کا پتہ چلا ہے۔ الیکٹرانکس یا دھاتی اشیاء سے دور جائیں۔</string>
+    <string name="accuracy_degraded_notice">سینسر کی درستگی کم ہو گئی ہے — کمپاس کم درست ہو سکتا ہے</string>
+
+    <!-- Qibla Compass (new) -->
+    <string name="qibla_loading">کمپاس کو شروع کیا جا رہا ہے…</string>
+    <string name="qibla_permission_denied">مقام کی اجازت مسترد کر دی گئی</string>
+    <string name="qibla_permission_explanation">قبلہ کا رخ معلوم کرنے کے لیے مکہ کا سمت معلوم کرنے کے لیے مقام تک رسائی درکار ہے۔</string>
+    <string name="qibla_grant_permission">اجازت دیں</string>
+    <string name="qibla_no_compass_sensor">کوئی کمپاس سینسر نہیں ملا</string>
+    <string name="qibla_no_compass_explanation">اس ڈیوائس میں مقناطیس پیما نہیں ہے۔ آپ کے موجودہ مقام سے قبلہ کا زاویہ %1$d° ہے۔</string>
+    <string name="qibla_label_location">مقام</string>
+    <string name="qibla_label_distance">کعبہ سے فاصلہ</string>
+    <string name="qibla_label_heading">سمت</string>
+    <string name="qibla_label_calibration">کیلیبریشن</string>
+    <string name="qibla_getting_location">مقام حاصل کیا جا رہا ہے…</string>
+    <string name="qibla_location_unavailable">مقام دستیاب نہیں ہے</string>
+    <string name="qibla_location_required">قبلہ کے رخ کے لیے مقام کی اجازت درکار ہے</string>
+    <string name="qibla_gps_off">جی پی ایس بند ہے۔ قبلہ کا رخ معلوم کرنے کے لیے براہ کرم مقام (Location) فعال کریں۔</string>
+    <string name="qibla_location_timeout">مقام حاصل کرنے سے قاصر ہے۔ براہ کرم جی پی ایس سگنل چیک کریں اور دوبارہ کوشش کریں۔</string>
+    <string name="qibla_near_kaaba">آپ کعبہ کے قریب ہیں۔ قبلہ کا رخ لاگو نہیں ہوتا۔</string>
+    <string name="qibla_arrow_description">قبلہ کے رخ کا اشارہ، %1$d ڈگری</string>
+    <string name="qibla_compass_description">کمپاس ڈائل، %1$d ڈگری پر (اوپر مغرب)</string>
+    <string name="qibla_kaaba_content_description">کعبہ کے رخ کا اشارہ</string>
+    <string name="kaaba_icon_content_description">کعبہ کی سمت کا ہدف</string>
+
+    <!-- Compass Error / Info -->
+    <string name="compass_calibrate_instruction">8 کی شکل میں حرکت دے کر ڈیوائس کو کیلیبریٹ کریں</string>
+    <string name="compass_location_disabled">لوکیشن سروسز غیر فعال ہیں۔ درست قبلہ رخ کے لیے GPS فعال کریں۔</string>
+    <string name="compass_low_accuracy">GPS کی درستگی کم ہے۔ قبلہ کا رخ اندازاً ہو سکتا ہے۔</string>
+    <string name="compass_sensor_unavailable">اس ڈیوائس پر کمپاس سینسر دستیاب نہیں ہے۔</string>
+    <string name="calibration_help_title">کمپاس کیلیبریشن</string>
+    <string name="calibration_help_message">درستگی کو بہتر بنانے کے لیے اپنے فون کو 8 کی شکل میں حرکت دیں۔ اسے مقناطیس اور دھاتی اشیاء سے دور رکھیں۔ سبز نقطہ کا مطلب ہے کہ کمپاس کیلیبریٹ ہو چکا ہے۔ پیلے نقطہ کا مطلب کم درستگی ہے۔ سرخ نقطہ کا مطلب ہے مداخلت کا پتہ چلا — کسی دوسری جگہ پر جائیں۔</string>
+
+    <!-- Import / Export -->
+    <string name="category_data">ڈیٹا</string>
+    <string name="export_data_title">ڈیٹا ایکسپورٹ کریں</string>
+    <string name="export_data_summary">اپنی نماز کی ترتیبات، الارم، اور مساجد کے مقامات کو فائل میں محفوظ کریں</string>
+    <string name="import_data_title">ڈیٹا درآمد کریں</string>
+    <string name="import_data_summary">پہلے سے ایکسپورٹ شدہ فائل سے ترتیبات بحال کریں</string>
+    <string name="import_confirm_title">ڈیٹا درآمد کریں</string>
+    <string name="import_confirm_message">ملا: %1$d نماز کی ترتیبات، %2$d الارم، %3$d آفسٹس، %4$d مساجد، %5$s تھیم۔ درآمد کے ساتھ آگے بڑھیں؟</string>
+    <string name="import_success">ڈیٹا کامیابی سے درآمد ہو گیا</string>
+    <string name="import_error">ڈیٹا درآمد کرنے میں ناکامی: %1$s</string>
+    <string name="import_invalid_format">فائل کا غلط فارمیٹ۔ براہ کرم درست MosqueDND ایکسپورٹ فائل منتخب کریں۔</string>
+    <string name="import_version_mismatch">غیر تعاون یافتہ ایکسپورٹ ورژن %1$d۔ یہ ایپ صرف ورژن %2$d کو سپورٹ کرتی ہے۔</string>
+    <string name="export_error_title">ایکسپورٹ میں خرابی</string>
+    <string name="export_error">ڈیٹا ایکسپورٹ کرنے میں ناکامی: %1$s</string>
+    <string name="export_success">ڈیٹا کامیابی سے ایکسپورٹ ہو گیا</string>
+    <string name="duplicate_mosques_found">%1$d ڈپلیکیٹ مساجد کو چھوڑ دیا گیا</string>
+    <string name="import_nothing">آمد کرنے کے لیے کچھ نہیں — فائل میں کوئی قابل شناخت ڈیٹا نہیں ملا۔</string>
+
+    <!-- Detection Radius -->
+    <string name="detection_radius_title">پتہ لگانے کا رداس</string>
+    <string name="detection_radius_summary">طے کریں کہ آپ کو مسجد کے کتنے قریب ہونا چاہیے</string>
+    <string name="radius_meters">%d میٹر</string>
+    <string name="pref_detection_radius_title">پتہ لگانے کا رداس</string>
+    <string name="pref_detection_radius_summary">%d میٹر کے اندر مساجد کا پتہ لگائیں</string>
+    <string name="pref_detection_radius_warning">یہ رداس بہت بڑا ہے اور ہو سکتا ہے قریبی مساجد کا پتہ نہ لگائے۔ تجویز کردہ: 1–50 کلومیٹر۔</string>
+
+    <!-- Auto DND -->
+    <string name="dnd_settings">ڈسٹرب نہ کریں</string>
+    <string name="auto_dnd_title">مسجد میں داخل ہونے پر آٹو ڈی این ڈی</string>
+    <string name="auto_dnd_summary_on">مسجد کے قریب ہونے پر ڈی این ڈی خود بخود فعال ہو جائے گا</string>
+    <string name="auto_dnd_summary_off">مساجد کے قریب خودکار ڈی این ڈی کو فعال کرنے کے لیے ٹیپ کریں</string>
+
+    <!-- DND Duration -->
+    <string name="dnd_duration_title">ڈی این ڈی کا طے شدہ دورانیہ</string>
+    <string name="dnd_duration_summary">طے کریں کہ ڈی این ڈی کتنی دیر تک فعال رہے</string>
+    <string name="help_dnd_duration_title">ڈی این ڈی کا طے شدہ دورانیہ</string>
+    <string name="help_dnd_duration_message">ڈی این ڈی ونڈو اذان اور فجر کے علاوہ دیگر یاد دہانیوں کو خاموش کرتی ہے۔ اگر اختتامی وقت آغاز کے وقت سے پہلے ہے، تو یہ رات بھر لپیٹتا ہے (مثال کے طور پر، رات 10 بجے سے صبح 6 بجے تک)۔</string>
+
+    <!-- Location & Overpass Error Feedback & Loading States -->
+    <string name="location_source_gps">GPS استعمال ہو رہا ہے</string>
+    <string name="location_source_manual">دستی مقام</string>
+    <string name="location_source_manual_location_info">دستی مقام (%1$s, %2$s)</string>
+    <string name="set_location_manually">دستی طور پر سیٹ کریں</string>
+    <string name="location_unavailable_title">مقام دستیاب نہیں ہے</string>
+    <string name="location_unavailable_message">آپ کے مقام کا تعین کرنے سے قاصر ہے۔ اسے دستی طور پر سیٹ کریں یا لوکیشن سروسز کو فعال کریں۔</string>
+    <string name="location_manual_title">دستی طور پر مقام سیٹ کریں</string>
+    <string name="location_manual_latitude_hint">عرض البلد (-90 سے 90)</string>
+    <string name="location_manual_longitude_hint">طول البلد (-180 سے 180)</string>
+    <string name="location_invalid_input">غلط متناسقات۔ براہ کرم درست عرض البلد اور طول البلد درج کریں۔</string>
+    <string name="use_gps">GPS استعمال کریں</string>
+    <string name="enable_location">مقام فعال کریں</string>
+    <string name="qibla_location_set_manually">دستی طور پر سیٹ کریں</string>
+    <string name="qibla_enable_location">مقام فعال کریں</string>
+    <string name="qibla_location_error_title">مقام دستیاب نہیں ہے</string>
+    <string name="qibla_location_error_message">آپ کے مقام کا تعین کرنے سے قاصر ہیں۔ GPS فعال کریں یا دستی طور پر سیٹ کریں۔</string>
+
+    <!-- New granular error feedback strings -->
+    <string name="error_permissions_denied">اجازتیں مسترد کر دی گئیں</string>
+    <string name="error_waiting_for_gps">GPS کا انتظار کیا جا رہا ہے</string>
+    <string name="error_api_timeout">API کا وقت ختم ہو گیا</string>
+    <string name="error_network_io">نیٹ ورک کنکشن کی خرابی</string>
+    <string name="error_rate_limited">اوور پاس ریٹ کی حد سے تجاوز کر گئی (HTTP 429)</string>
+    <string name="error_server_unavailable">اوور پاس سرور دستیاب نہیں ہے یا گیٹ وے ٹائم آؤٹ</string>
+    <string name="error_gps_disabled">GPS غیر فعال ہے۔ براہ کرم لوکیشن سروسز کو فعال کریں۔</string>
+
+    <!-- Map Cache -->
+    <string name="map_data_from">%s سے ڈیٹا</string>
+    <string name="map_refresh_data">ڈیٹا ریفریش کریں</string>
+
+    <!-- Calendar Settings -->
+    <string name="calendar_settings">کیلنڈر</string>
+    <string name="hijri_date_offset_title">ہجری تاریخ کا آفسٹ</string>
+    <string name="hijri_date_offset_summary">ہجری کیلنڈر کی تاریخ کو ±2 دن ایڈجسٹ کریں</string>
+    <string name="hijri_date_offset_help_title">ہجری تاریخ کا آفسٹ</string>
+    <string name="hijri_date_offset_help_message">ظاہر ہونے والی ہجری (اسلامی) کیلنڈر کی تاریخ کو -2 سے +2 دن تک ایڈجسٹ کریں۔ اگر آپ کے مقامی چاند کا نظر آنا حساب شدہ تاریخ سے مختلف ہے تو اسے استعمال کریں۔ آفسٹ صرف تاریخ کے ڈسپلے کو متاثر کرتا ہے، نماز کے اوقات کو نہیں۔</string>
+
+    <!-- Per-Prayer DND Controls -->
+    <string name="dnd_toggle_label">خاموش (ڈی این ڈی)</string>
+    <string name="dnd_toggle_content_desc">اس نماز کے لیے ڈسٹرب نہ کریں کو ٹوگل کریں</string>
+    <string name="dnd_offset_label">ڈی این ڈی آفسٹ</string>
+    <string name="dnd_duration_label">دورانیہ</string>
+    <string name="dnd_chip_5min">5 منٹ</string>
+    <string name="dnd_chip_10min">10 منٹ</string>
+    <string name="dnd_chip_15min">15 منٹ</string>
+    <string name="dnd_chip_30min">30 منٹ</string>
+    <string name="dnd_chip_60min">60 منٹ</string>
+    <string name="dnd_time_range" formatted="false">ڈی این ڈی: %s - %s</string>
+    <string name="dnd_permission_snackbar">فی نماز سائلنٹ موڈ استعمال کرنے کے لیے ترتیبات میں ڈی این ڈی تک رسائی دیں</string>
+    <string name="dnd_alarm_scheduled_snackbar">%s کے لیے ڈی این ڈی طے شدہ ہے</string>
+    <string name="dnd_alarm_cancelled_snackbar">%s کے لیے ڈی این ڈی منسوخ کر دیا گیا</string>
+    <string name="dnd_toast_enabled">%1$s کے لیے ڈی این ڈی فعال — نماز کے دوران فون خاموش ہو جائے گا</string>
+    <string name="dnd_toast_disabled">%1$s کے لیے ڈی این ڈی غیر فعال</string>
+    <string name="dnd_seekbar_content_desc">ڈی این ڈی آفسٹ سیک بار، %s</string>
+    <string name="dnd_chip_5min_desc">5 منٹ</string>
+    <string name="dnd_chip_10min_desc">10 منٹ</string>
+    <string name="dnd_chip_15min_desc">15 منٹ</string>
+    <string name="dnd_chip_20min">20 منٹ</string>
+    <string name="dnd_chip_20min_desc">20 منٹ</string>
+    <string name="dnd_chip_30min_desc">30 منٹ</string>
+    <string name="dnd_chip_60min_desc">60 منٹ</string>
+    <string name="dnd_chip_custom">حسب ضرورت</string>
+    <string name="dnd_chip_custom_desc">حسب ضرورت دورانیہ طے کریں</string>
+
+    <string-array name="dnd_duration_preset_values">
+        <item>5 منٹ</item>
+        <item>10 منٹ</item>
+        <item>15 منٹ</item>
+        <item>20 منٹ</item>
+        <item>30 منٹ</item>
+        <item>60 منٹ</item>
+        <item>حسب ضرورت…</item>
+    </string-array>
+    <string name="dnd_custom_label">حسب ضرورت:</string>
+    <string name="dnd_custom_hint">منٹ</string>
+    <string name="dnd_custom_set">سیٹ کریں</string>
+    <string name="dnd_custom_value_set">حسب ضرورت ڈی این ڈی کا دورانیہ %d منٹ مقرر کیا گیا</string>
+    <string name="dnd_custom_invalid">براہ کرم ایک درست نمبر درج کریں (1-999)</string>
+    <string name="help_location_title">پس منظر کا مقام</string>
+    <string name="help_location_message">MosqueDND کو یہ جاننے کے لیے پس منظر کے مقام تک رسائی کی ضرورت ہے کہ آپ کب مسجد کے جیو فینس میں داخل ہوتے ہیں۔ اس کے بغیر، آٹو ڈی این ڈی کام نہیں کرے گا۔ اگر آپ نے پہلے اجازت سے انکار کیا تھا تو ایپ کی ترتیبات کھولنے کے لیے یہاں ٹیپ کریں۔</string>
+    <string name="monitor_toggle_desc">مسجد کی نگرانی کو ٹوگل کرنے کے لیے دو بار تھپتھپائیں۔ ٹاک بیک فعال ہے — سنگل ٹیپ براہ راست ٹوگل کرتا ہے۔</string>
+    <string name="help_button_desc">مدد</string>
+
+    <!-- Help section -->
+    <string name="dnd_help_title">خاموش (DND) موڈ کے بارے میں</string>
+
+    <!-- Qibla Compass - extracted from Compose files -->
+    <string name="qibla_bearing_format">قبلہ: %d°</string>
+    <string name="qibla_near_pole_message">قطبین کے قریب قبلہ کا رخ غیر متعین ہے</string>
+    <string name="qibla_compass_not_responding">کمپاس سینسر جواب نہیں دے رہا ہے</string>
+    <string name="qibla_permanently_denied_title">اجازت مستقل طور پر مسترد کر دی گئی</string>
+    <string name="qibla_permanently_denied_message">قبلہ کے رخ کے لیے لوکیشن کی اجازت دینے کے لیے ترتیبات کھولیں</string>
+    <string name="qibla_calibrating">کیلیبریٹ کیا جا رہا ہے…</string>
+    <string name="qibla_magnetic_interference_status">مقناطیسی مداخلت</string>
+    <string name="qibla_you_are_near_kaaba">آپ کعبہ کے قریب ہیں</string>
+    <!-- Adhan/DND Overlap Validation -->
+    <string name="adhan_dnd_overlap">اذان اور ڈی این ڈی کے وقفے اوورلیپ نہیں ہو سکتے۔ ڈی این ڈی آفسٹ یا دورانیہ کو ایڈجسٹ کریں۔</string>
+
+    <string name="dnd_help_message">ہر نماز کے وقت کے لیے خاموشی کی مدت کا انتظام کریں۔
+
+• دورانیہ: انتخاب کریں کہ ڈسٹرب نہ کریں کتنی دیر تک فعال رہے — 5 سے 60 منٹ، یا حسب ضرورت قدر مقرر کریں۔
+• آفسٹ: ایڈجسٹ کریں کہ نماز کے وقت کے لحاظ سے ڈی این ڈی کب شروع ہوتا ہے (-60 سے +60 منٹ)۔
+• وقت کی حد: آپ کو ہر نماز کے لیے درست ڈی این ڈی شروع ہونے اور ختم ہونے کا وقت دکھاتی ہے۔
+
+ایپ خود بخود ڈی این ڈی کے الارم طے کرتی ہے اور مدت ختم ہونے پر عام اطلاعات کو بحال کرتی ہے، یہاں تک کہ اگر ایپ بند ہو یا ڈیوائس دوبارہ شروع ہو جائے۔</string>
+
+    <!-- Battery Optimization -->
+    <string name="battery_optimization_title">بیٹری آپٹیمائزیشن</string>
+    <string name="battery_optimization_summary">نماز کے قابل بھروسہ انتباہات اور جیو فینسنگ کے لیے بیٹری آپٹیمائزیشن کو غیر فعال کریں</string>
+    <string name="battery_optimization_message">نماز کے الارم اور مسجد کا پتہ لگانے کو قابل بھروسہ طریقے سے چلانے کے لیے، براہ کرم MosqueDND کے لیے بیٹری آپٹیمائزیشن کو غیر فعال کریں۔</string>
+    <string name="battery_optimization_open_settings">ترتیبات کھولیں</string>
+    <string name="battery_optimization_not_now">ابھی نہیں</string>
+
+    <!-- Usage Access -->
+    <string name="usage_access_title">استعمال تک رسائی</string>
+    <string name="usage_access_message">MosqueDND کو یہ جاننے کے لیے استعمال تک رسائی کی ضرورت ہے کہ کب بیٹری آپٹیمائزر یا کلینر ایپ نماز کے الارم میں مداخلت کرتی ہے۔ اس سے ہمیں آپ کو فعالیت بحال کرنے کا اشارہ دینے میں مدد ملتی ہے۔</string>
+    <string name="usage_access_grant">رسائی دیں</string>
+    <string name="usage_access_skip">چھوڑیں</string>
+    <string name="usage_access_granted">استعمال تک رسائی دی گئی</string>
+    <string name="usage_access_denied">استعمال تک رسائی نہیں دی گئی — کچھ خصوصیات کام نہیں کر سکتیں</string>
+
+    <!-- Onboarding strings -->
+    <string name="onboarding_title">مسجد ڈی این ڈی میں خوش آمدید</string>
+    <string name="onboarding_skip">چھوڑیں</string>
+    <string name="onboarding_next">اگلا</string>
+    <string name="onboarding_done">هو گیا</string>
+
+    <!-- Onboarding: Slide 1 — Prayer Times -->
+    <string name="onboarding_prayer_title">نماز کے اوقات</string>
+    <string name="onboarding_prayer_desc">آپ کے مقام کی بنیاد پر درست اسلامی نماز کے اوقات۔ حساب کے متعدد طریقوں اور فی نماز الارم اطلاعات کو سپورٹ کرتا ہے۔</string>
+
+    <!-- Onboarding: Slide 2 — Qibla Compass -->
+    <string name="onboarding_qibla_title">قبلہ کمپاس</string>
+    <string name="onboarding_qibla_desc">अपने اپنے ڈیوائس کے سینسرز کا استعمال کرتے ہوئے مقدس کعبہ کی اصل سمت تلاش کریں۔ دنیا میں کہیں بھی کام کرتا ہے۔</string>
+
+    <!-- Onboarding: Slide 3 — Mosque Detection -->
+    <string name="onboarding_mosque_title">مسجد کا پتہ لگانا</string>
+    <string name="onboarding_mosque_desc">آپ کے مقام کا استعمال کرتے ہوئے خود بخود قریبی مساجد کا پتہ لگاتا ہے۔ اپنی ذاتی مسجد کی فہرست بنانے کے لیے نقشے سے مساجد کو محفوظ کریں۔</string>
+
+    <!-- Onboarding: Slide 4 — Auto DND -->
+    <string name="onboarding_dnd_title">آٹو ڈی این ڈی</string>
+    <string name="onboarding_dnd_desc">جب آپ مسجد کے جیو فینس میں داخل ہوتے ہیں تو خود بخود ڈسٹرب نہ کریں کو فعال کرتا ہے۔ دستی ٹوگلنگ کے بغیر اپنی نمازوں پر توجہ مرکوز رکھیں۔</string>
+
+    <!-- Settings: Onboarding preference -->
+    <string name="pref_onboarding_title">آن بورڈنگ دکھائیں</string>
+    <string name="pref_onboarding_summary">فیچر واک تھرو ٹور کو دوبارہ چلائیں</string>
+    <string name="help_and_feedback">مدد اور تاثرات</string>
+
+    <!-- Onboarding accessibility -->
+    <string name="onboarding_page_desc">سلائیڈ %1$d کا %2$d</string>
+
+    <!-- Permission Wall -->
+    <!-- Help strings -->
+    <string name="help_monitoring_toggle">نگرانی کے ٹوگل کے بارے میں مدد</string>
+    <string name="help_detection_radius_title">پتہ لگانے کا رداس</string>
+    <string name="help_detection_radius_message">جیو فینس کا رداس یہ بتاتا ہے کہ Do Not Disturb خود بخود فعال ہونے سے پہلے آپ کو محفوظ کردہ مسجد کے کتنے قریب ہونے کی ضرورت ہے۔ ایک چھوٹا رداس (مثلاً 20 میٹر) کے لیے آپ کو بہت قریب ہونے کی ضرورت ہوتی ہے، جب کہ ایک بڑا رداس (مثلاً 200 میٹر) پہلے اور دور سے ٹرگر ہوتا ہے۔</string>
+
+    <!-- Help: Asr Method -->
+    <string name="help_asr_method_title">فقہی طریقہ</string>
+    <string name="help_asr_method_message">عصر کی نماز کا وقت شروع ہوتا ہے۔ شافعی (معیاری) طریقہ اس وقت عصر کا حساب لگاتا ہے جب سایہ کسی چیز کی اونچائی کے برابر ہو، جبکہ حنفی طریقہ اس کا حساب اس وقت لگاتا ہے جب سایہ چیز کی اونچائی سے دوگنا ہو۔</string>
+
+    <!-- Help: Adhan Notifications -->
+    <string name="help_adhan_notifications_title">اذان کی اطلاعات</string>
+    <string name="help_adhan_notifications_message">فعال ہونے پر، آپ کو ایک اطلاع موصول ہوگی اور ہر نماز کے وقت اذان ہوگی۔ آپ اپنی مرضی کے مطابق منتخب کر سکتے ہیں کہ کون سی نمازیں اطلاعات کو ٹرگر کرتی ہیں اور حسب ضرورت اذان آڈیو فائل منتخب کر سکتے ہیں۔</string>
+
+    <!-- Help: Geofence DND -->
+    <string name="help_geofence_enabled_title">مساجد کے قریب آٹو ڈی این ڈی</string>
+    <string name="help_geofence_enabled_message">فعال ہونے پر، جب آپ محفوظ کردہ مسجد کے جیو فینس کے علاقے میں داخل ہوں گے تو ایپ خود بخود Do Not Disturb موڈ کو فعال کر دے گی، اور جب آپ باہر نکلیں گے تو DND کو غیر فعال کر دے گی۔</string>
+
+    <!-- Help: Master Alarm -->
+    <string name="help_master_alarm_enabled_title">ماسٹر الارم ٹوگل</string>
+    <string name="help_master_alarm_enabled_message">جب ماسٹر الارم آف ہوتا ہے، تو تمام فی نماز الارم ٹوگل غیر فعال ہو جاتے ہیں اور کوئی اذان الارم نہیں بجے گا۔ نماز کے اوقات کی سکرین سے انفرادی نمازوں کو دوبارہ آن کریں۔</string>
+
+    <!-- Help: Onboarding -->
+    <string name="help_onboarding_title">آن بورڈنگ دکھائیں</string>
+    <string name="help_onboarding_message">ایپ کی خصوصیات کے بارے میں جاننے اور شروع سے اجازتیں ترتیب دینے کے لیے تعارفی آن بورڈنگ اسکرینز کو دوبارہ چلائیں۔</string>
+    <string name="help_map_save">مساجد کو محفوظ کرنے کے بارے میں مدد</string>
+    <string name="help_map_save_title">مسجد کو محفوظ کرنا</string>
+    <string name="help_map_save_message">مارکر لگانے کے لیے نقشے کو تھپتھپائیں، پھر مسجد کا نام درج کریں۔ جیو فینس کا رداس کنٹرول کرتا ہے کہ DND فعال ہونے سے پہلے آپ کو کتنے قریب ہونے کی ضرورت ہے۔ آپ سلائیڈرز کے ساتھ رداس کو ایڈجسٹ کر سکتے ہیں یا اوپن اسٹریٹ میپ سے خود بخود مساجد تلاش کرنے کے لیے \"Detect Nearby\" استعمال کر सकते हैं۔\n\nمساجد کو مقامی طور پر محفوظ کیا جاتا ہے اور نماز کے اوقات کے ارد گرد Do Not Disturb کا نظم کرنے کے لیے استعمال کیا جاتا ہے۔</string>
+
+    <!-- Mosques Empty State -->
+    <string name="mosques_empty_help_text">جب آپ نماز پڑھیں تو خود بخود Do Not Disturb کو فعال کرنے کے لیے اپنی مقامی مساجد کو محفوظ کریں۔ MosqueDND پتہ لگاتا ہے کہ آپ کب مسجد کے جیو فینس میں داخل ہوتے ہیں اور آپ کے فون کو خاموش کر دیتا ہے تاکہ آپ اپنی نمازوں پر توجہ مرکوز کر سکیں۔</string>
+    <string name="mosques_instructions_label">ہدایات</string>
+    <string name="mosques_instructions_expand_desc">ہدایات پھیلائیں</string>
+    <string name="mosques_instructions_collapse_desc">ہدایات سمیٹیں</string>
+    <string name="mosques_instructions_content">1. نقشہ کھولنے کے لیے \"Add Mosque\" پر ٹیپ کریں\n2. قریبی مساجد تلاش کریں یا براؤز کریں\n3. محفوظ کرنے کے لیے کسی مسجد پر ٹیپ کریں\n4. اگر ضرورت ہو تو جیو فینس کا رداس ایڈجسٹ کریں</string>
+    <string name="mosques_instructions_expanded">ہدایات پھیلائی گئیں</string>
+    <string name="mosques_instructions_collapsed">ہدایات سمیٹی گئیں</string>
+
+    <!-- Sect Selector -->
+    <string name="sect_selector_title">अपना مسلک منتخب کریں</string>
+    <string name="sect_hanafi">حنفی</string>
+    <string name="sect_hanbali">حنبلی</string>
+    <string name="sect_maliki">مالکی</string>
+    <string name="sect_shafii">شافعی</string>
+    <string name="sect_jafari">شیعہ جعفری</string>
+    <string name="sect_zaydi">زیدی</string>
+    <string name="sect_ibadi">اباضی</string>
+    <string name="sect_custom">حسب ضرورت</string>
+    <string name="sect_help_hanafi">عصر کو حنفی طریقہ پر سیٹ کرتا ہے۔ حساب کا طریقہ برقرار رکھا جاتا ہے۔</string>
+    <string name="sect_help_hanbali">عصر کو معیاری طریقہ پر سیٹ کرتا ہے۔ حساب کا طریقہ برقرار رکھا جاتا ہے۔</string>
+    <string name="sect_help_maliki">عصر کو معیاری طریقہ پر سیٹ کرتا ہے۔ حساب کا طریقہ برقرار رکھا جاتا ہے۔</string>
+    <string name="sect_help_shafii">عصر کو معیاری طریقہ پر سیٹ کرتا ہے۔ حساب کا طریقہ برقرار رکھا جاتا ہے۔</string>
+    <string name="sect_help_jafari">معیاری عصر کے طریقہ کے ساتھ جعفری حساب کا طریقہ استعمال کرتا ہے۔</string>
+    <string name="sect_help_zaydi">عصر کو معیاری طریقہ پر سیٹ کرتا ہے۔ حساب کا طریقہ برقرار رکھا جاتا ہے۔</string>
+    <string name="sect_help_ibadi">عصر کو معیاری طریقہ پر سیٹ کرتا ہے۔ حساب کا طریقہ برقرار رکھا جاتا ہے۔</string>
+    <string name="sect_help_custom">حساب اور عصر دونوں طریقوں کو دستی طور پر سیٹ کریں۔</string>
+    <string name="pref_sect_title">مسلک</string>
+    <string name="pref_sect_summary">अपना اسلامی مسلک منتخب کریں</string>
+    <string name="pref_sect_help_title">مسلک</string>
+    <string name="pref_sect_help_message">وہ مسلک منتخب کریں جس کی آپ پیروی کرتے ہیں۔ یہ مناسب حساب کے طریقہ اور عصر کے طریقہ کے امتزاج سے نقشہ بناتا:\n\n• حنفی → معیاری حساب، حنفی عصر\n• حنبلی، مالکی، شافعی، زیدی، اباضی → معیاری حساب، معیاری عصر\n• شیعہ جعفری → جعفری حساب، معیاری عصر\n• حسب ضرورت → دونوں کو دستی طور پر سیٹ کردہ کے طور پر چھوڑیں</string>
+
+    <!-- Exact Alarm Permission -->
+    <string name="exact_alarm_permission_title">الارم اور یاد دہانیوں کی اجازت</string>
+    <string name="exact_alarm_permission_message">MosqueDND درست نماز کے وقت کے شیڈولنگ کے لیے درست الارم استعمال کرتا ہے۔ براہ کرم ترتیبات میں الارم اور یاد دہانیوں کی اجازت دیں۔</string>
+    <string name="exact_alarm_open_settings">ترتیبات کھولیں</string>
+    <string name="monitoring_status_on">نگرانی: آن</string>
+    <string name="monitoring_status_off">نگرانی: آف</string>
+    <string name="background_location_needed">پس منظر کے مقام کی ضرورت ہے</string>
+    <string name="background_location_required">پس منظر کا مقام درکار ہے</string>
+    <!-- Background location rationale disclosure (shown before the system permission prompt) -->
+    <string name="bg_rationale_title">پس منظر کے مقام کی اجازت</string>
+    <string name="bg_rationale_message">MosqueDND پس منظر کے مقام کا استعمال صرف یہ پتہ لگانے کے لیے کرتا ہے کہ آیا آپ محفوظ کردہ مسجد کے قریب ہیں اور خود بخود Do Not Disturb کو فعال کرتے ہیں۔\n\n• یہ صرف اس وقت چلتا ہے جب نگرانی آن ہوتی ہے۔\n• آپ کا مقام اس ڈیوائس پر مقامی طور پر محفوظ ہے۔\n• مقام کا کوئی بھی ڈیٹا کسی تیسرے فریق کے ساتھ شیئر نہیں کیا جاتا ہے۔\n\nاس اجازت دینے کے لیے جاری رکھیں پر ٹیپ کریں۔</string>
+    <string name="bg_rationale_proceed">جاری رکھیں</string>
+    <string name="bg_rationale_dismiss">ابھی نہیں</string>
+    <string name="monitoring_started">نگرانی شروع ہو گئی</string>
+    <string name="monitoring_stopped">نگرانی بند کر دی گئی</string>
+    <string name="monitoring_error_stop">نگرانی بند کرنے میں ناکامی: %s</string>
+    <string name="monitoring_error_start">نگرانی شروع کرنے میں ناکامی: %s</string>
+    <string name="map_location_permission_required">لوکیشن کی اجازت درکار ہے</string>
+    <string name="radius_meters_format">%.0f میٹر</string>
+    <string name="map_select_mosques_title">محفوظ کرنے کے لیے مساجد منتخب کریں</string>
+    <string name="map_no_mosques_found">قریب میں کوئی مسجد نہیں ملی</string>
+    <string name="map_select_location_prompt">براہ کرم نقشے پر ایک مقام منتخب کریں</string>
+    <string name="map_mosque_added">مسجد شامل کر دی گئی</string>
+    <string name="about_title">مسجد ڈی اینڈ ڈی کے بارے میں</string>
+    <string name="about_message">گلشن حدید اور آس پاس کے علاقوں میں مسجد کے جیو فینس میں داخل ہونے پر خود بخود Do Not Disturb موڈ کو فعال کرتا ہے۔</string>
+    <string name="remove_mosque_title">مسجد ہٹائیں</string>
+    <string name="remove_mosque_message">کیا جیو فینسنگ سے %1$s کو ہٹانا ہے؟</string>
+    <string name="mosque_removed">مسجد ہٹا دی گئی</string>
+    <string name="coord_format">%.4f, %.4f</string>
+
+    <!-- Google Sign-In -->
+    <string name="account_category">گوگل اکاؤنٹ</string>
+    <string name="google_sign_in_title">گوگل اکاؤنٹ سائن ان</string>
+    <string name="google_sign_in_summary_signed_out">ترتیبات اور بیک اپ کی مطابقت پذیری کے لیے گوگل کے ساتھ سائن ان کریں</string>
+    <string name="google_sign_in_summary_signed_in">%1$s کے طور پر سائن ان ہیں</string>
+    <string name="google_sign_out_title">سائن آؤٹ</string>
+    <string name="google_sign_out_confirm">کیا آپ واقعی اپنے گوگل اکاؤنٹ سے سائن آؤٹ کرنا چاہتے ہیں؟</string>
+    <string name="google_sign_in_success">%1$s کے طور پر کامیابی سے سائن ان ہو گئے</string>
+    <string name="google_sign_in_failed">گوگل سائن ان ناکام ہو گیا: %1$s</string>
+    <string name="google_sign_out_success">کامیابی سے سائن آؤٹ ہو گئے</string>
+    <string name="google_client_id" translatable="false">370852286562-pcl1top4ur9m2qaq2l29bal32i7dr1kd.apps.googleusercontent.com</string>
+
+    <!-- AutoDND Activity Log -->
+    <string name="activity_log_title">سرگرمی کا لاگ</string>
+    <string name="clear_log">لاگ صاف کریں</string>
+    <string name="activity_log_empty">कोई حالیہ DND سرگرمی نہیں ہے</string>
+
+    <!-- Privacy Policy -->
+    <string name="privacy_policy_url">https://www.mosquednd.app/privacy</string>
+</resources>
