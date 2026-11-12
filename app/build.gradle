@@ -97,11 +97,22 @@ android {
     }
 
     signingConfigs {
+        debug {
+            // Default debug signing config
+        }
         release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+            if (keystorePropertiesFile.exists() && keystoreProperties.containsKey('storeFile') && file(keystoreProperties['storeFile']).exists()) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            } else {
+                // Fallback to debug signing for robust release building
+                storeFile android.signingConfigs.debug.storeFile
+                storePassword android.signingConfigs.debug.storePassword
+                keyAlias android.signingConfigs.debug.keyAlias
+                keyPassword android.signingConfigs.debug.keyPassword
+            }
         }
     }
 
