@@ -172,6 +172,12 @@ object ImportExportManager {
         val dndEnabled = PrayerAlarmPrefs.toDNDEnabledMap().mapKeys { it.key.name.lowercase() }
         val dndOffsets = PrayerAlarmPrefs.toDNDOffsetsMap().mapKeys { it.key.name.lowercase() }
         val dndDurations = PrayerAlarmPrefs.toDNDDurationsMap().mapKeys { it.key.name.lowercase() }
+        val jamaatOffsets = PrayerType.entries.associate { type ->
+            type.name.lowercase() to PrayerAlarmPrefs.getJamaatOffset(type)
+        }
+        val iqamahWindows = PrayerType.entries.associate { type ->
+            type.name.lowercase() to PrayerAlarmPrefs.getIqamahWindow(type)
+        }
 
         return ExportData(
             exportVersion = EXPORT_VERSION,
@@ -187,7 +193,9 @@ object ImportExportManager {
             themePreference = theme,
             dndEnabled = dndEnabled,
             dndOffsets = dndOffsets,
-            dndDurations = dndDurations
+            dndDurations = dndDurations,
+            jamaatOffsets = jamaatOffsets,
+            iqamahWindows = iqamahWindows
         )
     }
 
@@ -275,6 +283,8 @@ object ImportExportManager {
         result["dndEnabledCount"] = exportData.dndEnabled?.size ?: 0
         result["dndOffsetsCount"] = exportData.dndOffsets?.size ?: 0
         result["dndDurationsCount"] = exportData.dndDurations?.size ?: 0
+        result["jamaatOffsetsCount"] = exportData.jamaatOffsets?.size ?: 0
+        result["iqamahWindowsCount"] = exportData.iqamahWindows?.size ?: 0
 
         return result
     }
@@ -381,6 +391,32 @@ object ImportExportManager {
                 }
             }
             importedCategories.add("$dndDurationCount DND durations")
+        }
+
+        // 7b. Jama'at offsets (null-safe)
+        if (exportData.jamaatOffsets?.isNotEmpty() == true) {
+            var count = 0
+            for ((prayerName, offset) in exportData.jamaatOffsets) {
+                val type = prayerTypeFromName(prayerName)
+                if (type != null) {
+                    PrayerAlarmPrefs.setJamaatOffset(type, offset)
+                    count++
+                }
+            }
+            importedCategories.add("$count Jama'at offsets")
+        }
+
+        // 7c. Iqamah windows (null-safe)
+        if (exportData.iqamahWindows?.isNotEmpty() == true) {
+            var count = 0
+            for ((prayerName, window) in exportData.iqamahWindows) {
+                val type = prayerTypeFromName(prayerName)
+                if (type != null) {
+                    PrayerAlarmPrefs.setIqamahWindow(type, window)
+                    count++
+                }
+            }
+            importedCategories.add("$count Iqamah windows")
         }
 
         // 8. Custom Adhan URI

@@ -47,5 +47,11 @@ data class ExportData(
     val dndOffsets: Map<String, Int>? = null,
 
     /** Per-prayer DND duration in minutes (PrayerType.name.lowercase() -> minutes). Nullable because Gson may set null via reflection. */
-    val dndDurations: Map<String, Int>? = null
+    val dndDurations: Map<String, Int>? = null,
+
+    /** Per-prayer Jama'at offset in minutes (PrayerType.name.lowercase() -> minutes). Nullable because Gson may set null via reflection. */
+    val jamaatOffsets: Map<String, Int>? = null,
+
+    /** Per-prayer Iqamah window in minutes (PrayerType.name.lowercase() -> minutes). Nullable because Gson may set null via reflection. */
+    val iqamahWindows: Map<String, Int>? = null
 )

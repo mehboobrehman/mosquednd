@@ -346,6 +346,40 @@ class PrayerAlarmPrefsTest {
         assertFalse(PrayerAlarmPrefs.isDNDDurationKey(null))
     }
 
+    // --- Jama'at Offset & Iqamah Window Tests ---
+
+    @Test
+    fun `default jamaat offset is 0 and iqamah window is 10`() {
+        for (type in PrayerType.entries) {
+            assertEquals(0, PrayerAlarmPrefs.getJamaatOffset(type))
+            assertEquals(10, PrayerAlarmPrefs.getIqamahWindow(type))
+        }
+    }
+
+    @Test
+    fun `setJamaatOffset and getJamaatOffset round-trip correctly with clamping`() {
+        PrayerAlarmPrefs.setJamaatOffset(PrayerType.FAJR, 20)
+        assertEquals(20, PrayerAlarmPrefs.getJamaatOffset(PrayerType.FAJR))
+
+        PrayerAlarmPrefs.setJamaatOffset(PrayerType.DHUHR, 100) // clamped to 60
+        assertEquals(60, PrayerAlarmPrefs.getJamaatOffset(PrayerType.DHUHR))
+
+        PrayerAlarmPrefs.setJamaatOffset(PrayerType.ASR, -80) // clamped to -60
+        assertEquals(-60, PrayerAlarmPrefs.getJamaatOffset(PrayerType.ASR))
+    }
+
+    @Test
+    fun `setIqamahWindow and getIqamahWindow round-trip correctly with clamping`() {
+        PrayerAlarmPrefs.setIqamahWindow(PrayerType.FAJR, 25)
+        assertEquals(25, PrayerAlarmPrefs.getIqamahWindow(PrayerType.FAJR))
+
+        PrayerAlarmPrefs.setIqamahWindow(PrayerType.MAGHRIB, 0) // clamped to 1
+        assertEquals(1, PrayerAlarmPrefs.getIqamahWindow(PrayerType.MAGHRIB))
+
+        PrayerAlarmPrefs.setIqamahWindow(PrayerType.ISHA, 2000) // clamped to 999
+        assertEquals(999, PrayerAlarmPrefs.getIqamahWindow(PrayerType.ISHA))
+    }
+
 }
 
 /**

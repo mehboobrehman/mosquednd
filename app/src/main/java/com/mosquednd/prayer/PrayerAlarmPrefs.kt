@@ -24,6 +24,8 @@ object PrayerAlarmPrefs {
     private const val PREFS_CUSTOM_ADHAN_URI = "pref_custom_adhan_uri"
     private const val PREFS_ADHAN_MUTED_PREFIX = "pref_adhan_muted_"
     private const val PREFS_HIJRI_DATE_OFFSET = "hijri_date_offset"
+    private const val PREFS_JAMAAT_OFFSET_PREFIX = "pref_jamaat_offset_"
+    private const val PREFS_IQAMAH_WINDOW_PREFIX = "pref_iqamah_window_"
 
     // DND preference key constants
     private const val PREFS_DND_ENABLED_PREFIX = "pref_dnd_enabled_"
@@ -306,6 +308,37 @@ object PrayerAlarmPrefs {
         }
     }
 
+    // ──────────────────────────────────────────────
+    // Jama'at Offset (-60..+60 minutes)
+    // ──────────────────────────────────────────────
+
+    fun getJamaatOffset(type: PrayerType, default: Int = 0): Int {
+        val key = jamaatOffsetKey(type)
+        val stored = prefs.getInt(key, default)
+        return stored.coerceIn(MIN_OFFSET, MAX_OFFSET)
+    }
+
+    fun setJamaatOffset(type: PrayerType, minutes: Int) {
+        val clamped = minutes.coerceIn(MIN_OFFSET, MAX_OFFSET)
+        prefs.edit().putInt(jamaatOffsetKey(type), clamped).apply()
+        logDebug("Jama'at offset for prayer set")
+    }
+
+    // ──────────────────────────────────────────────
+    // Iqamah Window (minutes)
+    // ──────────────────────────────────────────────
+
+    fun getIqamahWindow(type: PrayerType, default: Int = 10): Int {
+        val key = iqamahWindowKey(type)
+        return prefs.getInt(key, default).coerceIn(1, 999)
+    }
+
+    fun setIqamahWindow(type: PrayerType, minutes: Int) {
+        val clamped = minutes.coerceIn(1, 999)
+        prefs.edit().putInt(iqamahWindowKey(type), clamped).apply()
+        logDebug("Iqamah window for prayer set")
+    }
+
     private fun clampDuration(minutes: Int): Int {
         if (minutes in VALID_DND_DURATIONS) return minutes
         return when {
@@ -335,4 +368,10 @@ object PrayerAlarmPrefs {
 
     private fun adhanMutedKey(type: PrayerType): String =
         "${PREFS_ADHAN_MUTED_PREFIX}${type.name.lowercase()}"
+
+    private fun jamaatOffsetKey(type: PrayerType): String =
+        "${PREFS_JAMAAT_OFFSET_PREFIX}${type.name.lowercase()}"
+
+    private fun iqamahWindowKey(type: PrayerType): String =
+        "${PREFS_IQAMAH_WINDOW_PREFIX}${type.name.lowercase()}"
 }

@@ -342,13 +342,16 @@ object AlarmScheduler {
             }
 
             val prayerTime = timesMap[type]?.time ?: continue
-            val offset = PrayerAlarmPrefs.getDNDOffset(type)
-            val duration = PrayerAlarmPrefs.getDNDDuration(type)
+            val dndOffset = PrayerAlarmPrefs.getDNDOffset(type)
+            val dndDuration = PrayerAlarmPrefs.getDNDDuration(type)
+            val jamaatOffset = PrayerAlarmPrefs.getJamaatOffset(type)
+            val iqamahWindow = PrayerAlarmPrefs.getIqamahWindow(type)
 
             val alarmOffset = PrayerAlarmPrefs.getOffset(type)
             val adhanAlertMillis = prayerTime.timeInMillis - (alarmOffset * 60 * 1000)
-            val startCal = Calendar.getInstance().apply { timeInMillis = adhanAlertMillis }
-            startCal.add(Calendar.MINUTE, offset)
+            val jamaatMillis = adhanAlertMillis + (jamaatOffset * 60 * 1000)
+            val startCal = Calendar.getInstance().apply { timeInMillis = jamaatMillis }
+            startCal.add(Calendar.MINUTE, dndOffset)
 
             // Skip prayers whose start window has already passed — don't schedule retroactive DND windows
             if (!isTimeInFuture(startCal)) {
@@ -356,8 +359,9 @@ object AlarmScheduler {
                 continue
             }
 
+            val effectiveDuration = if (iqamahWindow != 10) iqamahWindow else dndDuration
             val endCal = Calendar.getInstance().apply { timeInMillis = startCal.timeInMillis }
-            endCal.add(Calendar.MINUTE, duration)
+            endCal.add(Calendar.MINUTE, effectiveDuration)
 
             // Clamp DND end time to same day — don't roll into next day (e.g. 23:50 + 30min → 00:20)
             val startDay = startCal.get(Calendar.DAY_OF_YEAR)
@@ -401,7 +405,7 @@ object AlarmScheduler {
             }
 
             scheduledCount++
-            Log.d(TAG, "Scheduled DND for $type: start=$offset min end=+${offset + duration} min")
+            Log.d(TAG, "Scheduled DND for $type: jamaatOffset=$jamaatOffset, dndOffset=$dndOffset, duration=$effectiveDuration")
         }
 
         Log.d(TAG, "Scheduled DND alarms for $scheduledCount prayers")
