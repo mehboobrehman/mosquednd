@@ -423,4 +423,10 @@
 
     <!-- Privacy Policy -->
     <string name="privacy_policy_url">https://www.mosquednd.app/privacy</string>
+
+    <!-- Accessibility Content Descriptions -->
+    <string name="my_location">موقعي</string>
+    <string name="prayer_help_content_desc">مساعدة لصلاة %1$s</string>
+    <string name="mosque_item_desc">مسجد: %1$s</string>
+    <string name="delete_mosque_desc">إزالة المسجد %1$s</string>
 </resources>

@@ -86,7 +86,7 @@ class PrayerTimesAdapter : ListAdapter<PrayerTime, PrayerTimesAdapter.ViewHolder
                 binding.btnPrayerHelp.setOnClickListener {
                     prayerHelpClickCallback?.invoke(type, binding.btnPrayerHelp)
                 }
-                binding.btnPrayerHelp.contentDescription = "Help for ${type.displayName}"
+                binding.btnPrayerHelp.contentDescription = context.getString(R.string.prayer_help_content_desc, type.displayName)
                 binding.switchAlarmToggle.setOnCheckedChangeListener(null)
                 binding.switchAlarmToggle.isChecked = PrayerAlarmPrefs.isAlarmEnabled(type)
                 val masterEnabled = PrayerAlarmPrefs.isMasterAlarmEnabled()

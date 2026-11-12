@@ -165,7 +165,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_my_location"
-        android:contentDescription="My Location" />
+        android:contentDescription="@string/my_location" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

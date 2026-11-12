@@ -41,7 +41,8 @@ class ActivityLogAdapter : ListAdapter<DNDLogEntity, ActivityLogAdapter.LogViewH
 
         fun bind(log: DNDLogEntity, dateFormat: SimpleDateFormat) {
             textEventName.text = log.eventName
-            textTimestamp.text = dateFormat.format(Date(log.timestamp))
+            val timeStr = dateFormat.format(Date(log.timestamp))
+            textTimestamp.text = timeStr
             textDescription.text = log.description
 
             if (!log.mosqueName.isNullOrBlank()) {
@@ -50,6 +51,8 @@ class ActivityLogAdapter : ListAdapter<DNDLogEntity, ActivityLogAdapter.LogViewH
             } else {
                 textMosqueName.visibility = View.GONE
             }
+
+            itemView.contentDescription = "${log.eventName}, $timeStr, ${log.description}${if (!log.mosqueName.isNullOrBlank()) ", ${log.mosqueName}" else ""}"
         }
     }
 

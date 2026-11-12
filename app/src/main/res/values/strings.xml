@@ -423,4 +423,10 @@ The app automatically schedules DND alarms and restores normal notifications whe
 
     <!-- Privacy Policy -->
     <string name="privacy_policy_url">https://www.mosquednd.app/privacy</string>
+
+    <!-- Accessibility Content Descriptions -->
+    <string name="my_location">My Location</string>
+    <string name="prayer_help_content_desc">Help for %1$s prayer</string>
+    <string name="mosque_item_desc">Mosque: %1$s</string>
+    <string name="delete_mosque_desc">Remove mosque %1$s</string>
 </resources>

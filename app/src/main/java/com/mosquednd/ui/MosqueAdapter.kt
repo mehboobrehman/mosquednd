@@ -33,6 +33,8 @@ class MosqueAdapter(
                 itemView.context.getString(R.string.coord_format, mosque.latitude, mosque.longitude)
             }
             binding.textRadius.text = itemView.context.getString(R.string.radius_meters_format, mosque.geofenceRadius)
+            binding.root.contentDescription = itemView.context.getString(R.string.mosque_item_desc, mosque.name)
+            binding.btnDelete.contentDescription = itemView.context.getString(R.string.delete_mosque_desc, mosque.name)
             
             binding.root.setOnClickListener {
                 onItemClick(mosque)
