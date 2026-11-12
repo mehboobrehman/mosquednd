@@ -1255,3 +1255,10 @@ Mosque entities are small (~200 bytes JSON) and writes are infrequent user actio
 **When**: 2026-10-14 07:35:51
 
 Created a breathtaking, modular Qibla Direction Compass Dial under app/src/main/assets/web/ adhering to all spatial math, modern Islamic aesthetics, and robust sensor fallback requirements.
+
+## Add golden file tests for PrayTimesCalculator
+**When**: 2026-11-11 13:55:53
+
+The task requires adding golden file regression tests for prayer calculation engine against published timetables with ±1 minute tolerance.
+
+**Impact**: Modifies PrayTimesCalculatorTest.kt to include golden file tests.
