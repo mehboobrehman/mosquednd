@@ -632,7 +632,7 @@ const server = http.createServer((req, res) => {
         }
 
         function exportLogs() {
-            window.location.href = `/api/sessions/export${selectedDeviceId && selectedSessionId ? `?deviceId=${selectedDeviceId}&sessionId=${selectedSessionId}` : ''}`;
+            window.location.href = '/api/sessions/export' + (selectedDeviceId && selectedSessionId ? '?deviceId=' + selectedDeviceId + '&sessionId=' + selectedSessionId : '');
         }
 
         function selectSession(devId, sessId) {

@@ -579,6 +579,7 @@ object AgentLogger {
                     }
                 }
                 connectionState.set(ConnectionState.OFFLINE)
+                showToast("Telemetry server not found on local network. Ensure devices are on the same Wi-Fi. Manual IP can be set in Settings.", Toast.LENGTH_LONG)
                 isDiscovering.set(false)
             } catch (e: Exception) {
                 connectionState.set(ConnectionState.OFFLINE)
@@ -675,9 +676,9 @@ object AgentLogger {
         }
     }
 
-    private fun showToast(msg: String) {
+    private fun showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
         mainHandler.post {
-            appContext?.let { Toast.makeText(it, msg, Toast.LENGTH_SHORT).show() }
+            appContext?.let { Toast.makeText(it, msg, duration).show() }
         }
     }
 }
