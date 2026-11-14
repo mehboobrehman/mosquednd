@@ -28,20 +28,24 @@ android {
 
         // Semantic Versioning, Automatic versionCode Incrementing, and Build Metadata Injection
         def versionPropsFile = file('version.properties')
-        def semVer = "1.0.2"
-        def computedVersionCode = 3
+        def semVer = System.getenv("VERSION_NAME") ?: "1.0.2"
+        def computedVersionCode = System.getenv("VERSION_CODE")?.toInteger() ?: 3
         
         if (versionPropsFile.exists()) {
             def props = new Properties()
             props.load(new FileInputStream(versionPropsFile))
-            semVer = props.getProperty("VERSION_NAME", "1.0.2")
-            if (props.containsKey("VERSION_CODE")) {
-                computedVersionCode = props.getProperty("VERSION_CODE").toInteger()
+            if (!System.getenv("VERSION_NAME")) {
+                semVer = props.getProperty("VERSION_NAME", "1.0.2")
+            }
+            if (!System.getenv("VERSION_CODE")) {
+                if (props.containsKey("VERSION_CODE")) {
+                    computedVersionCode = props.getProperty("VERSION_CODE").toInteger()
+                }
             }
             
             // Check if auto-increment is enabled or check git commit count / tags
             def autoIncrement = props.getProperty("AUTO_INCREMENT", "true").toBoolean()
-            if (autoIncrement) {
+            if (autoIncrement && !System.getenv("VERSION_CODE")) {
                 try {
                     def stdout = new java.io.ByteArrayOutputStream()
                     exec {
@@ -101,13 +105,21 @@ android {
             // Default debug signing config
         }
         release {
-            if (keystorePropertiesFile.exists() && keystoreProperties.containsKey('storeFile') && file(keystoreProperties['storeFile']).exists()) {
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
-                storeFile file(keystoreProperties['storeFile'])
-                storePassword keystoreProperties['storePassword']
+            if (keystorePropertiesFile.exists()) {
+                if (keystoreProperties.containsKey('storeFile') && file(keystoreProperties['storeFile']).exists()) {
+                    keyAlias keystoreProperties['keyAlias']
+                    keyPassword keystoreProperties['keyPassword']
+                    storeFile file(keystoreProperties['storeFile'])
+                    storePassword keystoreProperties['storePassword']
+                } else {
+                    throw new GradleException("Keystore properties file exists but missing required fields or storeFile not found.")
+                }
             } else {
-                // Fallback to debug signing for robust release building
+                // If release signing is required but keystore is missing, throw an error for CI/CD
+                if (System.getenv("CI") == "true") {
+                    throw new GradleException("Release build requires keystore but 'app/keystore.properties' is missing.")
+                }
+                // Fallback to debug signing for local release builds (optional)
                 storeFile android.signingConfigs.debug.storeFile
                 storePassword android.signingConfigs.debug.storePassword
                 keyAlias android.signingConfigs.debug.keyAlias
