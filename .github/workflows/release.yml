@@ -41,7 +41,7 @@ jobs:
           mkdir -p release_assets
           cp app/build/outputs/apk/debug/MosqueDND-debug-v*.apk release_assets/
           cp app/build/outputs/apk/release/MosqueDND-release-v*.apk release_assets/
-          cp app/build/outputs/bundle/release/MosqueDND-release-v*.aab release_assets/
+          cp app/build/outputs/bundle/release/app-release.aab release_assets/
           
           # Generate SHA256SUMS for all release artifacts
           cd release_assets
