@@ -188,20 +188,30 @@ object AgentLogger {
             if (tryConnectServer(serverIp)) return
         }
 
-        // 3. Fallback to mDNS discovery
+        // 3. Fallback to mDNS discovery (preferred over subnet scan)
         startMdnsDiscovery()
     }
 
     private fun startMdnsDiscovery() {
         val ctx = appContext ?: return
+        if (!isDiscovering.compareAndSet(false, true)) return
+        
         mdnsDiscoveryManager = MdnsDiscoveryManager(ctx) { ip, port ->
             executor.execute {
                 if (tryConnectServer("http://$ip:$port")) {
+                    isDiscovering.set(false)
                     mdnsDiscoveryManager?.stopDiscovery()
                 }
             }
         }
         mdnsDiscoveryManager?.startDiscovery()
+        
+        // Also start subnet scan as a backup after a delay if mDNS fails
+        mainHandler.postDelayed({
+            if (connectionState.get() == ConnectionState.CONNECTING) {
+                startSubnetDiscovery()
+            }
+        }, 5000L)
     }
 
     private fun startSubnetDiscovery() {
