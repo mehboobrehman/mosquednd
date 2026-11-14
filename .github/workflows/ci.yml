@@ -2,13 +2,12 @@ name: Android CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -25,16 +24,22 @@ jobs:
       run: chmod +x gradlew
 
     - name: Run unit tests
-      run: ./gradlew testDebugUnitTest
+      run: ./gradlew testDebugUnitTest --parallel --build-cache
 
     - name: Run lint
-      run: ./gradlew lintDebug
+      run: ./gradlew lintDebug --parallel --build-cache
 
     - name: Build debug and release APKs
-      run: ./gradlew assembleDebug assembleRelease
+      run: ./gradlew assembleDebug assembleRelease --parallel --build-cache
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
         name: debug-apk
         path: app/build/outputs/apk/debug/MosqueDND-debug-v*.apk
+
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-apk
+        path: app/build/outputs/apk/release/MosqueDND-release-v*.apk

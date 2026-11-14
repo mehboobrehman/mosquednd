@@ -5,6 +5,10 @@ plugins {
     id 'kotlin-kapt'
 }
 
+dependencyLocking {
+    lockMode = LockMode.LENIENT
+}
+
 // Load keystore properties for release signing
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file("app/keystore.properties")
