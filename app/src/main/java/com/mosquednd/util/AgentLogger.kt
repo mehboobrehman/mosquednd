@@ -188,9 +188,23 @@ object AgentLogger {
             if (tryConnectServer(serverIp)) return
         }
 
-        // 3. Fallback to Wi-Fi subnet discovery
-        startSubnetDiscovery()
+        // 3. Fallback to mDNS discovery
+        startMdnsDiscovery()
     }
+
+    private fun startMdnsDiscovery() {
+        val ctx = appContext ?: return
+        mdnsDiscoveryManager = MdnsDiscoveryManager(ctx) { ip, port ->
+            executor.execute {
+                if (tryConnectServer("http://$ip:$port")) {
+                    mdnsDiscoveryManager?.stopDiscovery()
+                }
+            }
+        }
+        mdnsDiscoveryManager?.startDiscovery()
+    }
+
+    private fun startSubnetDiscovery() {
 
     private fun tryConnectServer(baseUrl: String): Boolean {
         try {
