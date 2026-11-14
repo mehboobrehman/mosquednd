@@ -32,14 +32,30 @@ android {
 
         // Semantic Versioning, Automatic versionCode Incrementing, and Build Metadata Injection
         def versionPropsFile = file('version.properties')
-        def semVer = System.getenv("VERSION_NAME") ?: "1.0.2"
+        def gitVersion = ""
+        try {
+            def stdout = new java.io.ByteArrayOutputStream()
+            exec {
+                commandLine 'git', 'describe', '--tags', '--always'
+                standardOutput = stdout
+                ignoreExitValue = true
+            }
+            gitVersion = stdout.toString().trim()
+            if (gitVersion.startsWith("v")) {
+                gitVersion = gitVersion.substring(1)
+            }
+        } catch (Exception e) {
+            // ignore
+        }
+
+        def semVer = System.getenv("VERSION_NAME") ?: (gitVersion ?: "1.0.0")
         def computedVersionCode = System.getenv("VERSION_CODE")?.toInteger() ?: 3
         
         if (versionPropsFile.exists()) {
             def props = new Properties()
             props.load(new FileInputStream(versionPropsFile))
-            if (!System.getenv("VERSION_NAME")) {
-                semVer = props.getProperty("VERSION_NAME", "1.0.2")
+            if (!System.getenv("VERSION_NAME") && !gitVersion) {
+                semVer = props.getProperty("VERSION_NAME", "1.0.0")
             }
             if (!System.getenv("VERSION_CODE")) {
                 if (props.containsKey("VERSION_CODE")) {
