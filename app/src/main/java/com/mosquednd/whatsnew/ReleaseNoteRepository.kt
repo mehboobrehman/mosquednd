@@ -1,12 +1,14 @@
 package com.mosquednd.whatsnew
 
+import com.mosquednd.BuildConfig
+
 object ReleaseNoteRepository {
     
     fun getReleaseNotes(): List<ReleaseNote> {
         return listOf(
             ReleaseNote(
-                versionName = "v1.0.11",
-                versionCode = 37,
+                versionName = "v${BuildConfig.APP_VERSION}",
+                versionCode = BuildConfig.VERSION_CODE,
                 releaseDate = "November 2026",
                 summary = "Adhan alarm offset persistence fix, live telemetry logging, and release build robustness.",
                 items = listOf(
