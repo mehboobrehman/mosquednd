@@ -81,6 +81,10 @@ class MosqueDNDApp : Application() {
         AgentLogger.d("PersistentMonitoringService started.")
         com.mosquednd.service.ServiceWatchdogWorker.schedule(this)
         AgentLogger.d("ServiceWatchdogWorker scheduled.")
+        
+        com.mosquednd.updater.AppUpdateWorker.schedule(this)
+        AgentLogger.d("AppUpdateWorker scheduled.")
+        
         AgentLogger.i("MosqueDNDApp onCreate complete.")
     }
 

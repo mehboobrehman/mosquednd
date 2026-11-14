@@ -11,6 +11,23 @@ class AppUpdateWorker(
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
 
+    companion object {
+        private const val TAG = "AppUpdateWorker"
+        private const val UNIQUE_WORK_NAME = "MosqueDNDAppUpdate"
+
+        fun schedule(context: Context) {
+            val workRequest = androidx.work.PeriodicWorkRequestBuilder<AppUpdateWorker>(
+                24, java.util.concurrent.TimeUnit.HOURS
+            ).build()
+
+            androidx.work.WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+                UNIQUE_WORK_NAME,
+                androidx.work.ExistingPeriodicWorkPolicy.KEEP,
+                workRequest
+            )
+        }
+    }
+
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         try {
             val updateManager = AppUpdateManager(applicationContext)

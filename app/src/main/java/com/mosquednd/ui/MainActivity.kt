@@ -15,6 +15,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
+import com.mosquednd.updater.AppUpdateViewModel
+import com.mosquednd.updater.UpdateUiState
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.mosquednd.MosqueDNDApp
@@ -51,6 +54,7 @@ class MainActivity : AppCompatActivity() {
     private var pendingNavigateToPrayerTimes = false
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var updateViewModel: AppUpdateViewModel
 
     private val hijriPrefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         if (key == "hijri_date_offset") {
@@ -69,6 +73,14 @@ class MainActivity : AppCompatActivity() {
         window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
+        updateViewModel = ViewModelProvider(this)[AppUpdateViewModel::class.java]
+        lifecycleScope.launch {
+            updateViewModel.uiState.collect { state ->
+                handleUpdateState(state)
+            }
+        }
+        updateViewModel.checkForUpdates(silent = true)
 
         if ("prayer_times" == intent.getStringExtra(EXTRA_NAVIGATE_TO)) {
             pendingNavigateToPrayerTimes = true
@@ -103,6 +115,33 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+    }
+
+    private fun handleUpdateState(state: UpdateUiState) {
+        when (state) {
+            is UpdateUiState.UpdateAvailable -> {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle("Update Available")
+                    .setMessage("A new version is available: ${state.releaseInfo.tagName}\n\n${state.releaseInfo.releaseNotes?.take(200) ?: ""}")
+                    .setPositiveButton("Install Now") { _, _ -> updateViewModel.startDownload() }
+                    .setNegativeButton("Later", null)
+                    .show()
+            }
+            is UpdateUiState.ReadyToInstall -> {
+                val intent = updateViewModel.getInstallIntent(state.apkFile)
+                startActivity(intent)
+                updateViewModel.dismiss()
+            }
+            is UpdateUiState.Error -> {
+                if (!state.canRetry) {
+                    Snackbar.make(binding.root, "Update error: ${state.message}", Snackbar.LENGTH_LONG).show()
+                }
+            }
+            is UpdateUiState.Downloading -> {
+                // Optionally show progress in a snackbar or custom dialog
+            }
+            else -> {}
+        }
     }
 
     private fun applyTheme() {

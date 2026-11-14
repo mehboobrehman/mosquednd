@@ -214,8 +214,6 @@ object AgentLogger {
         }, 5000L)
     }
 
-    private fun startSubnetDiscovery() {
-
     private fun tryConnectServer(baseUrl: String): Boolean {
         try {
             val normalized = normalizeServerUrl(baseUrl)
