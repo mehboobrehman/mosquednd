@@ -81,6 +81,8 @@ object AgentLogger {
 
     private val isDiscovering = AtomicBoolean(false)
     private val manualOverrideActive = AtomicBoolean(false)
+    private var mdnsDiscoveryManager: MdnsDiscoveryManager? = null
+    private val retryStrategy = RetryStrategy()
 
     // Backoff state for connection retries
     private var currentBackoffMs = 1000L
@@ -497,8 +499,7 @@ object AgentLogger {
                 sendEnvelopeToServer(jsonString)
             } else {
                 val jitter = (Math.random() * 500).toLong()
-                val sleepTime = currentBackoffMs + jitter
-                currentBackoffMs = (currentBackoffMs * 2).coerceAtMost(MAX_BACKOFF_MS)
+                val sleepTime = retryStrategy.nextDelay() + jitter
                 try {
                     Thread.sleep(sleepTime.coerceAtMost(3000L))
                 } catch (_: InterruptedException) {}
