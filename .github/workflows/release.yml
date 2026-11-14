@@ -33,12 +33,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build Release APK and AAB
-        run: ./gradlew assembleRelease bundleRelease
+      - name: Build Debug/Release APK and AAB
+        run: ./gradlew assembleDebug assembleRelease bundleRelease
 
       - name: Prepare Release Artifacts and Notes
         run: |
           mkdir -p release_assets
+          cp app/build/outputs/apk/debug/MosqueDND-debug-v*.apk release_assets/
           cp app/build/outputs/apk/release/MosqueDND-release-v*.apk release_assets/
           cp app/build/outputs/bundle/release/MosqueDND-release-v*.aab release_assets/
           
