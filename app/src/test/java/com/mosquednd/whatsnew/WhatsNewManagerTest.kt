@@ -66,7 +66,7 @@ class WhatsNewManagerTest {
         
         val latest = ReleaseNoteRepository.getLatestReleaseNote()
         assertNotNull(latest)
-        assertEquals("v1.0.11", latest?.versionName)
+        assertEquals("v${BuildConfig.APP_VERSION}", latest?.versionName)
         
         val v102 = ReleaseNoteRepository.getReleaseNoteForVersion("v1.0.2")
         assertNotNull(v102)
@@ -79,15 +79,15 @@ class WhatsNewManagerTest {
 
     @Test
     fun testGetReleaseNoteForVersionVariantMatching() {
-        val noteWithoutV = ReleaseNoteRepository.getReleaseNoteForVersion("1.0.11")
-        val noteWithV = ReleaseNoteRepository.getReleaseNoteForVersion("v1.0.11")
-        val noteWithUppercaseV = ReleaseNoteRepository.getReleaseNoteForVersion("V1.0.11")
+        val noteWithoutV = ReleaseNoteRepository.getReleaseNoteForVersion("1.0.10")
+        val noteWithV = ReleaseNoteRepository.getReleaseNoteForVersion("v1.0.10")
+        val noteWithUppercaseV = ReleaseNoteRepository.getReleaseNoteForVersion("V1.0.10")
 
-        assertNotNull("Should find release note for '1.0.11'", noteWithoutV)
-        assertNotNull("Should find release note for 'v1.0.11'", noteWithV)
-        assertNotNull("Should find release note for 'V1.0.11'", noteWithUppercaseV)
+        assertNotNull("Should find release note for '1.0.10'", noteWithoutV)
+        assertNotNull("Should find release note for 'v1.0.10'", noteWithV)
+        assertNotNull("Should find release note for 'V1.0.10'", noteWithUppercaseV)
 
-        assertEquals("v1.0.11", noteWithoutV?.versionName)
+        assertEquals("v1.0.10", noteWithoutV?.versionName)
         assertEquals(noteWithoutV, noteWithV)
         assertEquals(noteWithoutV, noteWithUppercaseV)
     }
