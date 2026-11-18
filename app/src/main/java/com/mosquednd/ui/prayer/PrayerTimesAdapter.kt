@@ -261,12 +261,25 @@ class PrayerTimesAdapter : ListAdapter<PrayerTime, PrayerTimesAdapter.ViewHolder
 
     fun toggleExpanded(prayerType: PrayerType) {
         val position = getPositionForType(prayerType) ?: return
+        val previousExpanded = expandedPosition
         expandedPosition = if (expandedPosition == position) null else position
-        notifyDataSetChanged()
+        
+        if (previousExpanded != null && previousExpanded != position && previousExpanded < itemCount) {
+            notifyItemChanged(previousExpanded)
+        }
+        if (position < itemCount) {
+            notifyItemChanged(position)
+        }
     }
 
     fun collapseExpanded() {
-        if (expandedPosition != null) { expandedPosition = null; notifyDataSetChanged() }
+        val previousExpanded = expandedPosition
+        if (previousExpanded != null) {
+            expandedPosition = null
+            if (previousExpanded < itemCount) {
+                notifyItemChanged(previousExpanded)
+            }
+        }
     }
 
     private fun getPositionForType(prayerType: PrayerType): Int? {

@@ -88,7 +88,6 @@ class HomeFragment : Fragment() {
         override fun onServiceDisconnected(name: ComponentName?) {
             Log.w(TAG, "LocationMonitorService disconnected (crashed or killed by OS)")
             isBound = false
-            MosqueDNDApp.prefs.edit().putBoolean(PREF_MONITORING_ENABLED, false).apply()
             updateMonitorUI()
         }
     }
@@ -443,7 +442,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateMonitorUI() {
-        val running = LocationMonitorService.isServiceRunning()
+        val running = BootPrefs.isMonitoringEnabled(requireContext()) || MosqueDNDApp.prefs.getBoolean(PREF_MONITORING_ENABLED, false) || LocationMonitorService.isServiceRunning()
         binding.textMonitorLabel.text = if (running) getString(R.string.monitoring_status_on) else getString(R.string.monitoring_status_off)
         binding.textMonitorLabel.setTextColor(resources.getColor(
             if (running) R.color.gold_primary else R.color.text_primary, null

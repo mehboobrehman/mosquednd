@@ -1,0 +1,50 @@
+{
+  "branches": [
+    "main",
+    "master"
+  ],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    [
+      "@semantic-release/npm",
+      {
+        "npmPublish": false
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "sed -i 's/VERSION_NAME=.*/VERSION_NAME=${nextRelease.version}/' app/version.properties && sed -i \"s/VERSION_CODE=.*/VERSION_CODE=$(grep VERSION_CODE app/version.properties | cut -d= -f2 | awk '{print $1+1}')/\" app/version.properties"
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "package.json",
+          "package-lock.json",
+          "CHANGELOG.md",
+          "app/version.properties"
+        ],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "release_assets/*.apk",
+            "label": "Android APK"
+          },
+          {
+            "path": "release_assets/checksums.txt",
+            "label": "SHA-256 Checksums"
+          }
+        ]
+      }
+    ]
+  ]
+}

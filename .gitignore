@@ -142,4 +142,8 @@ _ul*
 !mosquednd-video/**
 !ios/**
 !scripts/**
+!package.json
+!package-lock.json
+!.releaserc.json
+!.github/workflows/*.yml
 

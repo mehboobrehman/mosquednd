@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -26,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mosquednd.AppVersionInfo
+import com.mosquednd.updater.AppUpdateManager
+import kotlinx.coroutines.launch
 
 class WhatsNewBottomSheetFragment : BottomSheetDialogFragment() {
 
@@ -177,6 +181,57 @@ fun WhatsNewContent(onDismiss: () -> Unit) {
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            val context = LocalContext.current
+            val coroutineScope = rememberCoroutineScope()
+            var isCheckingUpdate by remember { mutableStateOf(false) }
+
+            OutlinedButton(
+                onClick = {
+                    if (!isCheckingUpdate) {
+                        isCheckingUpdate = true
+                        coroutineScope.launch {
+                            try {
+                                val updateManager = AppUpdateManager(context)
+                                val result = updateManager.checkForUpdate()
+                                isCheckingUpdate = false
+                                if (result != null) {
+                                    val (releaseInfo, isNewer) = result
+                                    if (isNewer) {
+                                        Toast.makeText(context, "New update available: ${releaseInfo.tagName}!", Toast.LENGTH_LONG).show()
+                                    } else {
+                                        Toast.makeText(context, "You are already on the latest version!", Toast.LENGTH_SHORT).show()
+                                    }
+                                } else {
+                                    Toast.makeText(context, "You are already on the latest version!", Toast.LENGTH_SHORT).show()
+                                }
+                            } catch (e: Exception) {
+                                isCheckingUpdate = false
+                                Toast.makeText(context, "Failed to check for updates: ${e.message}", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                },
+                enabled = !isCheckingUpdate,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                if (isCheckingUpdate) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+                Text(
+                    text = "Check For Update",
+                    style = MaterialTheme.typography.labelLarge,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             Button(
                 onClick = onDismiss,

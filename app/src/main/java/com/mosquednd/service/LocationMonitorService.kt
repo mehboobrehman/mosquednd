@@ -75,13 +75,26 @@ class LocationMonitorService : android.app.Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START -> startMonitoring(intent)
-            null -> LogHelper.logw(TAG, "Service restarted with null intent — not re-initializing (START_NOT_STICKY)")
+            null -> {
+                LogHelper.logw(TAG, "Service restarted with null intent (START_STICKY) — checking persistent preferences to restart monitoring")
+                if (BootPrefs.isMonitoringEnabled(this) || MosqueDNDApp.prefs.getBoolean("pref_monitoring_enabled", false)) {
+                    val interval = BootPrefs.getMonitoringInterval(this, 30)
+                    val restartIntent = Intent(this, LocationMonitorService::class.java).apply {
+                        action = ACTION_START
+                        putExtra(EXTRA_INTERVAL, interval)
+                    }
+                    startMonitoring(restartIntent)
+                } else {
+                    LogHelper.logd(TAG, "Monitoring not enabled in prefs — stopping service")
+                    stopSelf()
+                }
+            }
             else -> LogHelper.logw(TAG, "Unknown action: ${intent?.action}")
         }
         // Note: stopService() calls onDestroy() directly via the Android framework,
         // it does NOT route through onStartCommand(). The stopMonitoring() cleanup
         // is triggered by onDestroy() when the framework stops the service.
-        return START_NOT_STICKY
+        return START_STICKY
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
