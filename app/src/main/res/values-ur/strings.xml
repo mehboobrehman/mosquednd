@@ -421,6 +421,27 @@
     <string name="clear_log">لاگ صاف کریں</string>
     <string name="activity_log_empty">कोई حالیہ DND سرگرمی نہیں ہے</string>
 
+    <!-- In-app updates -->
+    <string name="whats_new_dismiss">ٹھیک ہے</string>
+    <string name="update_check_for_updates">اپ ڈیٹس چیک کریں</string>
+    <string name="update_checking">اپ ڈیٹس چیک ہو رہی ہیں…</string>
+    <string name="update_up_to_date">آپ تازہ ترین ورژن استعمال کر رہے ہیں۔</string>
+    <string name="update_check_again">دوبارہ چیک کریں</string>
+    <string name="update_available">ورژن %1$s دستیاب ہے۔</string>
+    <string name="update_available_title">اپ ڈیٹ دستیاب ہے</string>
+    <string name="update_available_message">ورژن %1$s دستیاب ہے۔\n\n%2$s</string>
+    <string name="update_download">اپ ڈیٹ ڈاؤن لوڈ کریں</string>
+    <string name="update_downloading">اپ ڈیٹ ڈاؤن لوڈ ہو رہی ہے…</string>
+    <string name="update_download_progress">ڈاؤن لوڈ کی پیش رفت: %1$d%%</string>
+    <string name="update_download_verified">ڈاؤن لوڈ کی تصدیق ہو گئی ہے اور انسٹال کے لیے تیار ہے۔</string>
+    <string name="update_install">اپ ڈیٹ انسٹال کریں</string>
+    <string name="update_error">اپ ڈیٹ ناکام ہوئی: %1$s</string>
+    <string name="update_later">بعد میں</string>
+    <string name="update_cancel">ڈاؤن لوڈ منسوخ کریں</string>
+    <string name="update_install_permission_denied">اس ایپ کو نامعلوم ایپس انسٹال کرنے کی اجازت دیں، پھر دوبارہ کوشش کریں۔</string>
+    <string name="update_install_file_missing">تصدیق شدہ اپ ڈیٹ فائل دستیاب نہیں رہی۔ دوبارہ اپ ڈیٹس چیک کریں۔</string>
+    <string name="update_installer_unavailable">اس ڈیوائس پر کوئی پیکیج انسٹالر دستیاب نہیں۔</string>
+
     <!-- Privacy Policy -->
     <string name="privacy_policy_url">https://www.mosquednd.app/privacy</string>
 

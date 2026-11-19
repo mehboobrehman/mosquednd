@@ -3,7 +3,10 @@ package com.mosquednd.updater
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,50 +30,62 @@ class AppUpdateViewModel(application: Application) : AndroidViewModel(applicatio
     val uiState: StateFlow<UpdateUiState> = _uiState.asStateFlow()
 
     private var currentReleaseInfo: ReleaseInfo? = null
+    private var checkJob: Job? = null
     private var downloadJob: Job? = null
+    private var showCheckResult = false
+    private var dismissCancelledDownload = false
 
     fun checkForUpdates(silent: Boolean = false) {
-        if (_uiState.value is UpdateUiState.Checking || _uiState.value is UpdateUiState.Downloading) return
-
-        viewModelScope.launch {
+        if (checkJob?.isActive == true) {
             if (!silent) {
+                showCheckResult = true
                 _uiState.value = UpdateUiState.Checking
             }
+            return
+        }
+        if (downloadJob?.isActive == true) return
+        showCheckResult = !silent
+        if (!silent) {
+            _uiState.value = UpdateUiState.Checking
+        }
+
+        checkJob = viewModelScope.launch {
             try {
                 val pair = updateManager.checkForUpdate()
-                if (pair != null) {
-                    val (releaseInfo, isNewer) = pair
-                    currentReleaseInfo = releaseInfo
-                    if (isNewer) {
-                        _uiState.value = UpdateUiState.UpdateAvailable(releaseInfo)
-                    } else {
-                        if (!silent) {
-                            _uiState.value = UpdateUiState.UpToDate
-                        } else {
-                            _uiState.value = UpdateUiState.Idle
-                        }
-                    }
+                val (releaseInfo, isNewer) = pair
+                currentReleaseInfo = releaseInfo
+                if (isNewer) {
+                    _uiState.value = UpdateUiState.UpdateAvailable(releaseInfo)
                 } else {
-                    if (!silent) {
-                        _uiState.value = UpdateUiState.Error("No release info found")
+                    if (showCheckResult) {
+                        _uiState.value = UpdateUiState.UpToDate
                     } else {
                         _uiState.value = UpdateUiState.Idle
                     }
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
-                if (!silent) {
+                if (showCheckResult) {
                     _uiState.value = UpdateUiState.Error("Failed to check for updates: ${e.message}")
                 } else {
                     _uiState.value = UpdateUiState.Idle
                 }
+            } finally {
+                checkJob = null
+                showCheckResult = false
             }
         }
     }
 
     fun startDownload(releaseInfo: ReleaseInfo? = currentReleaseInfo) {
-        val info = releaseInfo ?: return
-        downloadJob?.cancel()
+        if (downloadJob?.isActive == true) return
+        val info = releaseInfo ?: run {
+            _uiState.value = UpdateUiState.Error("No release is available to download")
+            return
+        }
 
+        dismissCancelledDownload = false
         downloadJob = viewModelScope.launch {
             _uiState.value = UpdateUiState.Downloading(0f, 0L, info.apkSize)
             try {
@@ -78,24 +93,35 @@ class AppUpdateViewModel(application: Application) : AndroidViewModel(applicatio
                     _uiState.value = UpdateUiState.Downloading(progress, downloaded, total)
                 }
                 _uiState.value = UpdateUiState.ReadyToInstall(apkFile, info)
+            } catch (e: CancellationException) {
+                if (dismissCancelledDownload) {
+                    _uiState.value = UpdateUiState.Idle
+                } else {
+                    currentReleaseInfo?.let {
+                        _uiState.value = UpdateUiState.UpdateAvailable(it)
+                    } ?: run {
+                        _uiState.value = UpdateUiState.Idle
+                    }
+                }
+                throw e
             } catch (e: Exception) {
+                currentCoroutineContext().ensureActive()
                 _uiState.value = UpdateUiState.Error("Update download/verification failed: ${e.message}")
+            } finally {
+                downloadJob = null
+                dismissCancelledDownload = false
             }
         }
     }
 
-    fun cancelDownload() {
+    fun cancelDownload(dismissAfterCancel: Boolean = false) {
+        dismissCancelledDownload = dismissAfterCancel
         downloadJob?.cancel()
-        currentReleaseInfo?.let {
-            _uiState.value = UpdateUiState.UpdateAvailable(it)
-        } ?: run {
-            _uiState.value = UpdateUiState.Idle
-        }
+        updateManager.cancelDownload()
     }
 
-    fun getInstallIntent(apkFile: File) = updateManager.getInstallIntent(apkFile)
-
     fun dismiss() {
+        showCheckResult = false
         _uiState.value = UpdateUiState.Idle
     }
 }

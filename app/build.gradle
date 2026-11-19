@@ -135,8 +135,8 @@ android {
                     throw new GradleException("Keystore properties file exists but missing required fields or storeFile not found.")
                 }
             } else {
-                // If release signing is required but keystore is missing, throw an error for CI/CD
-                if (System.getenv("CI") == "true") {
+                // Release workflows must explicitly require signing; CI builds may use the debug key.
+                if (System.getenv("RELEASE_SIGNING_REQUIRED") == "true") {
                     throw new GradleException("Release build requires keystore but 'app/keystore.properties' is missing.")
                 }
                 // Fallback to debug signing for local release builds (optional)

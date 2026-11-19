@@ -13,5 +13,6 @@ data class GitHubReleaseDto(
 data class GitHubAssetDto(
     @SerializedName("name") val name: String,
     @SerializedName("browser_download_url") val browserDownloadUrl: String,
-    @SerializedName("size") val size: Long
+    @SerializedName("size") val size: Long,
+    @SerializedName("digest") val digest: String?
 )

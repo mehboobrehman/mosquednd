@@ -2,12 +2,13 @@ package com.mosquednd.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.mosquednd.R
 import com.mosquednd.databinding.ActivitySettingsBinding
+import com.mosquednd.ui.AppUpdateInstallActivity
 import com.mosquednd.ui.MainActivity
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : AppUpdateInstallActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
 
@@ -29,6 +30,10 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         setupBottomNavigation()
+    }
+
+    override fun showUpdateInstallError(messageRes: Int) {
+        Snackbar.make(binding.root, messageRes, Snackbar.LENGTH_LONG).show()
     }
 
     override fun onResume() {
@@ -63,4 +68,5 @@ class SettingsActivity : AppCompatActivity() {
         finish()
         return true
     }
+
 }

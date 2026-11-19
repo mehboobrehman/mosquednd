@@ -19,6 +19,9 @@ object AppUpdateSecurity {
         if (expectedSha256.isNullOrBlank()) {
             return SecurityResult.Error("Missing expected SHA-256 checksum (SHA256SUMS required)")
         }
+        if (!expectedSha256.matches(Regex("[0-9a-fA-F]{64}"))) {
+            return SecurityResult.Error("Invalid expected SHA-256 checksum")
+        }
         if (!apkFile.exists()) {
             return SecurityResult.Error("Downloaded APK file does not exist")
         }
@@ -48,11 +51,6 @@ object AppUpdateSecurity {
         val packageName = context.packageName
 
         try {
-            val installedSignatures = getAppSignatures(packageManager, packageName)
-            if (installedSignatures.isEmpty()) {
-                return SecurityResult.Error("Unable to retrieve installed app signatures")
-            }
-
             val apkPackageInfo = packageManager.getPackageArchiveInfo(
                 apkFile.absolutePath,
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -62,6 +60,22 @@ object AppUpdateSecurity {
                     PackageManager.GET_SIGNATURES
                 }
             ) ?: return SecurityResult.Error("Failed to parse downloaded APK package info")
+
+            if (apkPackageInfo.packageName != packageName) {
+                return SecurityResult.Error("Downloaded APK package name does not match the installed app")
+            }
+
+            val installedPackageInfo = getInstalledPackageInfo(packageManager, packageName)
+            val installedSignatures = getPackageSignatures(installedPackageInfo)
+            if (installedSignatures.isEmpty()) {
+                return SecurityResult.Error("Unable to retrieve installed app signatures")
+            }
+
+            val installedVersionCode = packageVersionCode(installedPackageInfo)
+            val downloadedVersionCode = packageVersionCode(apkPackageInfo)
+            if (downloadedVersionCode <= installedVersionCode) {
+                return SecurityResult.Error("Downloaded APK is not newer than the installed app")
+            }
 
             val apkSignatures = getPackageSignatures(apkPackageInfo)
             if (apkSignatures.isEmpty()) {
@@ -78,27 +92,6 @@ object AppUpdateSecurity {
             return SecurityResult.Success
         } catch (e: Exception) {
             return SecurityResult.Error("Signature verification failed: ${e.message}")
-        }
-    }
-
-    private fun getAppSignatures(pm: PackageManager, packageName: String): Array<out android.content.pm.Signature> {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            val pkgInfo = pm.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
-            val signingInfo = pkgInfo.signingInfo
-            if (signingInfo != null) {
-                if (signingInfo.hasMultipleSigners()) {
-                    signingInfo.apkContentsSigners
-                } else {
-                    signingInfo.signingCertificateHistory
-                }
-            } else {
-                emptyArray()
-            }
-        } else {
-            @Suppress("DEPRECATION")
-            val pkgInfo = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-            @Suppress("DEPRECATION")
-            pkgInfo.signatures ?: emptyArray()
         }
     }
 
@@ -119,4 +112,20 @@ object AppUpdateSecurity {
             pkgInfo.signatures ?: emptyArray()
         }
     }
+
+    private fun getInstalledPackageInfo(pm: PackageManager, packageName: String): PackageInfo =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            pm.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
+        } else {
+            @Suppress("DEPRECATION")
+            pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+        }
+
+    private fun packageVersionCode(packageInfo: PackageInfo): Long =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            packageInfo.longVersionCode
+        } else {
+            @Suppress("DEPRECATION")
+            packageInfo.versionCode.toLong()
+        }
 }

@@ -11,13 +11,14 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
+import android.widget.ProgressBar
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import com.mosquednd.updater.AppUpdateViewModel
 import com.mosquednd.updater.UpdateUiState
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.mosquednd.MosqueDNDApp
@@ -40,7 +41,7 @@ import com.mosquednd.util.LogHelper
 import com.mosquednd.whatsnew.WhatsNewBottomSheetFragment
 import com.mosquednd.whatsnew.WhatsNewManager
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppUpdateInstallActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
@@ -55,6 +56,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var updateViewModel: AppUpdateViewModel
+    private var updateProgressDialog: androidx.appcompat.app.AlertDialog? = null
+    private var updateProgressBar: ProgressBar? = null
 
     private val hijriPrefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         if (key == "hijri_date_offset") {
@@ -76,8 +79,10 @@ class MainActivity : AppCompatActivity() {
         
         updateViewModel = ViewModelProvider(this)[AppUpdateViewModel::class.java]
         lifecycleScope.launch {
-            updateViewModel.uiState.collect { state ->
-                handleUpdateState(state)
+            repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
+                updateViewModel.uiState.collect { state ->
+                    handleUpdateState(state)
+                }
             }
         }
         updateViewModel.checkForUpdates(silent = true)
@@ -118,30 +123,74 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleUpdateState(state: UpdateUiState) {
+        if (supportFragmentManager.findFragmentByTag(WhatsNewBottomSheetFragment.TAG)?.isAdded == true) {
+            return
+        }
+
         when (state) {
             is UpdateUiState.UpdateAvailable -> {
+                dismissUpdateProgress()
                 MaterialAlertDialogBuilder(this)
-                    .setTitle("Update Available")
-                    .setMessage("A new version is available: ${state.releaseInfo.tagName}\n\n${state.releaseInfo.releaseNotes?.take(200) ?: ""}")
-                    .setPositiveButton("Install Now") { _, _ -> updateViewModel.startDownload() }
-                    .setNegativeButton("Later", null)
+                    .setTitle(R.string.update_available_title)
+                    .setMessage(getString(
+                        R.string.update_available_message,
+                        state.releaseInfo.tagName,
+                        state.releaseInfo.releaseNotes?.take(200).orEmpty()
+                    ))
+                    .setPositiveButton(R.string.update_download) { _, _ -> updateViewModel.startDownload() }
+                    .setNegativeButton(R.string.update_later) { _, _ -> updateViewModel.dismiss() }
+                    .setOnCancelListener { updateViewModel.dismiss() }
                     .show()
             }
             is UpdateUiState.ReadyToInstall -> {
-                val intent = updateViewModel.getInstallIntent(state.apkFile)
-                startActivity(intent)
+                dismissUpdateProgress()
+                installUpdate(state.apkFile)
                 updateViewModel.dismiss()
             }
             is UpdateUiState.Error -> {
-                if (!state.canRetry) {
-                    Snackbar.make(binding.root, "Update error: ${state.message}", Snackbar.LENGTH_LONG).show()
-                }
+                dismissUpdateProgress()
+                showSnackbar(getString(R.string.update_error, state.message))
             }
-            is UpdateUiState.Downloading -> {
-                // Optionally show progress in a snackbar or custom dialog
-            }
-            else -> {}
+            is UpdateUiState.Downloading -> showUpdateProgress(state)
+            UpdateUiState.Idle, UpdateUiState.UpToDate, UpdateUiState.Checking ->
+                dismissUpdateProgress()
         }
+    }
+
+    override fun showUpdateInstallError(messageRes: Int) {
+        showSnackbar(getString(messageRes))
+    }
+
+    private fun showUpdateProgress(state: UpdateUiState.Downloading) {
+        val progress = (updateProgressBar ?: ProgressBar(
+            this,
+            null,
+            android.R.attr.progressBarStyleHorizontal
+        ).also { updateProgressBar = it }).apply {
+            max = 100
+            isIndeterminate = state.progress < 0f
+            if (!isIndeterminate) {
+                this.progress = (state.progress.coerceIn(0f, 1f) * 100).toInt()
+            }
+        }
+
+        if (updateProgressDialog == null) {
+            updateProgressDialog = MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.update_downloading)
+                .setView(progress)
+                .setNegativeButton(R.string.update_cancel) { _, _ ->
+                    updateViewModel.cancelDownload(dismissAfterCancel = true)
+                }
+                .setCancelable(false)
+                .create()
+            updateProgressDialog?.show()
+        }
+    }
+
+    private fun dismissUpdateProgress() {
+        updateProgressDialog?.dismiss()
+        updateProgressDialog = null
+        updateProgressBar = null
     }
 
     private fun applyTheme() {
@@ -178,6 +227,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         LogHelper.logTelemetry(LogHelper.TelemetryCategory.STARTUP, "ACTIVITY_DESTROY", mapOf("activity" to "MainActivity"))
+        dismissUpdateProgress()
         MosqueDNDApp.prefs.unregisterOnSharedPreferenceChangeListener(hijriPrefListener)
         super.onDestroy()
     }

@@ -421,6 +421,27 @@
     <string name="clear_log">مسح السجل</string>
     <string name="activity_log_empty">لا يوجد نشاط عدم إزعاج حديث</string>
 
+    <!-- In-app updates -->
+    <string name="whats_new_dismiss">حسناً</string>
+    <string name="update_check_for_updates">التحقق من وجود تحديثات</string>
+    <string name="update_checking">جارٍ التحقق من التحديثات…</string>
+    <string name="update_up_to_date">أنت تستخدم أحدث إصدار.</string>
+    <string name="update_check_again">التحقق مرة أخرى</string>
+    <string name="update_available">الإصدار %1$s متاح.</string>
+    <string name="update_available_title">يتوفر تحديث</string>
+    <string name="update_available_message">يتوفر الإصدار %1$s.\n\n%2$s</string>
+    <string name="update_download">تنزيل التحديث</string>
+    <string name="update_downloading">جارٍ تنزيل التحديث…</string>
+    <string name="update_download_progress">تقدم التنزيل: %1$d%%</string>
+    <string name="update_download_verified">تم التحقق من التنزيل وأصبح جاهزاً للتثبيت.</string>
+    <string name="update_install">تثبيت التحديث</string>
+    <string name="update_error">فشل التحديث: %1$s</string>
+    <string name="update_later">لاحقاً</string>
+    <string name="update_cancel">إلغاء التنزيل</string>
+    <string name="update_install_permission_denied">اسمح لهذا التطبيق بتثبيت التطبيقات غير المعروفة، ثم حاول مرة أخرى.</string>
+    <string name="update_install_file_missing">لم يعد ملف التحديث الذي تم التحقق منه متاحاً. تحقق من وجود تحديثات مرة أخرى.</string>
+    <string name="update_installer_unavailable">لا يتوفر مثبّت حزم على هذا الجهاز.</string>
+
     <!-- Privacy Policy -->
     <string name="privacy_policy_url">https://www.mosquednd.app/privacy</string>
 

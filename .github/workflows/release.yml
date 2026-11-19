@@ -8,20 +8,29 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Create Keystore Properties
-        if: secrets.SIGNING_KEYSTORE_PASSWORD != ''
+        env:
+          SIGNING_KEYSTORE: ${{ secrets.SIGNING_KEYSTORE }}
+          SIGNING_KEYSTORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
         run: |
-          echo "storePassword=${{ secrets.SIGNING_KEYSTORE_PASSWORD }}" >> app/keystore.properties
-          echo "keyPassword=${{ secrets.SIGNING_KEY_PASSWORD }}" >> app/keystore.properties
-          echo "keyAlias=${{ secrets.SIGNING_KEY_ALIAS }}" >> app/keystore.properties
-          echo "storeFile=${{ github.workspace }}/app/keystore.jks" >> app/keystore.properties
-          
-          # Decode the keystore from base64
-          echo "${{ secrets.SIGNING_KEYSTORE }}" | base64 --decode > app/keystore.jks
+          set -euo pipefail
+          if [[ -z "$SIGNING_KEYSTORE" || -z "$SIGNING_KEYSTORE_PASSWORD" || -z "$SIGNING_KEY_PASSWORD" || -z "$SIGNING_KEY_ALIAS" ]]; then
+            echo "::error::Release signing secrets are not configured."
+            exit 1
+          fi
+          printf 'storePassword=%s\n' "$SIGNING_KEYSTORE_PASSWORD" >> app/keystore.properties
+          printf 'keyPassword=%s\n' "$SIGNING_KEY_PASSWORD" >> app/keystore.properties
+          printf 'keyAlias=%s\n' "$SIGNING_KEY_ALIAS" >> app/keystore.properties
+          printf 'storeFile=%s\n' "${GITHUB_WORKSPACE}/app/keystore.jks" >> app/keystore.properties
+          printf '%s' "$SIGNING_KEYSTORE" | base64 --decode > app/keystore.jks
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -34,6 +43,8 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build Debug/Release APK and AAB
+        env:
+          RELEASE_SIGNING_REQUIRED: "true"
         run: ./gradlew assembleDebug assembleRelease bundleRelease
 
       - name: Prepare Release Artifacts and Notes

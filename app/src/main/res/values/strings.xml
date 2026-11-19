@@ -421,6 +421,27 @@ The app automatically schedules DND alarms and restores normal notifications whe
     <string name="clear_log">Clear Log</string>
     <string name="activity_log_empty">No recent DND activity</string>
 
+    <!-- In-app updates -->
+    <string name="whats_new_dismiss">Got It!</string>
+    <string name="update_check_for_updates">Check for updates</string>
+    <string name="update_checking">Checking for updates...</string>
+    <string name="update_up_to_date">You're using the latest version.</string>
+    <string name="update_check_again">Check again</string>
+    <string name="update_available">%1$s is available.</string>
+    <string name="update_available_title">Update available</string>
+    <string name="update_available_message">Version %1$s is available.\n\n%2$s</string>
+    <string name="update_download">Download update</string>
+    <string name="update_downloading">Downloading update...</string>
+    <string name="update_download_progress">Download progress: %1$d%%</string>
+    <string name="update_download_verified">Download verified and ready to install.</string>
+    <string name="update_install">Install update</string>
+    <string name="update_error">Update failed: %1$s</string>
+    <string name="update_later">Later</string>
+    <string name="update_cancel">Cancel download</string>
+    <string name="update_install_permission_denied">Allow this app to install unknown apps, then try again.</string>
+    <string name="update_install_file_missing">The verified update file is no longer available. Check for updates again.</string>
+    <string name="update_installer_unavailable">No package installer is available on this device.</string>
+
     <!-- Privacy Policy -->
     <string name="privacy_policy_url">https://www.mosquednd.app/privacy</string>
 

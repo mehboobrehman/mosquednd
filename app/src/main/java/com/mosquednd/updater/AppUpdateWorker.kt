@@ -1,8 +1,10 @@
 package com.mosquednd.updater
 
 import android.content.Context
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -31,14 +33,13 @@ class AppUpdateWorker(
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         try {
             val updateManager = AppUpdateManager(applicationContext)
-            val pair = updateManager.checkForUpdate()
-            if (pair != null) {
-                val (_, isNewer) = pair
-                if (isNewer) {
-                    // Background check found newer release.
-                }
+            val (_, isNewer) = updateManager.checkForUpdate()
+            if (isNewer) {
+                Log.d(TAG, "Background update check found a newer release")
             }
             Result.success()
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             Result.retry()
         }

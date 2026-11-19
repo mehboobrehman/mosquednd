@@ -37,6 +37,9 @@ class GitHubReleaseRepository(
             .build()
 
         client.newCall(request).execute().use { response ->
+            if (!response.request.url.isHttps) {
+                throw SecurityException("GitHub releases API redirected to an insecure URL")
+            }
             if (!response.isSuccessful) {
                 throw IOException("Failed to fetch latest release: ${response.code} ${response.message}")
             }
@@ -50,26 +53,35 @@ class GitHubReleaseRepository(
 
             val expectedApkFilename = "MosqueDND-release-v${semVer.major}.${semVer.minor}.${semVer.patch}.apk"
             val apkAsset = assets.firstOrNull { 
-                it.name.equals(expectedApkFilename, ignoreCase = true) || 
-                it.name.matches(Regex("MosqueDND-release-v.*\\.apk", RegexOption.IGNORE_CASE)) 
+                it.name.equals(expectedApkFilename, ignoreCase = true)
             } ?: throw IOException("No matching APK asset found for version $tagName")
+            if (apkAsset.size <= 0L) {
+                throw IOException("APK release asset has an invalid size")
+            }
 
             val checksumAsset = assets.firstOrNull { it.name.equals("SHA256SUMS", ignoreCase = true) }
-                ?: throw IOException("No SHA256SUMS checksum asset found in release")
 
-            if (!apkAsset.browserDownloadUrl.startsWith("https://", ignoreCase = true) ||
-                !checksumAsset.browserDownloadUrl.startsWith("https://", ignoreCase = true)) {
+            if (!apkAsset.browserDownloadUrl.startsWith("https://", ignoreCase = true)) {
                 throw SecurityException("Insecure download URL detected (non-HTTPS)")
             }
 
-            // Download SHA256SUMS
-            val checksumRequest = Request.Builder().url(checksumAsset.browserDownloadUrl).build()
-            val expectedSha256 = client.newCall(checksumRequest).execute().use { checksumResp ->
-                if (!checksumResp.isSuccessful) {
-                    throw IOException("Failed to download SHA256SUMS: ${checksumResp.code}")
+            val expectedSha256 = apkAsset.digest?.let(::parseGitHubDigest) ?: run {
+                val manifest = checksumAsset
+                    ?: throw IOException("Release has no GitHub asset digest or SHA256SUMS manifest")
+                if (!manifest.browserDownloadUrl.startsWith("https://", ignoreCase = true)) {
+                    throw SecurityException("Insecure checksum download URL (HTTPS required)")
                 }
-                val checksumText = checksumResp.body?.string() ?: throw IOException("Empty SHA256SUMS")
-                parseChecksum(checksumText, apkAsset.name)
+                val checksumRequest = Request.Builder().url(manifest.browserDownloadUrl).build()
+                client.newCall(checksumRequest).execute().use { checksumResp ->
+                    if (!checksumResp.request.url.isHttps) {
+                        throw SecurityException("SHA256SUMS redirected to an insecure URL")
+                    }
+                    if (!checksumResp.isSuccessful) {
+                        throw IOException("Failed to download SHA256SUMS: ${checksumResp.code}")
+                    }
+                    val checksumText = checksumResp.body?.string() ?: throw IOException("Empty SHA256SUMS")
+                    parseChecksum(checksumText, apkAsset.name)
+                }
             }
 
             return ReleaseInfo(
@@ -94,19 +106,25 @@ class GitHubReleaseRepository(
             val parts = trimmed.split(Regex("\\s+"), limit = 2)
             if (parts.size == 2) {
                 val hash = parts[0].trim()
-                val filename = parts[1].trim().removePrefix("*")
-                if (filename.equals(targetFilename, ignoreCase = true) || 
-                    targetFilename.contains(filename, ignoreCase = true) || 
-                    filename.contains(targetFilename, ignoreCase = true)) {
+                val filename = parts[1].trim().removePrefix("*").substringAfterLast('/')
+                if (filename.equals(targetFilename, ignoreCase = true)) {
                     if (hash.length == 64 && hash.all { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }) {
                         return hash.lowercase()
                     }
                 }
-            } else if (parts.size == 1 && parts[0].length == 64) {
-                return parts[0].trim().lowercase()
             }
         }
         throw IOException("Checksum for $targetFilename not found in SHA256SUMS")
+    }
+
+    fun parseGitHubDigest(digest: String?): String {
+        val hash = digest
+            ?.takeIf { it.startsWith("sha256:", ignoreCase = true) }
+            ?.substringAfter(':')
+        if (hash == null || hash.length != 64 || hash.any { it !in '0'..'9' && it.lowercaseChar() !in 'a'..'f' }) {
+            throw IOException("Missing or invalid GitHub SHA-256 asset digest")
+        }
+        return hash.lowercase()
     }
 
     suspend fun fetchLatestReleaseSuspend(): ReleaseInfo =
