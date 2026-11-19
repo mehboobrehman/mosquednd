@@ -241,6 +241,7 @@ class OnboardingActivity : AppCompatActivity() {
         // Treat back press during onboarding as "skip to done"
         Log.d(TAG, "Back pressed during onboarding — finishing")
         LogHelper.logTelemetry(LogHelper.TelemetryCategory.ACTION, "BACK_PRESSED", mapOf("activity" to "OnboardingActivity"))
+        super.onBackPressed()
         finishOnboarding()
     }
 }
