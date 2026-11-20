@@ -1,7 +1,10 @@
 package com.mosquednd.ui.onboarding
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,10 +15,14 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mosquednd.MosqueDNDApp
 import com.mosquednd.R
 import com.mosquednd.ui.MainActivity
+import com.mosquednd.util.ExactAlarmHelper
 import com.mosquednd.util.LogHelper
 
 class OnboardingActivity : AppCompatActivity() {
@@ -214,6 +221,29 @@ class OnboardingActivity : AppCompatActivity() {
 
     private fun finishOnboarding() {
         markSeen()
+        val context = this
+        MaterialAlertDialogBuilder(context)
+            .setTitle(R.string.onboarding_permissions_title)
+            .setMessage(R.string.onboarding_permissions_message)
+            .setPositiveButton("Grant Permissions") { _, _ ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1001)
+                    }
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    ExactAlarmHelper.checkExactAlarm(context)
+                }
+                proceedToMain()
+            }
+            .setNegativeButton("Continue") { _, _ ->
+                proceedToMain()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun proceedToMain() {
         Log.d(TAG, "Onboarding complete — returning to MainActivity")
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

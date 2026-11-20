@@ -425,7 +425,7 @@ The app automatically schedules DND alarms and restores normal notifications whe
     <string name="whats_new_dismiss">Got It!</string>
     <string name="update_check_for_updates">Check for updates</string>
     <string name="update_checking">Checking for updates...</string>
-    <string name="update_up_to_date">You're using the latest version.</string>
+    <string name="update_up_to_date">You\'re using the latest version.</string>
     <string name="update_check_again">Check again</string>
     <string name="update_available">%1$s is available.</string>
     <string name="update_available_title">Update available</string>
@@ -450,4 +450,17 @@ The app automatically schedules DND alarms and restores normal notifications whe
     <string name="prayer_help_content_desc">Help for %1$s prayer</string>
     <string name="mosque_item_desc">Mosque: %1$s</string>
     <string name="delete_mosque_desc">Remove mosque %1$s</string>
+
+    <!-- Permissions & Notifications Settings -->
+    <string name="permissions_category">Permissions &amp; Notifications</string>
+    <string name="pref_perm_notifications_title">Notification Permission</string>
+    <string name="pref_perm_notifications_summary">Check or request permission for Adhan alerts &amp; countdown</string>
+    <string name="pref_perm_exact_alarm_title">Exact Alarms Permission</string>
+    <string name="pref_perm_exact_alarm_summary">Ensure precise scheduling for Adhan and DND times</string>
+    <string name="pref_perm_dnd_access_title">Do Not Disturb Access</string>
+    <string name="pref_perm_dnd_access_summary">Allow app to toggle DND during prayer times</string>
+    <string name="pref_perm_app_settings_title">App Settings &amp; Permissions</string>
+    <string name="pref_perm_app_settings_summary">Review all system permissions in Android Settings</string>
+    <string name="onboarding_permissions_title">Enable Adhan Notifications &amp; Alarms</string>
+    <string name="onboarding_permissions_message">To deliver Adhan alerts reliably when your screen is off or device is in Do Not Disturb mode, MosqueDND requires Notification and Exact Alarm permissions.\n\nPlease grant these permissions to ensure you never miss a prayer.</string>
 </resources>

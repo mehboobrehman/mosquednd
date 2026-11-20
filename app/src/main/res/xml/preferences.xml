@@ -13,6 +13,34 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/permissions_category">
+
+        <Preference
+            android:key="pref_perm_notifications"
+            android:title="@string/pref_perm_notifications_title"
+            android:summary="@string/pref_perm_notifications_summary"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="pref_perm_exact_alarm"
+            android:title="@string/pref_perm_exact_alarm_title"
+            android:summary="@string/pref_perm_exact_alarm_summary"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="pref_perm_dnd_access"
+            android:title="@string/pref_perm_dnd_access_title"
+            android:summary="@string/pref_perm_dnd_access_summary"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="pref_perm_app_settings"
+            android:title="@string/pref_perm_app_settings_title"
+            android:summary="@string/pref_perm_app_settings_summary"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/prayer_calculation">
 
         <ListPreference

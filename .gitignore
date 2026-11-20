@@ -105,6 +105,7 @@ www/
 *.ps1
 *.cmd
 *.html
+!e2e/harness/*.html
 *.jpeg
 *.png
 !telemetry_qr.png

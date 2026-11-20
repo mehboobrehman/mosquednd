@@ -135,6 +135,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setupLogServerPreference()
         setupAboutVersionPreferences()
         setupWhatsNewPreference()
+        setupPermissionsPreferences()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -163,6 +164,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onResume()
         updateRingtoneSummary()
         updateGoogleAuthPreferenceSummary()
+        updatePermissionsSummaries()
     }
 
     override fun onPause() {
@@ -957,5 +959,83 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         val envPref = findPreference<Preference>("pref_build_env")
         envPref?.summary = versionInfo.environment.replaceFirstChar { it.uppercase() }
+    }
+
+    private fun setupPermissionsPreferences() {
+        val notifPref = findPreference<Preference>("pref_perm_notifications")
+        val exactAlarmPref = findPreference<Preference>("pref_perm_exact_alarm")
+        val dndAccessPref = findPreference<Preference>("pref_perm_dnd_access")
+        val appSettingsPref = findPreference<Preference>("pref_perm_app_settings")
+
+        updatePermissionsSummaries()
+
+        notifPref?.setOnPreferenceClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                } else {
+                    Toast.makeText(requireContext(), "Notification permission already granted", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(requireContext(), "Notification permission not required on this Android version", Toast.LENGTH_SHORT).show()
+            }
+            true
+        }
+
+        exactAlarmPref?.setOnPreferenceClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ExactAlarmHelper.checkExactAlarm(requireContext())
+            } else {
+                Toast.makeText(requireContext(), "Exact alarm permission not required on this Android version", Toast.LENGTH_SHORT).show()
+            }
+            true
+        }
+
+        dndAccessPref?.setOnPreferenceClickListener {
+            try {
+                val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+                startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Could not open DND settings", Toast.LENGTH_SHORT).show()
+            }
+            true
+        }
+
+        appSettingsPref?.setOnPreferenceClickListener {
+            try {
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.fromParts("package", requireContext().packageName, null)
+                }
+                startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Could not open app settings", Toast.LENGTH_SHORT).show()
+            }
+            true
+        }
+    }
+
+    private fun updatePermissionsSummaries() {
+        val notifPref = findPreference<Preference>("pref_perm_notifications")
+        val exactAlarmPref = findPreference<Preference>("pref_perm_exact_alarm")
+        val dndAccessPref = findPreference<Preference>("pref_perm_dnd_access")
+        val context = try { requireContext() } catch (e: Exception) { return }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val granted = ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+            notifPref?.summary = if (granted) "Granted" else "Denied (Tap to request)"
+        } else {
+            notifPref?.summary = "Granted (Automatic on this Android version)"
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+            val granted = alarmMgr?.canScheduleExactAlarms() == true
+            exactAlarmPref?.summary = if (granted) "Granted" else "Denied (Tap to open settings)"
+        } else {
+            exactAlarmPref?.summary = "Granted (Automatic on this Android version)"
+        }
+
+        val dndGranted = com.mosquednd.util.DNDController.hasDNDAccess(context)
+        dndAccessPref?.summary = if (dndGranted) "Granted" else "Denied (Tap to grant)"
     }
 }

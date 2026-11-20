@@ -1,12 +1,15 @@
 {
   "name": "mosquednd",
-  "version": "1.0.14",
+  "version": "1.0.17",
   "description": "MosqueDND Android App",
   "main": "index.js",
   "scripts": {
     "build:debug": "./gradlew assembleDebug",
     "build:release": "./gradlew assembleRelease",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "test:e2e:playwright": "playwright test",
+    "test:e2e:cypress": "cypress run",
+    "harness:serve": "npx http-server e2e/harness -p 3000"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +19,9 @@
     "qrcode-terminal": "^0.12.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.41.2",
+    "cypress": "^13.6.5",
+    "http-server": "^14.1.1",
     "semantic-release": "^23.0.0",
     "@semantic-release/commit-analyzer": "^12.0.0",
     "@semantic-release/release-notes-generator": "^13.0.0",

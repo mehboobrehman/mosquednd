@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MosqueDND Settings - Google Account Sign-in Test Harness</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f5f5f7;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .header {
+      background: #1976d2;
+      color: white;
+      padding: 20px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .section-title {
+      padding: 16px 20px 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1976d2;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .preference-item {
+      padding: 16px 20px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .preference-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pref-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #ddd;
+      object-fit: cover;
+      display: none;
+    }
+    .avatar.visible {
+      display: block;
+    }
+    .pref-text h3 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .pref-text p {
+      margin: 0;
+      font-size: 14px;
+      color: #666;
+    }
+    .btn {
+      padding: 10px 18px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary {
+      background: #1976d2;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #115293;
+    }
+    .btn-danger {
+      background: #d32f2f;
+      color: white;
+    }
+    .btn-danger:hover {
+      background: #9a0007;
+    }
+    .btn-secondary {
+      background: #e0e0e0;
+      color: #333;
+    }
+    .btn-secondary:hover {
+      background: #d5d5d5;
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #323232;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 1000;
+    }
+    .toast.error {
+      background: #d32f2f;
+    }
+    .toast.visible {
+      display: block;
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .modal-overlay.visible {
+      display: flex;
+    }
+    .modal {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    .modal h3 {
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+    .modal p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+      margin-left: 8px;
+      vertical-align: middle;
+      display: none;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">MosqueDND Settings</div>
+    
+    <div class="section-title">Cloud &amp; Account</div>
+    
+    <div class="preference-item" data-testid="google-auth-section">
+      <div class="preference-row">
+        <div class="pref-info">
+          <img id="google-avatar" data-testid="google-avatar" class="avatar" src="" alt="User Avatar">
+          <div class="pref-text">
+            <h3>Google Account Sync</h3>
+            <p id="google-auth-status" data-testid="google-auth-status">Not connected</p>
+          </div>
+        </div>
+        <button id="google-auth-button" data-testid="google-auth-button" class="btn btn-primary" onclick="handleAuthAction()">
+          <span id="button-text">Sign in with Google</span>
+          <span id="loading-spinner" data-testid="loading-spinner" class="loading-spinner"></span>
+        </button>
+      </div>
+      <div id="google-user-profile" data-testid="google-user-profile" style="display:none; font-size: 13px; color: #555; background: #f9f9f9; padding: 8px 12px; border-radius: 6px;">
+        Signed in as: <strong id="google-email" data-testid="google-email"></strong> (<span id="google-name" data-testid="google-name"></span>)
+      </div>
+    </div>
+  </div>
+
+  <!-- Disconnect Confirmation Modal -->
+  <div id="disconnect-modal" data-testid="disconnect-modal" class="modal-overlay">
+    <div class="modal">
+      <h3>Disconnect Google Account?</h3>
+      <p>Backups and cross-device sync will be paused. Your local settings will remain safe on this device.</p>
+      <div class="modal-actions">
+        <button data-testid="cancel-disconnect-btn" class="btn btn-secondary" onclick="closeDisconnectModal()">Cancel</button>
+        <button data-testid="confirm-disconnect-btn" class="btn btn-danger" onclick="confirmDisconnect()">Disconnect</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast / Error Message -->
+  <div id="error-toast" data-testid="error-toast" class="toast"></div>
+
+  <script>
+    let authState = JSON.parse(localStorage.getItem('mosquednd_google_auth') || '{"signedIn":false}');
+    let testMode = 'success';
+
+    window.setTestMode = function(mode) {
+      testMode = mode;
+      console.log('Test mode set to:', mode);
+    };
+
+    window.resetState = function() {
+      authState = { signedIn: false };
+      localStorage.removeItem('mosquednd_google_auth');
+      testMode = 'success';
+      updateUI();
+    };
+
+    function updateUI() {
+      const statusEl = document.getElementById('google-auth-status');
+      const btnEl = document.getElementById('google-auth-button');
+      const btnTextEl = document.getElementById('button-text');
+      const profileEl = document.getElementById('google-user-profile');
+      const avatarEl = document.getElementById('google-avatar');
+      const emailEl = document.getElementById('google-email');
+      const nameEl = document.getElementById('google-name');
+
+      if (authState.signedIn) {
+        statusEl.textContent = 'Connected';
+        btnTextEl.textContent = 'Disconnect';
+        btnEl.className = 'btn btn-danger';
+        profileEl.style.display = 'block';
+        emailEl.textContent = authState.email || 'mehboob.rehman@live.com';
+        nameEl.textContent = authState.name || 'Test User';
+        avatarEl.src = authState.photoUrl || 'https://via.placeholder.com/48';
+        avatarEl.classList.add('visible');
+      } else {
+        statusEl.textContent = 'Not connected';
+        btnTextEl.textContent = 'Sign in with Google';
+        btnEl.className = 'btn btn-primary';
+        profileEl.style.display = 'none';
+        avatarEl.classList.remove('visible');
+        avatarEl.src = '';
+      }
+    }
+
+    function showToast(message, isError = false) {
+      const toast = document.getElementById('error-toast');
+      toast.textContent = message;
+      toast.className = 'toast ' + (isError ? 'error' : '') + ' visible';
+      setTimeout(() => {
+        toast.className = 'toast';
+      }, 4000);
+    }
+
+    function setSpinner(show) {
+      const spinner = document.getElementById('loading-spinner');
+      spinner.style.display = show ? 'inline-block' : 'none';
+    }
+
+    async function performOAuth(mode) {
+      await new Promise(r => setTimeout(r, 100));
+      if (mode === 'error') {
+        throw new Error('Google authentication failed: Invalid credentials or server error');
+      }
+      if (mode === 'timeout') {
+        await new Promise(r => setTimeout(r, 200));
+        throw new Error('Network timeout during Google sign-in. Please check connection.');
+      }
+      if (mode === 'cancel') {
+        throw new Error('Google Sign-In was cancelled by user');
+      }
+      return {
+        success: true,
+        email: 'mehboob.rehman@live.com',
+        name: 'Mehboob-ur-Rehman',
+        photoUrl: 'https://via.placeholder.com/48'
+      };
+    }
+
+    async function handleAuthAction() {
+      if (authState.signedIn) {
+        document.getElementById('disconnect-modal').classList.add('visible');
+      } else {
+        setSpinner(true);
+        const btn = document.getElementById('google-auth-button');
+        btn.disabled = true;
+
+        try {
+          const data = await performOAuth(testMode);
+          authState = {
+            signedIn: true,
+            email: data.email || 'mehboob.rehman@live.com',
+            name: data.name || 'Mehboob-ur-Rehman',
+            photoUrl: data.photoUrl || 'https://via.placeholder.com/48'
+          };
+          localStorage.setItem('mosquednd_google_auth', JSON.stringify(authState));
+          updateUI();
+          showToast('Successfully signed in with Google');
+        } catch (err) {
+          showToast(err.message || 'Network error during Google Sign-In', true);
+        } finally {
+          setSpinner(false);
+          btn.disabled = false;
+        }
+      }
+    }
+
+    function closeDisconnectModal() {
+      document.getElementById('disconnect-modal').classList.remove('visible');
+    }
+
+    function confirmDisconnect() {
+      closeDisconnectModal();
+      setSpinner(true);
+      setTimeout(() => {
+        setSpinner(false);
+        authState = { signedIn: false };
+        localStorage.removeItem('mosquednd_google_auth');
+        updateUI();
+        showToast('Google account disconnected successfully');
+      }, 200);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateUI();
+    });
+  </script>
+</body>
+</html>

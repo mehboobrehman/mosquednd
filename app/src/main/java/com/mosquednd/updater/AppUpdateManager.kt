@@ -172,7 +172,7 @@ class AppUpdateManager(
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    continuation.resume(response) { _, value, _ -> value.close() }
+                    continuation.resume(response) { _ -> response.close() }
                 }
             })
         }
