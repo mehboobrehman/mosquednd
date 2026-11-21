@@ -1,6 +1,6 @@
 {
   "name": "mosquednd",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "MosqueDND Android App",
   "main": "index.js",
   "scripts": {
